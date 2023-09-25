@@ -1,24 +1,27 @@
 # Db
-
 MARIADB_DATABASE=directus
 MARIADB_USER=directus
 MARIADB_PASSWORD=
 MARIADB_ROOT_PASSWORD=
 
 # Directus
-
 KEY=directus
 SECRET=
-
 AUTH_GITHUB_CLIENT_ID=
 AUTH_GITHUB_CLIENT_SECRET=
-
 ADMIN_EMAIL=
 ADMIN_PASSWORD=
+PUBLIC_URL=
 
-PUBLIC_URL=http://localhost:8055
+# GitHub API
+WEBHOOK_FLOW_ID= # should be a valid uuid. The result webhook to be passsed to github is ${host}/flows/trigger/${WEBHOOK_FLOW_ID}
+GITHUB_WEBHOOK_TOKEN= # Is generated during enabling of gh webhook, then passed to the app
+GITHUB_ACCESS_TOKEN= # Token to access GraphQL api
 
-# Are changed during deploy
+# App
+CREDITS_PER_DOLLAR=10000
+
+# Values that are changed during deploy.sh
 ADMIN_ACCESS_TOKEN=
 AUTH_GITHUB_DEFAULT_ROLE_ID=
 AUTH_DISABLE_DEFAULT=false
