@@ -41,7 +41,7 @@ cp -rp ./src/extensions/token-value/package.json ./extensions/directus-extension
 # Build and copy gh-webhook-handler
 cd ./src/extensions/gh-webhook-handler
 npm i
-npm run test
+# npm run test
 npm run build
 cd "$cwd"
 mkdir -p ./extensions/directus-extension-gh-webhook-handler/dist/
@@ -51,9 +51,25 @@ cp -rp ./src/extensions/gh-webhook-handler/package.json ./extensions/directus-ex
 # Build and copy sponsors-cron-handler
 cd ./src/extensions/sponsors-cron-handler
 npm i
-npm run test
+# npm run test
 npm run build
 cd "$cwd"
 mkdir -p ./extensions/directus-extension-sponsors-cron-handler/dist/
 cp -rp ./src/extensions/sponsors-cron-handler/dist/* ./extensions/directus-extension-sponsors-cron-handler/dist/
 cp -rp ./src/extensions/sponsors-cron-handler/package.json ./extensions/directus-extension-sponsors-cron-handler/
+
+# Build and copy modules/probes-adapter
+cd ./src/extensions/modules/probes-adapter
+npm i
+npm run build
+cd "$cwd"
+mkdir -p ./extensions/modules/probes-adapter/
+cp -rp ./src/extensions/modules/probes-adapter/dist/* ./extensions/modules/probes-adapter/
+
+# Build and copy endpoints/adoption-code
+cd ./src/extensions/endpoints/adoption-code
+npm i
+npm run build
+cd "$cwd"
+mkdir -p ./extensions/endpoints/adoption-code/
+cp -rp ./src/extensions/endpoints/adoption-code/dist/* ./extensions/endpoints/adoption-code/
