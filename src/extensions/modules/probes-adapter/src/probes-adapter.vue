@@ -45,6 +45,8 @@
 </template>
 
 <script>
+import { useApi } from '@directus/extensions-sdk';
+
 export default {
 	data() {
 		return {
@@ -54,50 +56,52 @@ export default {
 			verifyCodeResponse: '',
 		};
 	},
+	setup() {
+		const api = useApi();
+
+		return {
+			api
+		};
+	},
 	methods: {
 		async sendCode() {
 			try {
-				const response = await fetch('/adoption-code/send-code', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-					body: JSON.stringify({ ip: this.ip }),
-				});
+				const response = await this.api.post('/adoption-code/send-code', { ip: this.ip });
 
-				if (!response.ok) {
-					throw new Error('Network response code is not ok');
+				if (response.status !== 200) {
+					throw new Error('Network response code is not 200');
 				}
 
-				const text = await response.text();
-				this.sendCodeResponse = text;
+				this.sendCodeResponse = response.data;
 			} catch (error) {
 				console.error('Error:', error);
 				this.sendCodeResponse = 'An error occurred while submitting the form.';
 			}
 		},
+
 		async verifyCode() {
 			try {
-				const response = await fetch('/adoption-code/verify-code', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-					body: JSON.stringify({ code: this.code }),
-				});
+				const response = await this.api.post('/adoption-code/verify-code', { code: this.code });
 
-				if (!response.ok) {
-					throw new Error('Network response code is not ok');
+				if (response.status !== 200) {
+					throw new Error('Network response code is not 200');
 				}
 
-				const text = await response.text();
-				this.verifyCodeResponse = text;
+				this.verifyCodeResponse = response.data;
 			} catch (error) {
 				console.error('Error:', error);
 				this.verifyCodeResponse = 'An error occurred while submitting the form.';
 			}
-		},
+		}
 	},
+  watch: {
+    ip() {
+      this.sendCodeResponse = '';
+    },
+		code() {
+			this.verifyCodeResponse = '';
+		}
+  }
 };
 </script>
 

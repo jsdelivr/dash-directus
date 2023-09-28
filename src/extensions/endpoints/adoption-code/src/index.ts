@@ -22,28 +22,21 @@ const generateRandomCode = () => {
 
 export default defineEndpoint((router) => { // need to secure from brootforce here
 	router.post('/send-code', async (req, res) => {
-		console.log('JSON.stringify(req.accountability)', JSON.stringify(req.accountability));
 		const userId = (req as Request)?.accountability?.user;
 
-		console.log(1);
 		if (!userId) {
-			// throw new ForbiddenError();
+			throw new ForbiddenError();
 		}
 
-		console.log(2);
 		const ip = req.body?.ip;
 
-		console.log(3);
 		if (!ip) { // validate that string is ip here
-			console.log(4);
-			// throw new InvalidIpError();
+			throw new InvalidIpError();
 		}
 
-		console.log(5);
 		const code = generateRandomCode();
 
 		try {
-			console.log(6);
 			codes.set(userId, { ip, code });
 
 			await fetch('https://webhook.site/bee85cd1-e49a-429a-a145-2c9d03e1ae2c', {
