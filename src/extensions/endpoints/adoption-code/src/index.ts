@@ -1,16 +1,26 @@
+import type { Request as ExpressRequest } from 'express';
 import TTLCache from '@isaacs/ttlcache';
+import { RateLimiterMemory } from 'rate-limiter-flexible';
 import { createError, isDirectusError } from '@directus/errors';
 import { defineEndpoint } from '@directus/extensions-sdk';
+import { isIP } from 'net';
+
+type Request = ExpressRequest & {
+	accountability?: {
+		user: string | null;
+	},
+	schema: object,
+};
 
 const ForbiddenError = createError('FORBIDDEN', 'You need to be authenticated to access this endpoint', 403);
 const InvalidIpError = createError('INVALID_PAYLOAD_ERROR', 'IP is not valid', 400);
 const InvalidCodeError = createError('INVALID_PAYLOAD_ERROR', 'Code is not valid', 400);
+const TooManyRequestsError = createError('TOO_MANY_REQUESTS', 'Too many requests', 429);
 
-type Request = {
-	accountability?: {
-		user: string | null;
-	}
-};
+const rateLimiter = new RateLimiterMemory({
+	points: 20,
+	duration: 30 * 60,
+});
 
 const codes = new TTLCache<string, {ip: string, code: string}>({ ttl: 30 * 60 * 1000 });
 
@@ -20,7 +30,7 @@ const generateRandomCode = () => {
 	return randomCode;
 };
 
-export default defineEndpoint((router, { logger }) => { // need to secure from brootforce here
+export default defineEndpoint((router, { env, logger, services }) => {
 	router.post('/send-code', async (req, res) => {
 		try {
 			const userId = (req as Request)?.accountability?.user;
@@ -31,14 +41,16 @@ export default defineEndpoint((router, { logger }) => { // need to secure from b
 
 			const ip = req.body?.ip;
 
-			if (!ip) { // validate that string is ip here
+			if (!ip || isIP(ip) === 0) {
 				throw new InvalidIpError();
 			}
+
+			await rateLimiter.consume(userId, 1).catch(() => { throw new TooManyRequestsError(); });
 
 			const code = generateRandomCode();
 			codes.set(userId, { ip, code });
 
-			await fetch('https://webhook.site/bee85cd1-e49a-429a-a145-2c9d03e1ae2c', {
+			await fetch(`${env.GP_SEND_CODE_ENDPOINT}?adminkey=${env.GP_ADMIN_KEY}`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -58,9 +70,10 @@ export default defineEndpoint((router, { logger }) => { // need to secure from b
 		}
 	});
 
-	router.post('/verify-code', (req, res) => { // need to secure from brootforce here
+	router.post('/verify-code', async (request, res) => {
 		try {
-			const userId = (req as Request)?.accountability?.user;
+			const req = request as unknown as Request;
+			const userId = req?.accountability?.user;
 
 			if (!userId) {
 				throw new ForbiddenError();
@@ -72,15 +85,25 @@ export default defineEndpoint((router, { logger }) => { // need to secure from b
 				throw new InvalidCodeError();
 			}
 
+			await rateLimiter.consume(userId, 1).catch(() => { throw new TooManyRequestsError(); });
+
 			const code = codes.get(userId);
 
 			if (!code || code.code !== userCode) {
-				throw new InvalidCodeError(); // fix different error formats here
+				throw new InvalidCodeError();
 			}
 
-			// assign probe to user here
+			const itemsService = new services.ItemsService('adopted_probes', {
+				schema: req.schema,
+			});
+
+			await itemsService.createOne({
+				ip: code.ip,
+				userId,
+			});
 
 			codes.delete(userId);
+			rateLimiter.delete(userId);
 			res.send('Code successfully validated. Probe was assigned to you.');
 		} catch (error: unknown) {
 			logger.error(error);

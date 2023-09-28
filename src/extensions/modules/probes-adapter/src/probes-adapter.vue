@@ -12,6 +12,7 @@
 				1. Enter the IP address of your probe;<br/>
 				2. Go to the probe logs and find a 6 digit verification code;<br/>
 				3. Enter the code to the verification input.
+				4. Done. Check your <a class="link" href="/admin/content/adopted_probes">adopted probes</a>.
 			</p>
 
 			<form @submit.prevent="sendCode">
@@ -103,6 +104,11 @@ export default {
 	color: #172940;
 	font-size: 16px;
 	margin-bottom: 16px;
+}
+
+.link {
+	text-decoration: underline;
+	font-weight: 600;
 }
 
 form {
