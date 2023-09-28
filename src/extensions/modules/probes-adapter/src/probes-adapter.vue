@@ -67,30 +67,18 @@ export default {
 		async sendCode() {
 			try {
 				const response = await this.api.post('/adoption-code/send-code', { ip: this.ip });
-
-				if (response.status !== 200) {
-					throw new Error('Network response code is not 200');
-				}
-
 				this.sendCodeResponse = response.data;
 			} catch (error) {
-				console.error('Error:', error);
-				this.sendCodeResponse = 'An error occurred while submitting the form.';
+				this.sendCodeResponse = error.response.data;
 			}
 		},
 
 		async verifyCode() {
 			try {
 				const response = await this.api.post('/adoption-code/verify-code', { code: this.code });
-
-				if (response.status !== 200) {
-					throw new Error('Network response code is not 200');
-				}
-
 				this.verifyCodeResponse = response.data;
 			} catch (error) {
-				console.error('Error:', error);
-				this.verifyCodeResponse = 'An error occurred while submitting the form.';
+				this.verifyCodeResponse = error.response.data;
 			}
 		}
 	},
