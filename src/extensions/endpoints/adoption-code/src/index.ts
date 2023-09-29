@@ -1,19 +1,18 @@
 import type { Request as ExpressRequest } from 'express';
+import axios from 'axios';
 import TTLCache from '@isaacs/ttlcache';
 import { RateLimiterMemory } from 'rate-limiter-flexible';
 import { createError, isDirectusError } from '@directus/errors';
 import { defineEndpoint } from '@directus/extensions-sdk';
-import { isIP } from 'net';
+import Joi from 'joi';
 
 type Request = ExpressRequest & {
-	accountability?: {
-		user: string | null;
+	accountability: {
+		user: string;
 	},
 	schema: object,
 };
 
-const ForbiddenError = createError('FORBIDDEN', 'You need to be authenticated to access this endpoint', 403);
-const InvalidIpError = createError('INVALID_PAYLOAD_ERROR', 'IP is not valid', 400);
 const InvalidCodeError = createError('INVALID_PAYLOAD_ERROR', 'Code is not valid', 400);
 const TooManyRequestsError = createError('TOO_MANY_REQUESTS', 'Too many requests', 429);
 
@@ -30,33 +29,40 @@ const generateRandomCode = () => {
 	return randomCode;
 };
 
+const sendCodeSchema = Joi.object<Request>({
+	accountability: Joi.object({
+		user: Joi.string().required(),
+	}).required().unknown(true),
+	body: Joi.object({
+		ip: Joi.string().ip().required(),
+	}).required(),
+}).unknown(true);
+
 export default defineEndpoint((router, { env, logger, services }) => {
 	router.post('/send-code', async (req, res) => {
 		try {
-			const userId = (req as Request)?.accountability?.user;
+			const { value, error } = sendCodeSchema.validate(req);
 
-			if (!userId) {
-				throw new ForbiddenError();
+			if (error) {
+				throw new (createError('INVALID_PAYLOAD_ERROR', error.message, 400))();
 			}
 
-			const ip = req.body?.ip;
-
-			if (!ip || isIP(ip) === 0) {
-				throw new InvalidIpError();
-			}
+			const userId = value.accountability.user;
+			const ip = value.body.ip as string;
 
 			await rateLimiter.consume(userId, 1).catch(() => { throw new TooManyRequestsError(); });
 
 			const code = generateRandomCode();
 			codes.set(userId, { ip, code });
 
-			await fetch(`${env.GP_SEND_CODE_ENDPOINT}?adminkey=${env.GP_ADMIN_KEY}`, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({ ip, code }),
+			const response = await axios.post(`${env.GP_SEND_CODE_ENDPOINT}?adminkey=${env.GP_ADMIN_KEY}`, {
+				ip,
+				code,
 			});
+
+			if (response.status !== 200) {
+				throw new Error('Globalping response is non-200.');
+			}
 
 			res.send('Code was successfully sent to the probe.');
 		} catch (error: unknown) {
@@ -70,20 +76,25 @@ export default defineEndpoint((router, { env, logger, services }) => {
 		}
 	});
 
-	router.post('/verify-code', async (request, res) => {
+	const verifyCodeSchema = Joi.object<Request>({
+		accountability: Joi.object({
+			user: Joi.string().required(),
+		}).required().unknown(true),
+		body: Joi.object({
+			code: Joi.string().required(),
+		}).required(),
+	}).unknown(true);
+
+	router.post('/verify-code', async (req, res) => {
 		try {
-			const req = request as unknown as Request;
-			const userId = req?.accountability?.user;
+			const { value, error } = verifyCodeSchema.validate(req);
 
-			if (!userId) {
-				throw new ForbiddenError();
+			if (error) {
+				throw new (createError('INVALID_PAYLOAD_ERROR', error.message, 400))();
 			}
 
-			const userCode = req.body?.code && req.body?.code.replaceAll(' ', '');
-
-			if (!userCode) {
-				throw new InvalidCodeError();
-			}
+			const userId = value.accountability.user;
+			const userCode = value.body.code.replaceAll(' ', '');
 
 			await rateLimiter.consume(userId, 1).catch(() => { throw new TooManyRequestsError(); });
 
@@ -94,7 +105,7 @@ export default defineEndpoint((router, { env, logger, services }) => {
 			}
 
 			const itemsService = new services.ItemsService('adopted_probes', {
-				schema: req.schema,
+				schema: value.schema,
 			});
 
 			await itemsService.createOne({
