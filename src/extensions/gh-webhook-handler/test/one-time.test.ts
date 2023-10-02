@@ -64,7 +64,7 @@ describe('GitHub webhook one-time handler', () => {
 		};
 		const env = {};
 
-		const err = (await operationApi.handler({}, { data, database, env, getSchema, services, logger, accountability }) as Promise<string>).catch(err => err);
+		const err = await (operationApi.handler({}, { data, database, env, getSchema, services, logger, accountability }) as Promise<string>).catch(err => err);
 		expect(err).to.deep.equal(new Error('GITHUB_WEBHOOK_TOKEN was not provided'));
 		expect(createOne.callCount).to.equal(0);
 	});
@@ -77,7 +77,7 @@ describe('GitHub webhook one-time handler', () => {
 			},
 		};
 
-		const err = (await operationApi.handler({}, { data, database, env, getSchema, services, logger, accountability }) as Promise<string>).catch(err => err);
+		const err = await (operationApi.handler({}, { data, database, env, getSchema, services, logger, accountability }) as Promise<string>).catch(err => err);
 		expect(err).to.deep.equal(new Error('"x-hub-signature-256" header was not provided'));
 		expect(services.ItemsService.callCount).to.equal(0);
 		expect(createOne.callCount).to.equal(0);
@@ -93,7 +93,7 @@ describe('GitHub webhook one-time handler', () => {
 			},
 		};
 
-		const err = (await operationApi.handler({}, { data, database, env, getSchema, services, logger, accountability }) as Promise<string>).catch(err => err);
+		const err = await (operationApi.handler({}, { data, database, env, getSchema, services, logger, accountability }) as Promise<string>).catch(err => err);
 		expect(err).to.deep.equal(new Error('Signature is not valid'));
 		expect(services.ItemsService.callCount).to.equal(0);
 		expect(createOne.callCount).to.equal(0);
@@ -118,7 +118,7 @@ describe('GitHub webhook one-time handler', () => {
 			},
 		};
 
-		const err = (await operationApi.handler({}, { data, database, env, getSchema, services, logger, accountability }) as Promise<string>).catch(err => err);
+		const err = await (operationApi.handler({}, { data, database, env, getSchema, services, logger, accountability }) as Promise<string>).catch(err => err);
 		expect(err).to.deep.equal(new Error('"sponsorship.sponsor" field is undefined'));
 		expect(createOne.callCount).to.equal(0);
 	});

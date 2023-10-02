@@ -65,7 +65,7 @@ docker compose up -d --build
 echo "Waiting for the service to start..."
 ./sh-scripts/wait-for.sh -t 60 http://localhost:8055/admin/login
 
-echo "Applying tokens schema..."
+echo "Applying collections schema..."
 docker compose exec directus npx directus schema apply --yes /directus/snapshots/collections-schema.yml
 
 echo "Running migrations..."
