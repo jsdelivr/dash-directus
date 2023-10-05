@@ -60,16 +60,14 @@ export default defineEndpoint((router, { env, logger, services }) => {
 				code,
 			});
 
-			if (response.status !== 200) {
-				throw new Error('Globalping response is non-200.');
-			}
-
-			res.send('Code was successfully sent to the probe.');
+			res.send(response.data.result);
 		} catch (error: unknown) {
 			logger.error(error);
 
 			if (isDirectusError(error)) {
 				res.status(error.status).send(error.message);
+			} else if (axios.isAxiosError(error)) {
+				res.status(400).send(error.response?.data?.error?.message);
 			} else {
 				res.status(500).send('Internal Server Error');
 			}

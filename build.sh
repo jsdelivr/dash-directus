@@ -69,6 +69,7 @@ cp -rp ./src/extensions/modules/probes-adapter/dist/* ./extensions/modules/probe
 # Build and copy endpoints/adoption-code
 cd ./src/extensions/endpoints/adoption-code
 npm i
+npm run test
 npm run build
 cd "$cwd"
 mkdir -p ./extensions/endpoints/adoption-code/

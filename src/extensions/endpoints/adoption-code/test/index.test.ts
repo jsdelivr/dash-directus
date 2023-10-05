@@ -11,7 +11,7 @@ const endpointContext = {
 		error: console.error,
 	},
 	env: {
-		GP_SEND_CODE_ENDPOINT: 'https://api.globalping.io/v1/adopt-probe',
+		GP_SEND_CODE_ENDPOINT: 'https://api.globalping.io/v1/adoption-code',
 		GP_ADMIN_KEY: 'admin',
 	},
 	services: {
@@ -55,17 +55,19 @@ describe('/adoption-code/send-code endpoint', () => {
 				ip: '1.1.1.1',
 			},
 		};
-		nock('https://api.globalping.io').post('/v1/adopt-probe?adminkey=admin', (body) => {
+		nock('https://api.globalping.io').post('/v1/adoption-code?adminkey=admin', (body) => {
 			expect(body.ip).to.equal('1.1.1.1');
 			expect(body.code.length).to.equal(6);
 			return true;
-		}).reply(200);
+		}).reply(200, {
+			result: 'Code was sent to the probe.',
+		});
 
 		await request('/send-code', req, res);
 
 		expect(nock.isDone()).to.equal(true);
 		expect(resSend.callCount).to.equal(1);
-		expect(resSend.args[0]).to.deep.equal([ 'Code was successfully sent to the probe.' ]);
+		expect(resSend.args[0]).to.deep.equal([ 'Code was sent to the probe.' ]);
 	});
 
 	it('should reject non authorized requests', async () => {
@@ -125,12 +127,14 @@ describe('/adoption-code/verify-code endpoint', () => {
 	it('should accept valid verification code', async () => {
 		endpoint(router, endpointContext);
 		let code = '';
-		nock('https://api.globalping.io').post('/v1/adopt-probe?adminkey=admin', (body) => {
+		nock('https://api.globalping.io').post('/v1/adoption-code?adminkey=admin', (body) => {
 			expect(body.ip).to.equal('1.1.1.1');
 			expect(body.code.length).to.equal(6);
 			code = body.code;
 			return true;
-		}).reply(200);
+		}).reply(200, {
+			result: 'Code was sent to the probe.',
+		});
 
 		await request('/send-code', {
 			accountability: {
@@ -152,19 +156,21 @@ describe('/adoption-code/verify-code endpoint', () => {
 
 		expect(nock.isDone()).to.equal(true);
 		expect(resSend.callCount).to.equal(2);
-		expect(resSend.args[0]).to.deep.equal([ 'Code was successfully sent to the probe.' ]);
+		expect(resSend.args[0]).to.deep.equal([ 'Code was sent to the probe.' ]);
 		expect(resSend.args[1]).to.deep.equal([ 'Code successfully validated. Probe was assigned to you.' ]);
 	});
 
 	it('should accept valid verification code with spaces', async () => {
 		endpoint(router, endpointContext);
 		let code = '';
-		nock('https://api.globalping.io').post('/v1/adopt-probe?adminkey=admin', (body) => {
+		nock('https://api.globalping.io').post('/v1/adoption-code?adminkey=admin', (body) => {
 			expect(body.ip).to.equal('1.1.1.1');
 			expect(body.code.length).to.equal(6);
 			code = body.code;
 			return true;
-		}).reply(200);
+		}).reply(200, {
+			result: 'Code was sent to the probe.',
+		});
 
 		await request('/send-code', {
 			accountability: {
@@ -186,19 +192,21 @@ describe('/adoption-code/verify-code endpoint', () => {
 
 		expect(nock.isDone()).to.equal(true);
 		expect(resSend.callCount).to.equal(2);
-		expect(resSend.args[0]).to.deep.equal([ 'Code was successfully sent to the probe.' ]);
+		expect(resSend.args[0]).to.deep.equal([ 'Code was sent to the probe.' ]);
 		expect(resSend.args[1]).to.deep.equal([ 'Code successfully validated. Probe was assigned to you.' ]);
 	});
 
 	it('should reject non authorized requests', async () => {
 		endpoint(router, endpointContext);
 		let code = '';
-		nock('https://api.globalping.io').post('/v1/adopt-probe?adminkey=admin', (body) => {
+		nock('https://api.globalping.io').post('/v1/adoption-code?adminkey=admin', (body) => {
 			expect(body.ip).to.equal('1.1.1.1');
 			expect(body.code.length).to.equal(6);
 			code = body.code;
 			return true;
-		}).reply(200);
+		}).reply(200, {
+			result: 'Code was sent to the probe.',
+		});
 
 		await request('/send-code', {
 			accountability: {
@@ -217,18 +225,20 @@ describe('/adoption-code/verify-code endpoint', () => {
 
 		expect(nock.isDone()).to.equal(true);
 		expect(resSend.callCount).to.equal(2);
-		expect(resSend.args[0]).to.deep.equal([ 'Code was successfully sent to the probe.' ]);
+		expect(resSend.args[0]).to.deep.equal([ 'Code was sent to the probe.' ]);
 		expect(resSend.args[1]).to.deep.equal([ '"accountability" is required' ]);
 	});
 
 	it('should reject without code', async () => {
 		endpoint(router, endpointContext);
 
-		nock('https://api.globalping.io').post('/v1/adopt-probe?adminkey=admin', (body) => {
+		nock('https://api.globalping.io').post('/v1/adoption-code?adminkey=admin', (body) => {
 			expect(body.ip).to.equal('1.1.1.1');
 			expect(body.code.length).to.equal(6);
 			return true;
-		}).reply(200);
+		}).reply(200, {
+			result: 'Code was sent to the probe.',
+		});
 
 		await request('/send-code', {
 			accountability: {
@@ -248,18 +258,20 @@ describe('/adoption-code/verify-code endpoint', () => {
 
 		expect(nock.isDone()).to.equal(true);
 		expect(resSend.callCount).to.equal(2);
-		expect(resSend.args[0]).to.deep.equal([ 'Code was successfully sent to the probe.' ]);
+		expect(resSend.args[0]).to.deep.equal([ 'Code was sent to the probe.' ]);
 		expect(resSend.args[1]).to.deep.equal([ '"body.code" is required' ]);
 	});
 
 	it('should reject with wrong code', async () => {
 		endpoint(router, endpointContext);
 
-		nock('https://api.globalping.io').post('/v1/adopt-probe?adminkey=admin', (body) => {
+		nock('https://api.globalping.io').post('/v1/adoption-code?adminkey=admin', (body) => {
 			expect(body.ip).to.equal('1.1.1.1');
 			expect(body.code.length).to.equal(6);
 			return true;
-		}).reply(200);
+		}).reply(200, {
+			result: 'Code was sent to the probe.',
+		});
 
 		await request('/send-code', {
 			accountability: {
@@ -281,7 +293,7 @@ describe('/adoption-code/verify-code endpoint', () => {
 
 		expect(nock.isDone()).to.equal(true);
 		expect(resSend.callCount).to.equal(2);
-		expect(resSend.args[0]).to.deep.equal([ 'Code was successfully sent to the probe.' ]);
+		expect(resSend.args[0]).to.deep.equal([ 'Code was sent to the probe.' ]);
 		expect(resSend.args[1]).to.deep.equal([ 'Code is not valid' ]);
 	});
 });
