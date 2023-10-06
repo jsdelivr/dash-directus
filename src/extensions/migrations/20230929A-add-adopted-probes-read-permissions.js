@@ -35,6 +35,7 @@ async function createPermissions (roleId) {
 				fields: [
 					'date_updated',
 					'ip',
+					'lastSyncDate',
 					'date_created',
 				],
 			},

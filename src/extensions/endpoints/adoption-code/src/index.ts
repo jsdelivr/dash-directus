@@ -109,6 +109,7 @@ export default defineEndpoint((router, { env, logger, services }) => {
 			await itemsService.createOne({
 				ip: code.ip,
 				userId,
+				lastSyncDate: new Date(),
 			});
 
 			codes.delete(userId);

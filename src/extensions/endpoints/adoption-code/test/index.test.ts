@@ -124,6 +124,16 @@ describe('/adoption-code/send-code endpoint', () => {
 });
 
 describe('/adoption-code/verify-code endpoint', () => {
+	let sandbox: sinon.SinonSandbox;
+
+	beforeEach(() => {
+		sandbox = sinon.createSandbox({ useFakeTimers: true });
+	});
+
+	afterEach(() => {
+		sandbox.restore();
+	});
+
 	it('should accept valid verification code', async () => {
 		endpoint(router, endpointContext);
 		let code = '';
@@ -158,6 +168,13 @@ describe('/adoption-code/verify-code endpoint', () => {
 		expect(resSend.callCount).to.equal(2);
 		expect(resSend.args[0]).to.deep.equal([ 'Code was sent to the probe.' ]);
 		expect(resSend.args[1]).to.deep.equal([ 'Code successfully validated. Probe was assigned to you.' ]);
+		expect(createOne.callCount).to.equal(1);
+
+		expect(createOne.args[0][0]).to.deep.equal({
+			ip: '1.1.1.1',
+			userId: 'f3115997-31d1-4cf5-8b41-0617a99c5706',
+			lastSyncDate: new Date(),
+		});
 	});
 
 	it('should accept valid verification code with spaces', async () => {
@@ -194,6 +211,13 @@ describe('/adoption-code/verify-code endpoint', () => {
 		expect(resSend.callCount).to.equal(2);
 		expect(resSend.args[0]).to.deep.equal([ 'Code was sent to the probe.' ]);
 		expect(resSend.args[1]).to.deep.equal([ 'Code successfully validated. Probe was assigned to you.' ]);
+		expect(createOne.callCount).to.equal(1);
+
+		expect(createOne.args[0][0]).to.deep.equal({
+			ip: '1.1.1.1',
+			userId: 'f3115997-31d1-4cf5-8b41-0617a99c5706',
+			lastSyncDate: new Date(),
+		});
 	});
 
 	it('should reject non authorized requests', async () => {
@@ -227,6 +251,7 @@ describe('/adoption-code/verify-code endpoint', () => {
 		expect(resSend.callCount).to.equal(2);
 		expect(resSend.args[0]).to.deep.equal([ 'Code was sent to the probe.' ]);
 		expect(resSend.args[1]).to.deep.equal([ '"accountability" is required' ]);
+		expect(createOne.callCount).to.equal(0);
 	});
 
 	it('should reject without code', async () => {
@@ -260,6 +285,7 @@ describe('/adoption-code/verify-code endpoint', () => {
 		expect(resSend.callCount).to.equal(2);
 		expect(resSend.args[0]).to.deep.equal([ 'Code was sent to the probe.' ]);
 		expect(resSend.args[1]).to.deep.equal([ '"body.code" is required' ]);
+		expect(createOne.callCount).to.equal(0);
 	});
 
 	it('should reject with wrong code', async () => {
@@ -295,5 +321,6 @@ describe('/adoption-code/verify-code endpoint', () => {
 		expect(resSend.callCount).to.equal(2);
 		expect(resSend.args[0]).to.deep.equal([ 'Code was sent to the probe.' ]);
 		expect(resSend.args[1]).to.deep.equal([ 'Code is not valid' ]);
+		expect(createOne.callCount).to.equal(0);
 	});
 });
