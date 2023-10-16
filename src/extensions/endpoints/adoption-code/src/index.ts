@@ -55,7 +55,7 @@ export default defineEndpoint((router, { env, logger, services }) => {
 			const code = generateRandomCode();
 			codes.set(userId, { ip, code });
 
-			const response = await axios.post(`${env.GP_SEND_CODE_ENDPOINT}?adminkey=${env.GP_ADMIN_KEY}`, {
+			const response = await axios.post(`${env.GP_SEND_CODE_ENDPOINT}?systemkey=${env.GP_SYSTEM_KEY}`, {
 				ip,
 				code,
 			});

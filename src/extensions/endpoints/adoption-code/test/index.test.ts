@@ -12,7 +12,7 @@ const endpointContext = {
 	},
 	env: {
 		GP_SEND_CODE_ENDPOINT: 'https://api.globalping.io/v1/adoption-code',
-		GP_ADMIN_KEY: 'admin',
+		GP_SYSTEM_KEY: 'system',
 	},
 	services: {
 		ItemsService: sinon.stub().callsFake(() => {
@@ -55,7 +55,7 @@ describe('/adoption-code/send-code endpoint', () => {
 				ip: '1.1.1.1',
 			},
 		};
-		nock('https://api.globalping.io').post('/v1/adoption-code?adminkey=admin', (body) => {
+		nock('https://api.globalping.io').post('/v1/adoption-code?systemkey=system', (body) => {
 			expect(body.ip).to.equal('1.1.1.1');
 			expect(body.code.length).to.equal(6);
 			return true;
@@ -137,7 +137,7 @@ describe('/adoption-code/verify-code endpoint', () => {
 	it('should accept valid verification code', async () => {
 		endpoint(router, endpointContext);
 		let code = '';
-		nock('https://api.globalping.io').post('/v1/adoption-code?adminkey=admin', (body) => {
+		nock('https://api.globalping.io').post('/v1/adoption-code?systemkey=system', (body) => {
 			expect(body.ip).to.equal('1.1.1.1');
 			expect(body.code.length).to.equal(6);
 			code = body.code;
@@ -180,7 +180,7 @@ describe('/adoption-code/verify-code endpoint', () => {
 	it('should accept valid verification code with spaces', async () => {
 		endpoint(router, endpointContext);
 		let code = '';
-		nock('https://api.globalping.io').post('/v1/adoption-code?adminkey=admin', (body) => {
+		nock('https://api.globalping.io').post('/v1/adoption-code?systemkey=system', (body) => {
 			expect(body.ip).to.equal('1.1.1.1');
 			expect(body.code.length).to.equal(6);
 			code = body.code;
@@ -223,7 +223,7 @@ describe('/adoption-code/verify-code endpoint', () => {
 	it('should reject non authorized requests', async () => {
 		endpoint(router, endpointContext);
 		let code = '';
-		nock('https://api.globalping.io').post('/v1/adoption-code?adminkey=admin', (body) => {
+		nock('https://api.globalping.io').post('/v1/adoption-code?systemkey=system', (body) => {
 			expect(body.ip).to.equal('1.1.1.1');
 			expect(body.code.length).to.equal(6);
 			code = body.code;
@@ -257,7 +257,7 @@ describe('/adoption-code/verify-code endpoint', () => {
 	it('should reject without code', async () => {
 		endpoint(router, endpointContext);
 
-		nock('https://api.globalping.io').post('/v1/adoption-code?adminkey=admin', (body) => {
+		nock('https://api.globalping.io').post('/v1/adoption-code?systemkey=system', (body) => {
 			expect(body.ip).to.equal('1.1.1.1');
 			expect(body.code.length).to.equal(6);
 			return true;
@@ -291,7 +291,7 @@ describe('/adoption-code/verify-code endpoint', () => {
 	it('should reject with wrong code', async () => {
 		endpoint(router, endpointContext);
 
-		nock('https://api.globalping.io').post('/v1/adoption-code?adminkey=admin', (body) => {
+		nock('https://api.globalping.io').post('/v1/adoption-code?systemkey=system', (body) => {
 			expect(body.ip).to.equal('1.1.1.1');
 			expect(body.code.length).to.equal(6);
 			return true;
