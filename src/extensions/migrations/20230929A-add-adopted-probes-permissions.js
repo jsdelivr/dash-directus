@@ -33,8 +33,11 @@ async function createPermissions (roleId) {
 					],
 				},
 				fields: [
+					'id',
 					'date_updated',
 					'ip',
+					'name',
+					'tags',
 					'lastSyncDate',
 					'date_created',
 					'status',
@@ -45,6 +48,25 @@ async function createPermissions (roleId) {
 					'longitude',
 					'asn',
 					'network',
+				],
+			},
+			{
+				collection: 'adopted_probes',
+				action: 'update',
+				role: roleId,
+				permissions: {
+					_and: [
+						{
+							userId: {
+								_eq: '$CURRENT_USER',
+							},
+						},
+					],
+				},
+				fields: [
+					'name',
+					'tags',
+					'city',
 				],
 			},
 		]),
