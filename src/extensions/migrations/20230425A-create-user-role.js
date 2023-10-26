@@ -85,7 +85,7 @@ async function createPermissions (roleId) {
 						_eq: '$CURRENT_USER',
 					},
 				},
-				fields: [ 'first_name', 'last_name', 'email', 'theme', 'token', 'status', 'external_identifier', 'provider' ],
+				fields: [ 'first_name', 'last_name', 'email', 'appearance', 'theme_light', 'theme_dark', 'theme_light_overrides', 'theme_dark_overrides', 'token', 'status', 'external_identifier', 'provider' ],
 			},
 			{
 				collection: 'directus_users',
@@ -96,7 +96,7 @@ async function createPermissions (roleId) {
 						_eq: '$CURRENT_USER',
 					},
 				},
-				fields: [ 'theme', 'token', 'last_page' ],
+				fields: [ 'token', 'last_page', 'appearance', 'theme_light', 'theme_dark', 'theme_light_overrides', 'theme_dark_overrides' ],
 			},
 		]),
 		headers: {

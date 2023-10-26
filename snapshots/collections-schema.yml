@@ -1,5 +1,5 @@
 version: 1
-directus: 13.2.0
+directus: 14.0.0
 vendor: mysql
 collections:
   - collection: adopted_probes
@@ -23,6 +23,7 @@ collections:
       sort_field: null
       translations: null
       unarchive_value: null
+      versioning: false
     schema:
       name: adopted_probes
   - collection: credits
@@ -46,6 +47,7 @@ collections:
       sort_field: null
       translations: null
       unarchive_value: null
+      versioning: false
     schema:
       name: credits
   - collection: jsdelivr
@@ -69,6 +71,7 @@ collections:
       sort_field: null
       translations: null
       unarchive_value: null
+      versioning: false
   - collection: sponsors
     meta:
       accountability: all
@@ -90,6 +93,7 @@ collections:
       sort_field: null
       translations: null
       unarchive_value: null
+      versioning: false
     schema:
       name: sponsors
   - collection: tokens
@@ -113,6 +117,7 @@ collections:
       sort_field: null
       translations: null
       unarchive_value: null
+      versioning: false
     schema:
       name: tokens
 fields:
