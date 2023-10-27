@@ -28,33 +28,36 @@ type GeonamesResponse = {
 }[];
 }
 
-type TierChangedActionArgs = {
-	env: HookExtensionContext['env'];
-	services: HookExtensionContext['services'];
-	database: HookExtensionContext['database'];
-	getSchema: HookExtensionContext['getSchema'];
-};
-
-export default defineHook(({ filter }, { env, services, database, getSchema }) => {
+export default defineHook(({ filter }, context) => {
 	filter('adopted_probes.items.update', async (updateFields, { keys }) => {
 		const fields = updateFields as Fields;
 
 		if (fields.city === null) { // city value was cleared => resetting
-			resetCity(fields);
+			await resetCity(fields, keys, context);
 		} else if (fields.city) {
-			await updateCity(fields, keys, { env, services, database, getSchema });
+			await updateCity(fields, keys, context);
 		}
 	});
 });
 
-const resetCity = (fields: Fields) => {
+const resetCity = async (fields: Fields, keys: string[], { services, database, getSchema }: HookExtensionContext) => {
+	const { ItemsService } = services;
+
+	const adoptedProbesService = new ItemsService('adopted_probes', {
+		database,
+		schema: await getSchema(),
+	});
+
+	await adoptedProbesService.updateMany(keys, { // These fields are updated separately by BE, because user operation doesn't have permissions to edit them.
+		latitude: null,
+		longitude: null,
+		isCustomCity: false,
+	});
+
 	fields.city = null;
-	fields.latitude = null;
-	fields.longitude = null;
-	fields.isCustomCity = false;
 };
 
-const updateCity = async (fields: Fields, keys: string[], { env, services, database, getSchema }: TierChangedActionArgs) => {
+const updateCity = async (fields: Fields, keys: string[], { env, services, database, getSchema }: HookExtensionContext) => {
 	const { ItemsService } = services;
 
 	const adoptedProbesService = new ItemsService('adopted_probes', {
@@ -90,8 +93,11 @@ const updateCity = async (fields: Fields, keys: string[], { env, services, datab
 
 	const city = cities[0]!;
 
+	await adoptedProbesService.updateMany(keys, { // These fields are updated separately by BE, because user operation doesn't have permissions to edit them.
+		latitude: city.lat,
+		longitude: city.lng,
+		isCustomCity: true,
+	});
+
 	fields.city = normalizeCityName(city.toponymName);
-	fields.latitude = city.lat;
-	fields.longitude = city.lng;
-	fields.isCustomCity = true;
 };
