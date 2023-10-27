@@ -8,7 +8,7 @@ type AdoptedProbe = {
 	city: string | null;
 	latitude: string | null;
 	longitude: string | null;
-	country: string;
+	country: string | null;
 	isCustomCity: boolean;
 };
 
@@ -69,6 +69,10 @@ const updateCity = async (fields: Fields, keys: string[], { env, services, datab
 	}
 
 	const country = currentProbes[0]!.country;
+
+	if (!country) {
+		throw new Error('Country is not defined. Wait for the probe data to be synced with globalping.');
+	}
 
 	const allInSameCountry = currentProbes.every(currentProbe => currentProbe.country === country);
 
