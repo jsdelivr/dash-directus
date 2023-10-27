@@ -11,8 +11,10 @@
 				This page allows to adopt your own probes. You need follow these steps (Note: multiple probes should be adopted one by one):<br>
 				1. Enter the IP address of your probe;<br>
 				2. Go to the probe logs and find a 6 digit verification code;<br>
-				3. Enter the code to the verification input.
-				4. Done. Check your <a class="link" href="/admin/content/adopted_probes">adopted probes</a>.
+				3. Enter the code to the verification input.<br>
+				4. Probe can be found on the <a class="link" href="/admin/content/adopted_probes">adopted probes</a> page.<br>
+				5. Wait for ~2 minutes so the probe location info will be synced with globalping.<br>
+				6. Done.
 			</p>
 
 			<form @submit.prevent="sendCode">

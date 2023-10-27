@@ -33,7 +33,7 @@ Run migration:
 
 Create extension:
 
-`npx create-directus-extension@latest`
+`npx --yes create-directus-extension@latest`
 
 ### Prepare dev host:
 
