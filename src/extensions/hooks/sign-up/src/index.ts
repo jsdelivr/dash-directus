@@ -19,18 +19,10 @@ export default defineHook(({ filter }) => {
 });
 
 const handleGithubLogin = (user: User) => {
-	const firstName = user.first_name;
-	const id = user.external_identifier;
+	const login = user.last_name;
 
-	if (!firstName) {
-		user.first_name = id;
-		return;
-	}
-
-	const names = firstName.split(' ');
-
-	if (names.length > 1) {
-		user.first_name = names[0];
-		user.last_name = names.slice(1).join(' ');
+	if (!login) {
+		const id = user.external_identifier;
+		user.last_name = id;
 	}
 };
