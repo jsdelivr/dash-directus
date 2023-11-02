@@ -38,6 +38,7 @@ async function createPermissions (roleId) {
 					'ip',
 					'name',
 					'tags',
+					'isCustomCity',
 					'lastSyncDate',
 					'date_created',
 					'status',
@@ -68,6 +69,19 @@ async function createPermissions (roleId) {
 					'tags',
 					'city',
 				],
+			},
+			{
+				collection: 'adopted_probes',
+				action: 'delete',
+				permissions: {
+					_and: [
+						{
+							userId: {
+								_eq: '$CURRENT_USER',
+							},
+						},
+					],
+				},
 			},
 		]),
 		headers: {

@@ -13,8 +13,7 @@
 				2. Go to the probe logs and find a 6 digit verification code;<br>
 				3. Enter the code to the verification input.<br>
 				4. Probe can be found on the <a class="link" href="/admin/content/adopted_probes">adopted probes</a> page.<br>
-				5. Wait for ~2 minutes so the probe location info will be synced with globalping.<br>
-				6. Done.
+				5. Done.
 			</p>
 
 			<form @submit.prevent="sendCode">
