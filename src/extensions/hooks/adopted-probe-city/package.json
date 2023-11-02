@@ -26,6 +26,7 @@
 		"typescript": "^5.2.2"
 	},
 	"dependencies": {
+		"@directus/errors": "^0.2.0",
 		"@directus/extensions": "^0.1.0",
 		"any-ascii": "^0.3.2",
 		"axios": "^1.6.0"

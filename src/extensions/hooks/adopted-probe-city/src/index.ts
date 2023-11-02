@@ -1,5 +1,6 @@
 import type { HookExtensionContext } from '@directus/extensions';
 import { defineHook } from '@directus/extensions-sdk';
+import { createError } from '@directus/errors';
 import axios from 'axios';
 
 import { normalizeCityName } from './normalize-city';
@@ -27,6 +28,11 @@ type GeonamesResponse = {
 		fcode: string;
 }[];
 }
+
+const ProbesNotFoundError = createError('INVALID_PAYLOAD_ERROR', 'Adopted probes not found.', 400);
+const CountryNotDefinedError = createError('INVALID_PAYLOAD_ERROR', 'Country is not defined. Wait for the probe data to be synced with globalping.', 400);
+const DifferentCountriesError = createError('INVALID_PAYLOAD_ERROR', 'Some of the adopted probes are in different countries. Update the list of items you want to edit.', 400);
+const InvalidCityError = createError('INVALID_PAYLOAD_ERROR', 'No valid cities found. Please check "city" and "country" values. Validation algorithm can be checked here: https://www.geonames.org/advanced-search.html?featureClass=P', 400);
 
 export default defineHook(({ filter }, context) => {
 	filter('adopted_probes.items.update', async (updateFields, { keys }) => {
@@ -68,19 +74,19 @@ const updateCity = async (fields: Fields, keys: string[], { env, services, datab
 	const currentProbes = await adoptedProbesService.readMany(keys) as AdoptedProbe[];
 
 	if (!currentProbes || currentProbes.length === 0) {
-		throw new Error('Adopted probes not found');
+		throw new ProbesNotFoundError();
 	}
 
 	const country = currentProbes[0]!.country;
 
 	if (!country) {
-		throw new Error('Country is not defined. Wait for the probe data to be synced with globalping.');
+		throw new CountryNotDefinedError();
 	}
 
 	const allInSameCountry = currentProbes.every(currentProbe => currentProbe.country === country);
 
 	if (!allInSameCountry) {
-		throw new Error('Some of the adopted probes are in different countries. Update the list of items you want to edit.');
+		throw new DifferentCountriesError();
 	}
 
 	const response = await axios<GeonamesResponse>(`http://api.geonames.org/searchJSON?featureClass=P&style=short&isNameRequired=true&maxRows=1&username=${env.GEONAMES_USERNAME}&country=${country}&q=${fields.city}`);
@@ -88,7 +94,7 @@ const updateCity = async (fields: Fields, keys: string[], { env, services, datab
 	const cities = response.data.geonames;
 
 	if (cities.length === 0) {
-		throw new Error('No valid cities found. Please check "city" and "country" values. Validation algorithm can be checked here: https://www.geonames.org/advanced-search.html?featureClass=P');
+		throw new InvalidCityError();
 	}
 
 	const city = cities[0]!;
