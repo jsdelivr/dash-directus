@@ -171,7 +171,12 @@ fields:
       group: null
       hidden: false
       interface: input
-      note: null
+      note: >-
+        City where the probe is located. If you know that city is wrong it can
+        be changed here: type in the valid city and click save. City edit is
+        only available within the country defined by Globalping ("country"
+        field). To reset the city value clear the field, save and wait for a few
+        mins while dashboard picks up the city from Globalping.
       options: null
       readonly: false
       required: false
@@ -209,7 +214,9 @@ fields:
       group: null
       hidden: false
       interface: input
-      note: null
+      note: >-
+        Country value is not editable. If you are sure it is wrong please leave
+        a message here: https://github.com/jsdelivr/globalping/issues/268
       options: null
       readonly: false
       required: true
@@ -442,7 +449,9 @@ fields:
       group: null
       hidden: false
       interface: datetime
-      note: null
+      note: >-
+        Last time probe was online. Adoption will expire after 30 days of being
+        offline.
       options: null
       readonly: false
       required: true
@@ -556,7 +565,9 @@ fields:
       group: null
       hidden: false
       interface: input
-      note: null
+      note: >-
+        Non-public name of the probe. It doesn't affect anything and is only
+        visible on the dashboard "Adopted Probes" page.
       options: null
       readonly: false
       required: false
@@ -670,7 +681,10 @@ fields:
       group: null
       hidden: false
       interface: tags
-      note: null
+      note: >-
+        Public tags of the probe. They can be used as location filters for a
+        measurement. E.g. for user with github username `"jimaek"` and tag
+        `"home1"` location filter is `{ "tags": ["u-jimaek-home1"] }`
       options: null
       readonly: false
       required: false

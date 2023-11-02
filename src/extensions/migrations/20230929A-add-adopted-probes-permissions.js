@@ -38,7 +38,6 @@ async function createPermissions (roleId) {
 					'ip',
 					'name',
 					'tags',
-					'isCustomCity',
 					'lastSyncDate',
 					'date_created',
 					'status',
