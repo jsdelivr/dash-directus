@@ -12,8 +12,7 @@
 				1. Enter the IP address of your probe;<br>
 				2. Go to the probe logs and find a 6 digit verification code;<br>
 				3. Enter the code to the verification input.<br>
-				4. Probe can be found on the <a class="link" href="/admin/content/adopted_probes">adopted probes</a> page.<br>
-				5. Done.
+				4. Probe can be found on the <a class="link" href="/admin/content/adopted_probes">adopted probes</a> page.
 			</p>
 
 			<form @submit.prevent="sendCode">
@@ -101,7 +100,7 @@ export default {
 }
 
 .description {
-	color: #172940;
+	color: var(--theme--foreground-accent);
 	font-size: 16px;
 	margin-bottom: 16px;
 }
@@ -128,7 +127,7 @@ form {
 
 .label {
 	font-weight: 600;
-	color: #172940;
+	color: var(--theme--foreground-accent);
 	font-size: 16px;
 	margin-bottom: 8px;
 }
