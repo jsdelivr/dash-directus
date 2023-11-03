@@ -55,7 +55,7 @@ async function addCssRules () {
 
 export async function up () {
 	await addCssRules();
-	console.log('Successfully updated css rules.');
+	console.log('Added adopt probes button to the panel');
 }
 
 export async function down () {

@@ -10,7 +10,7 @@
 			<p class="description">
 				This page allows to adopt your own probes. You need follow these steps (Note: multiple probes should be adopted one by one):<br>
 				1. Enter the IP address of your probe;<br>
-				2. Go to the probe logs and find a 6 digit verification code;<br>
+				2. Go to the probe logs and find a 6 digit adoption code;<br>
 				3. Enter the code to the verification input.<br>
 				4. Probe can be found on the <a class="link" href="/admin/content/adopted_probes">adopted probes</a> page.
 			</p>
@@ -29,7 +29,7 @@
 			</form>
 
 			<form @submit.prevent="verifyCode">
-				<label for="code" class="label">Enter the verification code:</label>
+				<label for="code" class="label">Enter the adoption code:</label>
 				<v-input
 					type="text"
 					id="code"

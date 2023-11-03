@@ -72,6 +72,7 @@ async function createPermissions (roleId) {
 			{
 				collection: 'adopted_probes',
 				action: 'delete',
+				role: roleId,
 				permissions: {
 					_and: [
 						{
@@ -99,7 +100,7 @@ async function createPermissions (roleId) {
 export async function up () {
 	const roleId = await getUserRoleId();
 	await createPermissions(roleId);
-	console.log(`Read credits permissions added`);
+	console.log('Adopted probes permissions added');
 }
 
 export async function down () {
