@@ -26,6 +26,16 @@ type GeonamesResponse = {
 		lat: string;
 		fcl: string;
 		fcode: string;
+		adminCode1: string;
+		countryId: string;
+		population: number,
+		fclName: string;
+		adminCodes1: {
+				ISO3166_2: string;
+		},
+		countryName: string;
+		fcodeName: string;
+		adminName1: string;
 }[];
 }
 
@@ -57,6 +67,7 @@ const resetCity = async (fields: Fields, keys: string[], { services, database, g
 	await adoptedProbesService.updateMany(keys, { // These fields are updated separately by BE, because user operation doesn't have permissions to edit them.
 		latitude: null,
 		longitude: null,
+		state: null,
 		isCustomCity: false,
 	});
 
@@ -89,7 +100,7 @@ const updateCity = async (fields: Fields, keys: string[], { env, services, datab
 		throw new DifferentCountriesError();
 	}
 
-	const response = await axios<GeonamesResponse>(`http://api.geonames.org/searchJSON?featureClass=P&style=short&isNameRequired=true&maxRows=1&username=${env.GEONAMES_USERNAME}&country=${country}&q=${fields.city}`);
+	const response = await axios<GeonamesResponse>(`http://api.geonames.org/searchJSON?featureClass=P&style=medium&isNameRequired=true&maxRows=1&username=${env.GEONAMES_USERNAME}&country=${country}&q=${fields.city}`);
 
 	const cities = response.data.geonames;
 
@@ -98,10 +109,12 @@ const updateCity = async (fields: Fields, keys: string[], { env, services, datab
 	}
 
 	const city = cities[0]!;
+	const state = country === 'US' ? city.adminCode1 : null;
 
 	await adoptedProbesService.updateMany(keys, { // These fields are updated separately by BE, because user operation doesn't have permissions to edit them.
 		latitude: city.lat,
 		longitude: city.lng,
+		state,
 		isCustomCity: true,
 	});
 

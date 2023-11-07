@@ -18,11 +18,18 @@ type SendCodeResponse = {
 	version: string;
 	status: string;
 	city: string;
+	state?: string;
 	country: string;
 	latitude: number;
 	longitude: number;
 	asn: number;
 	network: string;
+}
+
+type AdoptedProbe = Omit<SendCodeResponse, 'ip' | 'code' | 'state'> & {
+	ip: string,
+	code: string,
+	state: string | null
 }
 
 const InvalidCodeError = createError('INVALID_PAYLOAD_ERROR', 'Code is not valid', 400);
@@ -33,7 +40,7 @@ const rateLimiter = new RateLimiterMemory({
 	duration: 30 * 60,
 });
 
-const probesToAdopt = new TTLCache<string, SendCodeResponse & {ip: string, code: string}>({ ttl: 30 * 60 * 1000 });
+const probesToAdopt = new TTLCache<string, AdoptedProbe>({ ttl: 30 * 60 * 1000 });
 
 const generateRandomCode = () => {
 	const randomNumber = Math.floor(Math.random() * 1000000);
@@ -78,6 +85,7 @@ export default defineEndpoint((router, { env, logger, services }) => {
 				version: response.data.version,
 				status: response.data.status,
 				city: response.data.city,
+				state: response.data.state || null,
 				country: response.data.country,
 				latitude: response.data.latitude,
 				longitude: response.data.longitude,
@@ -137,6 +145,7 @@ export default defineEndpoint((router, { env, logger, services }) => {
 				version: probe.version,
 				status: probe.status,
 				city: probe.city,
+				state: probe.state,
 				country: probe.country,
 				latitude: probe.latitude,
 				longitude: probe.longitude,

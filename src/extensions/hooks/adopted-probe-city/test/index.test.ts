@@ -47,7 +47,7 @@ describe('adopted-probe-city hook', () => {
 			isCustomCity: false,
 		}]);
 
-		nock('http://api.geonames.org').get('/searchJSON?featureClass=P&style=short&isNameRequired=true&maxRows=1&username=username&country=FR&q=marsel')
+		nock('http://api.geonames.org').get('/searchJSON?featureClass=P&style=medium&isNameRequired=true&maxRows=1&username=username&country=FR&q=marsel')
 			.reply(200, {
 				totalResultsCount: 5,
 				geonames: [
@@ -75,7 +75,7 @@ describe('adopted-probe-city hook', () => {
 
 		expect(updateMany.args[0]).to.deep.equal([
 			[ '1' ],
-			{ latitude: '43.29695', longitude: '5.38107', isCustomCity: true },
+			{ latitude: '43.29695', longitude: '5.38107', isCustomCity: true, state: null },
 		]);
 
 		expect(updateFields.city).to.equal('Marseille');
@@ -98,7 +98,7 @@ describe('adopted-probe-city hook', () => {
 
 		expect(updateMany.args[0]).to.deep.equal([
 			[ '1' ],
-			{ latitude: null, longitude: null, isCustomCity: false },
+			{ latitude: null, longitude: null, isCustomCity: false, state: null },
 		]);
 
 		expect(updateFields.city).to.equal(null);
@@ -164,7 +164,7 @@ describe('adopted-probe-city hook', () => {
 			isCustomCity: false,
 		}]);
 
-		nock('http://api.geonames.org').get('/searchJSON?featureClass=P&style=short&isNameRequired=true&maxRows=1&username=username&country=FR&q=invalidcity')
+		nock('http://api.geonames.org').get('/searchJSON?featureClass=P&style=medium&isNameRequired=true&maxRows=1&username=username&country=FR&q=invalidcity')
 			.reply(200, {
 				totalResultsCount: 0,
 				geonames: [],
@@ -174,6 +174,7 @@ describe('adopted-probe-city hook', () => {
 		const updateFields = { city: 'invalidcity' };
 		const err = await callbacks['adopted_probes.items.update'](updateFields, { keys: [ '1' ] }).catch(err => err);
 
+		expect(nock.isDone()).to.equal(true);
 		expect(err).to.deep.equal(new InvalidCityError());
 		expect(updateMany.callCount).to.equal(0);
 	});

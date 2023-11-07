@@ -1,5 +1,5 @@
 <template>
-	<private-view title="Adopt your probes">
+	<private-view title="Adopt Your Probes">
 		<template #title-outer:prepend>
 			<v-button class="header-icon" rounded icon exact disabled>
 				<v-icon name="router" />
