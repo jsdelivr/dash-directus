@@ -44,6 +44,10 @@ beforeEach(() => {
 	sinon.resetHistory();
 });
 
+after(() => {
+	nock.cleanAll();
+});
+
 describe('/adoption-code/send-code endpoint', () => {
 	it('should accept ip, generate code and send it to globalping api', async () => {
 		endpoint(router, endpointContext);

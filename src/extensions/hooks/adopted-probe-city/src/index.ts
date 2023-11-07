@@ -29,10 +29,10 @@ type GeonamesResponse = {
 }[];
 }
 
-const ProbesNotFoundError = createError('INVALID_PAYLOAD_ERROR', 'Adopted probes not found.', 400);
-const CountryNotDefinedError = createError('INVALID_PAYLOAD_ERROR', 'Country is not defined. Wait for the probe data to be synced with globalping.', 400);
-const DifferentCountriesError = createError('INVALID_PAYLOAD_ERROR', 'Some of the adopted probes are in different countries. Update the list of items you want to edit.', 400);
-const InvalidCityError = createError('INVALID_PAYLOAD_ERROR', 'No valid cities found. Please check "city" and "country" values. Validation algorithm can be checked here: https://www.geonames.org/advanced-search.html?featureClass=P', 400);
+export const ProbesNotFoundError = createError('INVALID_PAYLOAD_ERROR', 'Adopted probes not found.', 400);
+export const CountryNotDefinedError = createError('INVALID_PAYLOAD_ERROR', 'Country is not defined. Wait for the probe data to be synced with globalping.', 400);
+export const DifferentCountriesError = createError('INVALID_PAYLOAD_ERROR', 'Some of the adopted probes are in different countries. Update the list of items you want to edit.', 400);
+export const InvalidCityError = createError('INVALID_PAYLOAD_ERROR', 'No valid cities found. Please check "city" and "country" values. Validation algorithm can be checked here: https://www.geonames.org/advanced-search.html?featureClass=P', 400);
 
 export default defineHook(({ filter }, context) => {
 	filter('adopted_probes.items.update', async (updateFields, { keys }) => {
