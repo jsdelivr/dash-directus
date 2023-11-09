@@ -6,6 +6,7 @@ import { resetMetadata, updateMetadata } from './update-metadata';
 
 export type AdoptedProbe = {
 	city: string | null;
+	state: string | null;
 	latitude: string | null;
 	longitude: string | null;
 	country: string | null;
