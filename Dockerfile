@@ -14,7 +14,7 @@ RUN npm ci
 COPY ./src/extensions/hooks/sign-up .
 RUN npm run build
 
-# # Build interfaces/token
+# Build interfaces/token
 FROM node:18-alpine AS builder-03
 WORKDIR /builder/src/extensions/interfaces/token
 ADD ./src/extensions/interfaces/token/package.json ./src/extensions/interfaces/token/package-lock.json ./

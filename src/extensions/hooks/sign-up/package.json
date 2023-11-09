@@ -1,0 +1,29 @@
+{
+	"name": "directus-extension-sign-up",
+	"description": "Hook that manages user properties during registration",
+	"icon": "extension",
+	"version": "1.0.0",
+	"keywords": [
+		"directus",
+		"directus-extension",
+		"directus-custom-hook"
+	],
+	"type": "module",
+	"directus:extension": {
+		"type": "hook",
+		"path": "dist/index.js",
+		"source": "src/index.ts",
+		"host": "^10.1.1"
+	},
+	"scripts": {
+		"build": "directus-extension build",
+		"dev": "directus-extension build -w --no-minify",
+		"link": "directus-extension link",
+		"test": "echo 'No tests for that extension'"
+	},
+	"devDependencies": {
+		"@directus/extensions-sdk": "10.1.1",
+		"@types/node": "^20.2.3",
+		"typescript": "^5.0.4"
+	}
+}
