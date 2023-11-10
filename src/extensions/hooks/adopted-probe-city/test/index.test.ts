@@ -3,7 +3,7 @@ import nock from 'nock';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import hook from '../src/index.js';
-import { CountryNotDefinedError, DifferentCountriesError, InvalidCityError, ProbesNotFoundError } from '../src/validate-city.js';
+import { CountryNotDefinedError, DifferentCountriesError, InvalidCityError, ProbesNotFoundError } from '../src/validate-fields.js';
 
 const callbacks = {
 	filter: {},
@@ -189,6 +189,30 @@ describe('adopted-probe-city hook', () => {
 		]);
 
 		expect(payload.city).to.equal(null);
+	});
+
+	it('should update non-city meta fields of the adopted probe', async () => {
+		readMany.resolves([{
+			city: 'Paris',
+			state: null,
+			latitude: '48.85341',
+			longitude: '2.3488',
+			country: 'FR',
+			isCustomCity: false,
+		}]);
+
+		hook(hooks, context);
+		const payload = { name: 'My Probe', tags: [ 'my tag', 'mytag2' ] };
+		await callbacks.filter['adopted_probes.items.update'](payload, { keys: [ '1' ] }, context);
+
+		expect(readMany.callCount).to.equal(0);
+		expect(nock.isDone()).to.equal(true);
+		expect(updateMany.callCount).to.equal(0);
+		expect(payload).to.deep.equal({ name: 'My Probe', tags: [ 'my-tag', 'mytag2' ] });
+
+		await callbacks.action['adopted_probes.items.update']({ payload, keys: [ '1' ] }, context);
+
+		expect(updateMany.callCount).to.equal(0);
 	});
 
 	it('should send valid error if probes not found', async () => {

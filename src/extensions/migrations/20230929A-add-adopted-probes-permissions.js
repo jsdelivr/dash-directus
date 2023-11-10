@@ -33,11 +33,8 @@ async function createPermissions (roleId) {
 					],
 				},
 				fields: [
-					'id',
 					'date_updated',
 					'ip',
-					'name',
-					'tags',
 					'lastSyncDate',
 					'date_created',
 					'status',
@@ -49,39 +46,6 @@ async function createPermissions (roleId) {
 					'asn',
 					'network',
 				],
-			},
-			{
-				collection: 'adopted_probes',
-				action: 'update',
-				role: roleId,
-				permissions: {
-					_and: [
-						{
-							userId: {
-								_eq: '$CURRENT_USER',
-							},
-						},
-					],
-				},
-				fields: [
-					'name',
-					'tags',
-					'city',
-				],
-			},
-			{
-				collection: 'adopted_probes',
-				action: 'delete',
-				role: roleId,
-				permissions: {
-					_and: [
-						{
-							userId: {
-								_eq: '$CURRENT_USER',
-							},
-						},
-					],
-				},
 			},
 		]),
 		headers: {
@@ -100,7 +64,7 @@ async function createPermissions (roleId) {
 export async function up () {
 	const roleId = await getUserRoleId();
 	await createPermissions(roleId);
-	console.log('Adopted probes permissions added');
+	console.log(`Read credits permissions added`);
 }
 
 export async function down () {
