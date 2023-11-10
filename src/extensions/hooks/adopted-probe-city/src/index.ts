@@ -1,6 +1,6 @@
 import { defineHook } from '@directus/extensions-sdk';
 import { createError } from '@directus/errors';
-import { validateCity } from './validate-city';
+import { validateCity, validateTags } from './validate-fields';
 import { resetMetadata, updateMetadata } from './update-metadata';
 
 
@@ -11,6 +11,7 @@ export type AdoptedProbe = {
 	longitude: string | null;
 	country: string | null;
 	isCustomCity: boolean;
+	tags: string[] | null;
 };
 
 export type Fields = Partial<AdoptedProbe>;
@@ -23,6 +24,10 @@ export default defineHook(({ filter, action }, context) => {
 
 		if (!accountability) {
 			throw new UserNotFoundError();
+		}
+
+		if (fields.tags && fields.tags.length > 0) {
+			validateTags(fields);
 		}
 
 		if (fields.city || fields.city === '') {

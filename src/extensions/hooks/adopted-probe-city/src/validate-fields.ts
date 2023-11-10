@@ -11,6 +11,10 @@ export const CountryNotDefinedError = createError('INVALID_PAYLOAD_ERROR', 'Coun
 export const DifferentCountriesError = createError('INVALID_PAYLOAD_ERROR', 'Requested adopted probes are in different countries. Update the list of items you want to edit.', 400);
 export const InvalidCityError = createError('INVALID_PAYLOAD_ERROR', 'No valid cities found. Please check "city" and "country" values. Validation algorithm can be checked here: https://www.geonames.org/advanced-search.html?featureClass=P', 400);
 
+export const validateTags = (fields: Fields) => {
+	fields.tags = fields.tags!.map(tag => tag.trim().replaceAll(' ', '-'));
+};
+
 export const validateCity = async (fields: Fields, keys: string[], accountability: EventContext['accountability'], { env, services, database, getSchema }: HookExtensionContext) => {
 	const { ItemsService } = services;
 
