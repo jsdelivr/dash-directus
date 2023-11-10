@@ -3,7 +3,7 @@ import nock from 'nock';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import hook from '../src/index.js';
-import { CountryNotDefinedError, DifferentCountriesError, InvalidCityError, ProbesNotFoundError } from '../src/validate-fields.js';
+import { CountryNotDefinedError, DifferentCountriesError, InvalidCityError, ProbesNotFoundError, TooManyTagsError } from '../src/validate-fields.js';
 
 const callbacks = {
 	filter: {},
@@ -290,6 +290,16 @@ describe('adopted-probe-city hook', () => {
 
 		expect(nock.isDone()).to.equal(true);
 		expect(err).to.deep.equal(new InvalidCityError());
+		expect(updateMany.callCount).to.equal(0);
+	});
+
+	it('should send valid error if there are too many tags', async () => {
+		hook(hooks, context);
+		const payload = { tags: [ 'a', 'b', 'c', 'd', 'e', 'f' ] };
+		const err = await callbacks.filter['adopted_probes.items.update'](payload, { keys: [ '1' ] }, context).catch(err => err);
+
+		expect(nock.isDone()).to.equal(true);
+		expect(err).to.deep.equal(new TooManyTagsError());
 		expect(updateMany.callCount).to.equal(0);
 	});
 });

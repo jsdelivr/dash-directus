@@ -6,12 +6,17 @@ import { City, geonamesCache, getKey } from './geonames-cache';
 import { normalizeCityName } from './normalize-city';
 import { EventContext } from '@directus/types';
 
+export const TooManyTagsError = createError('INVALID_PAYLOAD_ERROR', 'No more than 5 tags are allowed.', 400);
 export const ProbesNotFoundError = createError('INVALID_PAYLOAD_ERROR', 'Adopted probes not found.', 400);
 export const CountryNotDefinedError = createError('INVALID_PAYLOAD_ERROR', 'Country is not defined. Wait for the probe data to be synced with globalping.', 400);
 export const DifferentCountriesError = createError('INVALID_PAYLOAD_ERROR', 'Requested adopted probes are in different countries. Update the list of items you want to edit.', 400);
 export const InvalidCityError = createError('INVALID_PAYLOAD_ERROR', 'No valid cities found. Please check "city" and "country" values. Validation algorithm can be checked here: https://www.geonames.org/advanced-search.html?featureClass=P', 400);
 
 export const validateTags = (fields: Fields) => {
+	if (fields.tags!.length > 5) {
+		throw new TooManyTagsError();
+	}
+
 	fields.tags = fields.tags!.map(tag => tag.trim().replaceAll(' ', '-'));
 };
 
