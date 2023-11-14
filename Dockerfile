@@ -78,6 +78,14 @@ RUN npm ci
 COPY ./src/extensions/hooks/sign-in .
 RUN npm run build
 
+# Build endpoints/sync-github-username
+FROM node:18-alpine AS builder-11
+WORKDIR /builder/src/extensions/endpoints/sync-github-username
+ADD ./src/extensions/endpoints/sync-github-username/package.json ./src/extensions/endpoints/sync-github-username/package-lock.json ./
+RUN npm ci
+COPY ./src/extensions/endpoints/sync-github-username .
+RUN npm run build
+
 FROM directus/directus:10.7.2
 
 COPY --from=builder-01 /builder/src/extensions/hooks/tokens/dist/* /directus/extensions/hooks/tokens/
@@ -93,3 +101,4 @@ COPY --from=builder-07 /builder/src/extensions/modules/probes-adapter/dist/* /di
 COPY --from=builder-08 /builder/src/extensions/endpoints/adoption-code/dist/* /directus/extensions/endpoints/adoption-code/
 COPY --from=builder-09 /builder/src/extensions/hooks/adopted-probe-city/dist/* /directus/extensions/hooks/adopted-probe-city/
 COPY --from=builder-10 /builder/src/extensions/hooks/sign-in/dist/* /directus/extensions/hooks/sign-in/
+COPY --from=builder-11 /builder/src/extensions/endpoints/sync-github-username/dist/* /directus/extensions/endpoints/sync-github-username/

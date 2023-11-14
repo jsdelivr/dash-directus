@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { HookExtensionContext } from '@directus/extensions';
+import type { HookExtensionContext } from '@directus/extensions';
 import { defineHook } from '@directus/extensions-sdk';
 
 type GithubUserResponse = {
