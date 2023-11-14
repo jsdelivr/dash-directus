@@ -1,6 +1,6 @@
 import Joi from 'joi';
 import { defineEndpoint } from '@directus/extensions-sdk';
-import { createError } from '@directus/errors';
+import { createError, isDirectusError } from '@directus/errors';
 import axios from 'axios';
 import { RateLimiterMemory } from 'rate-limiter-flexible';
 import type { Request as ExpressRequest } from 'express';
@@ -23,6 +23,7 @@ type User = {
 	github?: string;
 }
 
+const NotEnoughDataError = createError('INVALID_PAYLOAD_ERROR', 'Not enough data to check GitHub username', 400);
 const TooManyRequestsError = createError('TOO_MANY_REQUESTS', 'Too many requests', 429);
 
 const rateLimiter = new RateLimiterMemory({
@@ -37,20 +38,34 @@ const syncGithubUsernameSchema = Joi.object<Request>({
 }).unknown(true);
 
 export default defineEndpoint((router, context: EndpointExtensionContext) => {
-	router.post('/', async (req, res) => {
-		const { value, error } = syncGithubUsernameSchema.validate(req);
+	router.get('/', async (req, res) => {
+		const { logger } = context;
 
-		if (error) {
-			throw new (createError('INVALID_PAYLOAD_ERROR', error.message, 400))();
+		try {
+			const { value, error } = syncGithubUsernameSchema.validate(req);
+
+			if (error) {
+				throw new (createError('INVALID_PAYLOAD_ERROR', error.message, 400))();
+			}
+
+			const userId = value.accountability.user;
+
+			await rateLimiter.consume(userId, 1).catch(() => { throw new TooManyRequestsError(); });
+
+			await syncGithubUsername(userId, context);
+
+			res.send('Synced');
+		} catch (error: unknown) {
+			logger.error(error);
+
+			if (isDirectusError(error)) {
+				res.status(error.status).send(error.message);
+			} else if (axios.isAxiosError(error)) {
+				res.status(400).send(error.response?.data?.error?.message);
+			} else {
+				res.status(500).send('Internal Server Error');
+			}
 		}
-
-		const userId = value.accountability.user;
-
-		await rateLimiter.consume(userId, 1).catch(() => { throw new TooManyRequestsError(); });
-
-		await syncGithubUsername(userId, context);
-
-		res.sendStatus(200);
 	});
 });
 
@@ -68,7 +83,7 @@ const syncGithubUsername = async (userId: string, context: EndpointExtensionCont
 	const username = user?.github;
 
 	if (!user || !githubId || !username) {
-		throw new Error('Not enough data to check GitHub username');
+		throw new NotEnoughDataError();
 	}
 
 	const response = await axios.get<GithubUserResponse>(`https://api.github.com/user/${githubId}`, {
