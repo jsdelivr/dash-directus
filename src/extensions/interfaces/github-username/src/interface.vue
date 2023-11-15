@@ -18,11 +18,16 @@ const props = withDefaults(
 );
 
 async function sync () {
-	await api.post('/sync-github-username', {
-		userId: props.primaryKey,
-	});
+	try {
+		await api.post('/sync-github-username', {
+			userId: props.primaryKey,
+		});
 
-	window.location.reload();
+		window.location.reload();
+	} catch (err: any) {
+		console.error(err);
+		alert(err.response?.data || err.toString());
+	}
 }
 
 defineEmits([ 'input' ]);
