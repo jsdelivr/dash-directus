@@ -17,7 +17,7 @@ const props = withDefaults(
 	},
 );
 
-async function log () {
+async function sync () {
 	await api.post('/sync-github-username', {
 		userId: props.primaryKey,
 	});
@@ -36,7 +36,7 @@ defineEmits([ 'input' ]);
 		:class="font"
 		@update:model-value="$emit('input', $event)"
 	/>
-	<v-button secondary @click="log">Sync GitHub Username</v-button>
+	<v-button secondary @click="sync">Sync GitHub Username</v-button>
 </template>
 
 <style lang="scss" scoped>

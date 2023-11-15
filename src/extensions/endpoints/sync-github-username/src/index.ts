@@ -35,10 +35,13 @@ const syncGithubUsernameSchema = Joi.object<Request>({
 	accountability: Joi.object({
 		user: Joi.string().required(),
 	}).required().unknown(true),
+	body: Joi.object({
+		userId: Joi.string().required(),
+	}).required(),
 }).unknown(true);
 
 export default defineEndpoint((router, context: EndpointExtensionContext) => {
-	router.get('/', async (req, res) => {
+	router.post('/', async (req, res) => {
 		const { logger } = context;
 
 		try {
@@ -48,11 +51,12 @@ export default defineEndpoint((router, context: EndpointExtensionContext) => {
 				throw new (createError('INVALID_PAYLOAD_ERROR', error.message, 400))();
 			}
 
-			const userId = value.accountability.user;
+			const requesterId = value.accountability.user;
+			const userId = value.body.userId;
 
-			await rateLimiter.consume(userId, 1).catch(() => { throw new TooManyRequestsError(); });
+			await rateLimiter.consume(requesterId, 1).catch(() => { throw new TooManyRequestsError(); });
 
-			await syncGithubUsername(userId, context);
+			await syncGithubUsername(value.accountability, userId, context);
 
 			res.send('Synced');
 		} catch (error: unknown) {
@@ -69,11 +73,12 @@ export default defineEndpoint((router, context: EndpointExtensionContext) => {
 	});
 });
 
-const syncGithubUsername = async (userId: string, context: EndpointExtensionContext) => {
+const syncGithubUsername = async (accountability: Request['accountability'], userId: string, context: EndpointExtensionContext) => {
 	const { services, database, getSchema, env } = context;
 	const { ItemsService, UsersService } = services;
 
 	const itemsService = new ItemsService('directus_users', {
+		accountability,
 		schema: await getSchema({ database }),
 		knex: database,
 	});
