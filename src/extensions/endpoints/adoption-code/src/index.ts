@@ -76,6 +76,8 @@ export default defineEndpoint((router, { env, logger, services }) => {
 			const response = await axios.post<SendCodeResponse>(`${env.GP_SEND_CODE_ENDPOINT}?systemkey=${env.GP_SYSTEM_KEY}`, {
 				ip,
 				code,
+			}, {
+				timeout: 5000,
 			});
 
 			probesToAdopt.set(userId, {

@@ -6,6 +6,8 @@ import { City, geonamesCache, getKey } from './geonames-cache';
 import { normalizeCityName } from './normalize-city';
 import { EventContext } from '@directus/types';
 
+export const InvalidTagError = createError('INVALID_PAYLOAD_ERROR', 'Some of the tags have invalid symbols. Valid symbols are: EN letters, numbers and "-" signs', 400);
+export const TooBigTagError = createError('INVALID_PAYLOAD_ERROR', 'Some of the tags are too big. Max length is 32 characters.', 400);
 export const TooManyTagsError = createError('INVALID_PAYLOAD_ERROR', 'No more than 5 tags are allowed.', 400);
 export const ProbesNotFoundError = createError('INVALID_PAYLOAD_ERROR', 'Adopted probes not found.', 400);
 export const CountryNotDefinedError = createError('INVALID_PAYLOAD_ERROR', 'Country is not defined. Wait for the probe data to be synced with globalping.', 400);
@@ -17,7 +19,15 @@ export const validateTags = (fields: Fields) => {
 		throw new TooManyTagsError();
 	}
 
-	fields.tags = fields.tags!.map(tag => tag.trim().replaceAll(' ', '-'));
+	fields.tags = fields.tags!.map(tag => tag.trim());
+
+	if (fields.tags!.some(tag => !/^[a-zA-Z0-9-]+$/.test(tag))) {
+		throw new InvalidTagError();
+	}
+
+	if (fields.tags!.some(tag => tag.length > 32)) {
+		throw new TooBigTagError();
+	}
 };
 
 export const validateCity = async (fields: Fields, keys: string[], accountability: EventContext['accountability'], { env, services, database, getSchema }: HookExtensionContext) => {
@@ -48,7 +58,9 @@ export const validateCity = async (fields: Fields, keys: string[], accountabilit
 	}
 
 	const url = `http://api.geonames.org/searchJSON?featureClass=P&style=medium&isNameRequired=true&maxRows=1&username=${env.GEONAMES_USERNAME}&country=${country}&q=${fields.city}`;
-	const response = await axios<{totalResultsCount: number, geonames: City[]}>(url);
+	const response = await axios<{totalResultsCount: number, geonames: City[]}>(url, {
+		timeout: 5000,
+	});
 
 	const cities = response.data.geonames;
 
