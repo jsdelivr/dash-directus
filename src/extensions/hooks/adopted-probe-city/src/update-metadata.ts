@@ -37,6 +37,7 @@ export const updateMetadata = async (_fields: Fields, keys: string[], { services
 	const state = city.countryCode === 'US' ? city.adminCode1 : null;
 
 	await adoptedProbesService.updateMany(keys, {
+		countryOfCustomCity: city.countryCode,
 		latitude: city.lat,
 		longitude: city.lng,
 		state,

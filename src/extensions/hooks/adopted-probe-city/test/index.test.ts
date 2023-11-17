@@ -101,7 +101,7 @@ describe('adopted-probe-city hook', () => {
 
 		expect(updateMany.args[0]).to.deep.equal([
 			[ '1' ],
-			{ latitude: '43.29695', longitude: '5.38107', isCustomCity: true, state: null },
+			{ latitude: '43.29695', longitude: '5.38107', isCustomCity: true, countryOfCustomCity: 'FR', state: null },
 			{ emitEvents: false },
 		]);
 	});
@@ -159,7 +159,7 @@ describe('adopted-probe-city hook', () => {
 
 		expect(updateMany.args[0]).to.deep.equal([
 			[ '1' ],
-			{ latitude: '25.77427', longitude: '-80.19366', isCustomCity: true, state: 'FL' },
+			{ latitude: '25.77427', longitude: '-80.19366', isCustomCity: true, countryOfCustomCity: 'US', state: 'FL' },
 			{ emitEvents: false },
 		]);
 	});
