@@ -92,6 +92,7 @@ const syncGithubUsername = async (accountability: Request['accountability'], use
 	}
 
 	const response = await axios.get<GithubUserResponse>(`https://api.github.com/user/${githubId}`, {
+		timeout: 5000,
 		headers: {
 			Authorization: `Bearer ${env.GITHUB_ACCESS_TOKEN}`,
 		},
