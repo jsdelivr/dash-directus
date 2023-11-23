@@ -3,7 +3,7 @@ import nock from 'nock';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import hook from '../src/index.js';
-import { CountryNotDefinedError, DifferentCountriesError, InvalidCityError, ProbesNotFoundError, TooManyTagsError } from '../src/validate-fields.js';
+import { CountryNotDefinedError, DifferentCountriesError, InvalidCityError, InvalidTagError, ProbesNotFoundError, TooBigTagError, TooManyTagsError } from '../src/validate-fields.js';
 
 const callbacks = {
 	filter: {},
@@ -101,7 +101,7 @@ describe('adopted-probe-city hook', () => {
 
 		expect(updateMany.args[0]).to.deep.equal([
 			[ '1' ],
-			{ latitude: '43.29695', longitude: '5.38107', isCustomCity: true, state: null },
+			{ latitude: '43.29695', longitude: '5.38107', isCustomCity: true, countryOfCustomCity: 'FR', state: null },
 			{ emitEvents: false },
 		]);
 	});
@@ -159,7 +159,7 @@ describe('adopted-probe-city hook', () => {
 
 		expect(updateMany.args[0]).to.deep.equal([
 			[ '1' ],
-			{ latitude: '25.77427', longitude: '-80.19366', isCustomCity: true, state: 'FL' },
+			{ latitude: '25.77427', longitude: '-80.19366', isCustomCity: true, countryOfCustomCity: 'US', state: 'FL' },
 			{ emitEvents: false },
 		]);
 	});
@@ -202,13 +202,13 @@ describe('adopted-probe-city hook', () => {
 		}]);
 
 		hook(hooks, context);
-		const payload = { name: 'My Probe', tags: [ 'my tag', 'mytag2' ] };
+		const payload = { name: 'My Probe', tags: [ 'mytag', 'mytag2' ] };
 		await callbacks.filter['adopted_probes.items.update'](payload, { keys: [ '1' ] }, context);
 
 		expect(readMany.callCount).to.equal(0);
 		expect(nock.isDone()).to.equal(true);
 		expect(updateMany.callCount).to.equal(0);
-		expect(payload).to.deep.equal({ name: 'My Probe', tags: [ 'my-tag', 'mytag2' ] });
+		expect(payload).to.deep.equal({ name: 'My Probe', tags: [ 'mytag', 'mytag2' ] });
 
 		await callbacks.action['adopted_probes.items.update']({ payload, keys: [ '1' ] }, context);
 
@@ -300,6 +300,26 @@ describe('adopted-probe-city hook', () => {
 
 		expect(nock.isDone()).to.equal(true);
 		expect(err).to.deep.equal(new TooManyTagsError());
+		expect(updateMany.callCount).to.equal(0);
+	});
+
+	it('should send valid error if the tag is too big', async () => {
+		hook(hooks, context);
+		const payload = { tags: [ 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa' ] };
+		const err = await callbacks.filter['adopted_probes.items.update'](payload, { keys: [ '1' ] }, context).catch(err => err);
+
+		expect(nock.isDone()).to.equal(true);
+		expect(err).to.deep.equal(new TooBigTagError());
+		expect(updateMany.callCount).to.equal(0);
+	});
+
+	it('should send valid error if the tag has invalid character', async () => {
+		hook(hooks, context);
+		const payload = { tags: [ '@mytag' ] };
+		const err = await callbacks.filter['adopted_probes.items.update'](payload, { keys: [ '1' ] }, context).catch(err => err);
+
+		expect(nock.isDone()).to.equal(true);
+		expect(err).to.deep.equal(new InvalidTagError());
 		expect(updateMany.callCount).to.equal(0);
 	});
 });
