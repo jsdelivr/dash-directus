@@ -94,6 +94,14 @@ RUN npm ci
 COPY ./src/extensions/interfaces/github-username .
 RUN npm run build
 
+# Build sponsors-cron-handler
+FROM node:18-alpine AS builder-13
+WORKDIR /builder/src/extensions/adopted-probes-cron-handler
+ADD ./src/extensions/adopted-probes-cron-handler/package.json ./src/extensions/adopted-probes-cron-handler/package-lock.json ./
+RUN npm ci
+COPY ./src/extensions/adopted-probes-cron-handler .
+RUN npm run build
+
 FROM directus/directus:10.7.2
 
 COPY --from=builder-01 /builder/src/extensions/hooks/tokens/dist/* /directus/extensions/hooks/tokens/
@@ -111,3 +119,5 @@ COPY --from=builder-09 /builder/src/extensions/hooks/adopted-probe-city/dist/* /
 COPY --from=builder-10 /builder/src/extensions/hooks/sign-in/dist/* /directus/extensions/hooks/sign-in/
 COPY --from=builder-11 /builder/src/extensions/endpoints/sync-github-username/dist/* /directus/extensions/endpoints/sync-github-username/
 COPY --from=builder-12 /builder/src/extensions/interfaces/github-username/dist/* /directus/extensions/interfaces/github-username/
+COPY --from=builder-13 /builder/src/extensions/adopted-probes-cron-handler/dist/* /directus/extensions/directus-extension-adopted-probes-cron-handler/dist/
+COPY --from=builder-13 /builder/src/extensions/adopted-probes-cron-handler/package.json /directus/extensions/directus-extension-adopted-probes-cron-handler/
