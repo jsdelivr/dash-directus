@@ -184,7 +184,7 @@ describe('adopted-probe-city hook', () => {
 
 		expect(updateMany.args[0]).to.deep.equal([
 			[ '1' ],
-			{ latitude: null, longitude: null, isCustomCity: false, state: null },
+			{ latitude: null, longitude: null, isCustomCity: false, countryOfCustomCity: null, state: null },
 			{ emitEvents: false },
 		]);
 

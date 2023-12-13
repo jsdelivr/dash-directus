@@ -1,5 +1,5 @@
 version: 1
-directus: 14.1.0
+directus: 14.1.2
 vendor: mysql
 collections:
   - collection: adopted_probes
@@ -530,7 +530,7 @@ fields:
       note: null
       options: null
       readonly: false
-      required: true
+      required: false
       sort: 18
       special: null
       translations: null
@@ -568,7 +568,7 @@ fields:
       note: null
       options: null
       readonly: false
-      required: true
+      required: false
       sort: 19
       special: null
       translations: null
