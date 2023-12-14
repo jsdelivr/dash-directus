@@ -6,8 +6,8 @@ export const checkOnlineStatus = async (context: OperationContext) => {
 	const adoptedProbes = await getAdoptedProbes(context);
 	const connectedProbes = await getConnectedProbes(context);
 
-	const activeIpsSet = new Set(connectedProbes.filter(({ status }) => status === 'ready').map(({ ipAddress }) => ipAddress));
-	const activeAdoptedProbes = adoptedProbes.filter(({ ip }) => activeIpsSet.has(ip));
+	const onlineIpsSet = new Set(connectedProbes.filter(({ status }) => status === 'ready').map(({ ipAddress }) => ipAddress));
+	const onlineAdoptedProbes = adoptedProbes.filter(({ ip }) => onlineIpsSet.has(ip));
 
-	await increaseOnlineTimes(activeAdoptedProbes, context);
+	await increaseOnlineTimes(onlineAdoptedProbes, context);
 };

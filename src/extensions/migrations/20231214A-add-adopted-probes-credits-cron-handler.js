@@ -1,6 +1,6 @@
 const DIRECTUS_URL = process.env.DIRECTUS_URL;
 const ADMIN_ACCESS_TOKEN = process.env.ADMIN_ACCESS_TOKEN;
-const FLOW_ID = '284f22f9-0233-44ee-a9e1-503e9a2e3830'; // Flow id needs to be a uuid, as Directus throws otherwise. This is a random value.
+const FLOW_ID = '4d64c5a9-f731-4654-823d-9bda7f5c4ebe'; // Flow id needs to be a uuid, as Directus throws otherwise. This is a random value.
 
 async function createFlow () {
 	const URL = `${DIRECTUS_URL}/flows?access_token=${ADMIN_ACCESS_TOKEN}`;
@@ -8,13 +8,13 @@ async function createFlow () {
 		method: 'POST',
 		body: JSON.stringify({
 			id: FLOW_ID,
-			name: 'Adopted probes status CRON',
+			name: 'Adopted probes credits CRON',
 			description: 'Add Globalping credits for adopted probes',
 			status: 'active',
 			trigger: 'schedule',
 			accountability: 'all',
 			options: {
-				cron: '*/10 * * * *',
+				cron: '0 0 * * *',
 			},
 		}),
 		headers: {
@@ -36,9 +36,9 @@ async function createOperation () {
 		method: 'POST',
 		body: JSON.stringify({
 			flow: FLOW_ID,
-			name: 'Adopted probes status CRON handler',
-			key: 'adopted_probes_status_cron_handler',
-			type: 'adopted-probes-status-cron-handler',
+			name: 'Adopted probes credits CRON handler',
+			key: 'adopted_probes_credits_cron_handler',
+			type: 'adopted-probes-credits-cron-handler',
 			position_x: 19,
 			position_y: 1,
 			options: {},
@@ -80,7 +80,7 @@ export async function up () {
 	await createFlow();
 	const operation = await createOperation();
 	await assignOperationToFlow(operation.id);
-	console.log('Adopted probes status CRON handler added');
+	console.log('Adopted probes credits CRON handler added');
 }
 
 export async function down () {
