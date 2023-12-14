@@ -3,7 +3,7 @@ import { defineOperationApi } from '@directus/extensions-sdk';
 import _ from 'lodash';
 
 export default defineOperationApi({
-	id: 'adopted-probes-cron-handler',
+	id: 'adopted-probes-status-cron-handler',
 	handler: (_operationData, context: OperationContext) => {
 		const maxDeviation = parseFloat(context.env['ADOPTED_PROBES_CHECK_TIME_MAX_DEVIATION_MINS']);
 

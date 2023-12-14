@@ -8,7 +8,7 @@ async function createFlow () {
 		method: 'POST',
 		body: JSON.stringify({
 			id: FLOW_ID,
-			name: 'Adopted probes CRON',
+			name: 'Adopted probes status CRON',
 			description: 'Add Globalping credits for adopted probes',
 			status: 'active',
 			trigger: 'schedule',
@@ -36,9 +36,9 @@ async function createOperation () {
 		method: 'POST',
 		body: JSON.stringify({
 			flow: FLOW_ID,
-			name: 'Adopted probes CRON handler',
-			key: 'adopted_probes_cron_handler',
-			type: 'adopted-probes-cron-handler',
+			name: 'Adopted probes status CRON handler',
+			key: 'adopted_probes_status_cron_handler',
+			type: 'adopted-probes-status-cron-handler',
 			position_x: 19,
 			position_y: 1,
 			options: {},
@@ -80,7 +80,7 @@ export async function up () {
 	await createFlow();
 	const operation = await createOperation();
 	await assignOperationToFlow(operation.id);
-	console.log('Adopted probes CRON handler added');
+	console.log('Adopted probes status CRON handler added');
 }
 
 export async function down () {
