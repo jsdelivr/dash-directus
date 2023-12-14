@@ -11,7 +11,7 @@ const endpointContext = {
 		error: console.error,
 	},
 	env: {
-		GP_SEND_CODE_ENDPOINT: 'https://api.globalping.io/v1/adoption-code',
+		GLOBALPING_URL: 'https://api.globalping.io/v1',
 		GP_SYSTEM_KEY: 'system',
 	},
 	services: {

@@ -1,6 +1,7 @@
 import type { OperationContext } from '@directus/extensions';
 import { defineOperationApi } from '@directus/extensions-sdk';
 import _ from 'lodash';
+import { checkOnlineStatus } from './actions/check-online-status';
 
 export default defineOperationApi({
 	id: 'adopted-probes-status-cron-handler',
@@ -16,6 +17,3 @@ export default defineOperationApi({
 		setTimeout(() => checkOnlineStatus(context), timeOffset);
 	},
 });
-
-const checkOnlineStatus = (context: OperationContext) => {
-};
