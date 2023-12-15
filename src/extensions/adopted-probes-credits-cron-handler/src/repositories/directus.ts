@@ -27,10 +27,9 @@ export const addCredits = async (adoptedProbes: AdoptedProbe[], { services, data
 	});
 
 	const result = await creditsService.createMany(adoptedProbes.map(adoptedProbe => ({
-		githubLogin: 'login',
 		githubId: 'id',
 		credits: parseInt(env.CREDITS_PER_ADOPTED_PROBE_DAY, 10),
-		comment: `For adopted probe (${adoptedProbe.ip})`,
+		comment: `For adopted probe with ip ${adoptedProbe.ip}`,
 	}))) as number[];
 
 	return result;
