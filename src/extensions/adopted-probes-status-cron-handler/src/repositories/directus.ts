@@ -26,8 +26,10 @@ export const increaseOnlineTimes = async (adoptedProbes: AdoptedProbe[], { servi
 		knex: database,
 	});
 
-	await itemsService.updateBatch(adoptedProbes.map(({ id, onlineTimesToday }) => ({
+	const updatedIds = await itemsService.updateBatch(adoptedProbes.map(({ id, onlineTimesToday }) => ({
 		id,
 		onlineTimesToday: onlineTimesToday + 1,
-	})), { emitEvents: false });
+	})), { emitEvents: false }) as number[];
+
+	return updatedIds;
 };

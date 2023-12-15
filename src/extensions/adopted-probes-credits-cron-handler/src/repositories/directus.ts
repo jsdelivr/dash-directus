@@ -26,7 +26,7 @@ export const getAdoptedProbes = async ({ services, database, getSchema }: Operat
 
 export const addCredits = async (adoptedProbes: AdoptedProbe[], { services, database, getSchema, env }: OperationContext) => {
 	if (adoptedProbes.length === 0) {
-		return;
+		return [];
 	}
 
 	const { ItemsService } = services;

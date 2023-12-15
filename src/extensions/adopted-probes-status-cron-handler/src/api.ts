@@ -1,11 +1,11 @@
 import type { OperationContext } from '@directus/extensions';
 import { defineOperationApi } from '@directus/extensions-sdk';
-import _ from 'lodash';
+import _, { reject } from 'lodash';
 import { checkOnlineStatus } from './actions/check-online-status';
 
 export default defineOperationApi({
 	id: 'adopted-probes-status-cron-handler',
-	handler: (_operationData, context: OperationContext) => {
+	handler: async (_operationData, context: OperationContext) => {
 		const maxDeviation = parseFloat(context.env['ADOPTED_PROBES_CHECK_TIME_MAX_DEVIATION_MINS']);
 
 		if (!maxDeviation) {
@@ -14,6 +14,14 @@ export default defineOperationApi({
 
 		const timeOffset = _.random(0, maxDeviation * 60 * 1000);
 
-		setTimeout(() => checkOnlineStatus(context), timeOffset);
+		const onlineIds = await new Promise((resolve) => {
+			setTimeout(() => {
+				checkOnlineStatus(context)
+					.then(onlineIds => resolve(onlineIds))
+					.catch(err => reject(err));
+			}, timeOffset);
+		});
+
+		return `Online probes ids: ${onlineIds}`;
 	},
 });

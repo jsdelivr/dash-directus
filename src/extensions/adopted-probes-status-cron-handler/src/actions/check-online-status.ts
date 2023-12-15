@@ -9,5 +9,6 @@ export const checkOnlineStatus = async (context: OperationContext) => {
 	const onlineIpsSet = new Set(connectedProbes.filter(({ status }) => status === 'ready').map(({ ipAddress }) => ipAddress));
 	const onlineAdoptedProbes = adoptedProbes.filter(({ ip }) => onlineIpsSet.has(ip));
 
-	await increaseOnlineTimes(onlineAdoptedProbes, context);
+	const updatedIds = await increaseOnlineTimes(onlineAdoptedProbes, context);
+	return updatedIds;
 };
