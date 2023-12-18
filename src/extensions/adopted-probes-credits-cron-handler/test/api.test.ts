@@ -75,7 +75,7 @@ describe('Adopted probes status cron handler', () => {
 			id: '1',
 			ip: '1.2.3.4',
 			userId: '1-1-1-1-1-1',
-			onlineTimesToday: 10,
+			onlineTimesToday: 119,
 		}]);
 
 		readMany.resolves([{
