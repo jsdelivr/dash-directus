@@ -1,6 +1,6 @@
 import type { OperationContext } from '@directus/extensions';
 import { defineOperationApi } from '@directus/extensions-sdk';
-import _, { reject } from 'lodash';
+import _ from 'lodash';
 import { checkOnlineStatus } from './actions/check-online-status';
 
 export default defineOperationApi({
@@ -14,7 +14,7 @@ export default defineOperationApi({
 
 		const timeOffset = _.random(0, maxDeviation * 60 * 1000);
 
-		const onlineIds = await new Promise((resolve) => {
+		const onlineIds = await new Promise((resolve, reject) => {
 			setTimeout(() => {
 				checkOnlineStatus(context)
 					.then(onlineIds => resolve(onlineIds))

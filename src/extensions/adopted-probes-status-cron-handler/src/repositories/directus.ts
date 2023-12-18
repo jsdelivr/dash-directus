@@ -19,6 +19,10 @@ export const getAdoptedProbes = async ({ services, database, getSchema }: Operat
 };
 
 export const increaseOnlineTimes = async (adoptedProbes: AdoptedProbe[], { services, database, getSchema }: OperationContext) => {
+	if (adoptedProbes.length === 0) {
+		return [];
+	}
+
 	const { ItemsService } = services;
 
 	const itemsService = new ItemsService('adopted_probes', {
