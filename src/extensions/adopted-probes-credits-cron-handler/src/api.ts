@@ -6,6 +6,6 @@ export default defineOperationApi({
 	id: 'adopted-probes-credits-cron-handler',
 	handler: async (_operationData, context: OperationContext) => {
 		const creditIds = await assignCredits(context);
-		return `Created credits with ids: ${creditIds}`;
+		return creditIds.length ? `Created credits with ids: ${creditIds}` : 'No credits created';
 	},
 });

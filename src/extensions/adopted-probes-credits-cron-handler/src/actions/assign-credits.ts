@@ -5,7 +5,7 @@ export const assignCredits = async (context: OperationContext) => {
 	const requiredOnlineTimes = context.env['ADOPTED_PROBES_REQUIRED_ONLINE_TIMES'];
 
 	if (!requiredOnlineTimes) {
-		throw new Error('ADOPTED_PROBES_REQUIRED_ONLINE_TIMES was not privided');
+		throw new Error('ADOPTED_PROBES_REQUIRED_ONLINE_TIMES was not provided');
 	}
 
 	const adoptedProbes = await getAdoptedProbes(context);

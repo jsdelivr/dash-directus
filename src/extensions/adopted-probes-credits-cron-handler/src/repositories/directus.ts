@@ -25,6 +25,10 @@ export const getAdoptedProbes = async ({ services, database, getSchema }: Operat
 };
 
 export const addCredits = async (adoptedProbes: AdoptedProbe[], { services, database, getSchema, env }: OperationContext) => {
+	if (!env.CREDITS_PER_ADOPTED_PROBE_DAY) {
+		throw new Error('CREDITS_PER_ADOPTED_PROBE_DAY was not provided');
+	}
+
 	if (adoptedProbes.length === 0) {
 		return [];
 	}
