@@ -20,8 +20,8 @@ export default defineOperationApi({
 					.then(onlineIds => resolve(onlineIds))
 					.catch(err => reject(err));
 			}, timeOffset);
-		});
+		}) as number[];
 
-		return `Online probes ids: ${onlineIds}`;
+		return onlineIds.length ? `Online adopted probes ids: ${onlineIds}` : 'No adopted online probes';
 	},
 });

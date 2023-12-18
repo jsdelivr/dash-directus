@@ -94,7 +94,7 @@ RUN npm ci
 COPY ./src/extensions/interfaces/github-username .
 RUN npm run build
 
-# Build sponsors-cron-handler
+# Build adopted-probes-status-cron-handler
 FROM node:18-alpine AS builder-13
 WORKDIR /builder/src/extensions/adopted-probes-status-cron-handler
 ADD ./src/extensions/adopted-probes-status-cron-handler/package.json ./src/extensions/adopted-probes-status-cron-handler/package-lock.json ./
@@ -102,7 +102,7 @@ RUN npm ci
 COPY ./src/extensions/adopted-probes-status-cron-handler .
 RUN npm run build
 
-# Build sponsors-cron-handler
+# Build adopted-probes-credits-cron-handler
 FROM node:18-alpine AS builder-14
 WORKDIR /builder/src/extensions/adopted-probes-credits-cron-handler
 ADD ./src/extensions/adopted-probes-credits-cron-handler/package.json ./src/extensions/adopted-probes-credits-cron-handler/package-lock.json ./
