@@ -1334,14 +1334,14 @@ fields:
       foreign_key_table: directus_users
       foreign_key_column: id
   - collection: directus_users
-    field: github_organisations
+    field: github_organizations
     type: text
     meta:
       collection: directus_users
       conditions: null
       display: null
       display_options: null
-      field: github_organisations
+      field: github_organizations
       group: null
       hidden: false
       interface: input
@@ -1356,7 +1356,7 @@ fields:
       validation_message: null
       width: full
     schema:
-      name: github_organisations
+      name: github_organizations
       table: directus_users
       data_type: text
       default_value: null
@@ -1541,7 +1541,7 @@ fields:
       group: null
       hidden: false
       interface: input
-      note: GitHub username or organisation name.
+      note: GitHub username or organization name.
       options: null
       readonly: false
       required: true
