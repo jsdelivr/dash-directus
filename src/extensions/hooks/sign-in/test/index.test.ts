@@ -49,7 +49,7 @@ describe('syncGithubLogin hook', () => {
 		const username = 'oldUsername';
 		const githubUsername = 'newUsername';
 
-		readOne.resolves({ external_identifier: githubId, github: username });
+		readOne.resolves({ external_identifier: githubId, github_username: username });
 
 		nock('https://api.github.com')
 			.get(`/user/${githubId}`)
@@ -78,7 +78,7 @@ describe('syncGithubLogin hook', () => {
 		const githubId = '456';
 		const username = 'sameUsername';
 
-		readOne.resolves({ external_identifier: githubId, github: username });
+		readOne.resolves({ external_identifier: githubId, github_username: username });
 
 		nock('https://api.github.com')
 			.get(`/user/${githubId}`)

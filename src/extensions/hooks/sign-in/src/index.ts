@@ -9,7 +9,7 @@ type GithubUserResponse = {
 
 type User = {
 	external_identifier?: string;
-	github?: string;
+	github_username?: string;
 }
 
 export default defineHook(({ action }, context) => {
@@ -24,7 +24,6 @@ const syncGithubLogin = async (userId: string, provider: string, context: HookEx
 	const { services, database, getSchema, env } = context;
 	const { ItemsService } = services;
 
-	// On initial dashboard setup script is logging in as non-github user => need to return to avoid throwing errors.
 	if (provider !== 'github') {
 		return;
 	}
@@ -36,7 +35,7 @@ const syncGithubLogin = async (userId: string, provider: string, context: HookEx
 
 	const user = await itemsService.readOne(userId) as User | undefined;
 	const githubId = user?.external_identifier;
-	const username = user?.github;
+	const username = user?.github_username;
 
 	if (!user || !githubId || !username) {
 		throw new Error('Not enough data to check GitHub username');

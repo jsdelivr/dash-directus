@@ -9,7 +9,7 @@ describe('Sync Github Username endpoint', () => {
 	const updateOne = sinon.stub();
 	const readOne = sinon.stub().resolves({
 		external_identifier: 'github-id',
-		github: 'old-username',
+		github_username: 'old-username',
 	});
 	const itemsServiceStub = sinon.stub().returns({
 		readOne,
@@ -83,7 +83,7 @@ describe('Sync Github Username endpoint', () => {
 		expect(updateOne.callCount).to.equal(1);
 
 		expect(updateOne.args[0][1]).to.deep.equal({
-			github: 'new-username',
+			github_username: 'new-username',
 		});
 	});
 

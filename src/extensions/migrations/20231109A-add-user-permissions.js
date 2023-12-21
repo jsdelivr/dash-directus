@@ -45,7 +45,7 @@ async function patchReadPermissions (readPermissions) {
 				'theme_dark',
 				'theme_light_overrides',
 				'theme_dark_overrides',
-				'github',
+				'github_username',
 			],
 		}),
 		headers: {

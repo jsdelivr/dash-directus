@@ -20,7 +20,7 @@ type GithubUserResponse = {
 
 type User = {
 	external_identifier?: string;
-	github?: string;
+	github_username?: string;
 }
 
 const NotEnoughDataError = createError('INVALID_PAYLOAD_ERROR', 'Not enough data to check GitHub username', 400);
@@ -85,7 +85,7 @@ const syncGithubUsername = async (accountability: Request['accountability'], use
 
 	const user = await itemsService.readOne(userId) as User | undefined;
 	const githubId = user?.external_identifier;
-	const username = user?.github;
+	const username = user?.github_username;
 
 	if (!user || !githubId || !username) {
 		throw new NotEnoughDataError();
@@ -105,7 +105,7 @@ const syncGithubUsername = async (accountability: Request['accountability'], use
 			knex: database,
 		});
 		await usersService.updateOne(userId, {
-			github: githubUsername,
+			github_username: githubUsername,
 		});
 	}
 };

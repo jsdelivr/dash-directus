@@ -6,7 +6,7 @@ type User = {
     first_name?: string;
     last_name?: string;
     last_page?: string;
-		github?: string;
+		github_username?: string;
 }
 
 export default defineHook(({ filter }) => {
@@ -22,7 +22,7 @@ export default defineHook(({ filter }) => {
 const handleGithubLogin = (user: User) => {
 	const login = user.last_name;
 	user.last_name = undefined;
-	user.github = login;
+	user.github_username = login;
 
 	const name = user.first_name;
 

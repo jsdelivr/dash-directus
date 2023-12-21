@@ -1334,17 +1334,17 @@ fields:
       foreign_key_table: directus_users
       foreign_key_column: id
   - collection: directus_users
-    field: github
-    type: string
+    field: github_organisations
+    type: text
     meta:
       collection: directus_users
       conditions: null
       display: null
       display_options: null
-      field: github
+      field: github_organisations
       group: null
       hidden: false
-      interface: github-username
+      interface: input
       note: null
       options: null
       readonly: false
@@ -1356,7 +1356,45 @@ fields:
       validation_message: null
       width: full
     schema:
-      name: github
+      name: github_organisations
+      table: directus_users
+      data_type: text
+      default_value: null
+      max_length: 65535
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: directus_users
+    field: github_username
+    type: string
+    meta:
+      collection: directus_users
+      conditions: null
+      display: null
+      display_options: null
+      field: github_username
+      group: null
+      hidden: false
+      interface: github-username
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 2
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: github_username
       table: directus_users
       data_type: varchar
       default_value: null
