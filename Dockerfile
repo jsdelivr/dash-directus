@@ -78,12 +78,12 @@ RUN npm ci
 COPY ./src/extensions/hooks/sign-in .
 RUN npm run build
 
-# Build endpoints/sync-github-username
+# Build endpoints/sync-github-data
 FROM node:18-alpine AS builder-11
-WORKDIR /builder/src/extensions/endpoints/sync-github-username
-ADD ./src/extensions/endpoints/sync-github-username/package.json ./src/extensions/endpoints/sync-github-username/package-lock.json ./
+WORKDIR /builder/src/extensions/endpoints/sync-github-data
+ADD ./src/extensions/endpoints/sync-github-data/package.json ./src/extensions/endpoints/sync-github-data/package-lock.json ./
 RUN npm ci
-COPY ./src/extensions/endpoints/sync-github-username .
+COPY ./src/extensions/endpoints/sync-github-data .
 RUN npm run build
 
 # Build interfaces/github-username
@@ -125,7 +125,7 @@ COPY --from=builder-07 /builder/src/extensions/modules/probes-adapter/dist/* /di
 COPY --from=builder-08 /builder/src/extensions/endpoints/adoption-code/dist/* /directus/extensions/endpoints/adoption-code/
 COPY --from=builder-09 /builder/src/extensions/hooks/adopted-probe-city/dist/* /directus/extensions/hooks/adopted-probe-city/
 COPY --from=builder-10 /builder/src/extensions/hooks/sign-in/dist/* /directus/extensions/hooks/sign-in/
-COPY --from=builder-11 /builder/src/extensions/endpoints/sync-github-username/dist/* /directus/extensions/endpoints/sync-github-username/
+COPY --from=builder-11 /builder/src/extensions/endpoints/sync-github-data/dist/* /directus/extensions/endpoints/sync-github-data/
 COPY --from=builder-12 /builder/src/extensions/interfaces/github-username/dist/* /directus/extensions/interfaces/github-username/
 COPY --from=builder-13 /builder/src/extensions/adopted-probes-status-cron-handler/dist/* /directus/extensions/directus-extension-adopted-probes-status-cron-handler/dist/
 COPY --from=builder-13 /builder/src/extensions/adopted-probes-status-cron-handler/package.json /directus/extensions/directus-extension-adopted-probes-status-cron-handler/

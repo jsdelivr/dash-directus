@@ -19,7 +19,7 @@ const props = withDefaults(
 
 async function sync () {
 	try {
-		await api.post('/sync-github-username', {
+		await api.post('/sync-github-data', {
 			userId: props.primaryKey,
 		});
 
