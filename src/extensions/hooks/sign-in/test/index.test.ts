@@ -68,7 +68,7 @@ describe('syncGithubLogin hook', () => {
 			{
 				recipient: userId,
 				subject: 'Github username update',
-				message: `Looks like your GitHub username was updated from "${username}" to "${githubUsername}". Tags of the adopted probes are constructed as \`u-\${githubUsername}-\${tagValue}\`. If you want tags to use the new value click "Sync GitHub Username" button on the [user page](/admin/users/${userId}).`,
+				message: `Looks like your GitHub username was updated from "${username}" to "${githubUsername}". Tags of the adopted probes are constructed as \`u-\${githubUsername}-\${tagValue}\`. If you want tags to use the new value click "Sync GitHub Data" button on the [user page](/admin/users/${userId}).`,
 			},
 		]);
 	});

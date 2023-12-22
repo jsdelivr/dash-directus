@@ -41,7 +41,7 @@ defineEmits([ 'input' ]);
 		:class="font"
 		@update:model-value="$emit('input', $event)"
 	/>
-	<v-button secondary @click="sync">Sync GitHub Username</v-button>
+	<v-button secondary @click="sync">Sync GitHub Data</v-button>
 </template>
 
 <style lang="scss" scoped>
