@@ -4,7 +4,7 @@ import * as sinon from 'sinon';
 import nock from 'nock';
 import hook from '../src/index.js';
 
-describe('syncGithubLogin hook', () => {
+describe('Sign-in hook', () => {
 	const callbacks = {
 		action: {},
 	};

@@ -40,6 +40,7 @@
 		"@directus/errors": "^0.2.0",
 		"axios": "^1.6.1",
 		"joi": "^17.11.0",
+		"lodash": "^4.17.21",
 		"rate-limiter-flexible": "^3.0.4"
 	}
 }

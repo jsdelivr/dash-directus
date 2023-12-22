@@ -42,7 +42,7 @@ const syncGithubData = async (userId: string, provider: string, context: HookExt
 
 	const user = await itemsService.readOne(userId) as User | undefined;
 
-	if (!user || !user.external_identifier || !user.github_username) {
+	if (!user || !user.external_identifier) {
 		throw new Error('Not enough data to check GitHub data');
 	}
 
@@ -74,7 +74,14 @@ const syncGitHubOrganizations = async (user: User, context: HookExtensionContext
 		},
 	});
 	const githubOrgs = orgsResponse.data.map(org => org.login);
-	const userOrgs = user.github_organizations ? JSON.parse(user.github_organizations) : [];
+	let userOrgs = [];
+
+	try {
+		userOrgs = user?.github_organizations ? JSON.parse(user.github_organizations) : [];
+	} catch (error) {
+		context.logger.error('Failed to parse github_organizations:');
+		context.logger.error(error);
+	}
 
 	if (!_.isEqual(userOrgs.sort(), githubOrgs.sort())) {
 		await updateOrganizations(user, githubOrgs, context);
@@ -99,12 +106,11 @@ const sendNotification = async (user: User, githubUsername: string, context: Hoo
 
 const updateOrganizations = async (user: User, githubOrgs: string[], context: HookExtensionContext) => {
 	const { services, database, getSchema } = context;
-	const { ItemsService } = services;
+	const { UsersService } = services;
 
-	const itemsService = new ItemsService('directus_users', {
+	const usersService = new UsersService({
 		schema: await getSchema({ database }),
 		knex: database,
 	});
-
-	await itemsService.updateOne(user.id, { github_organizations: JSON.stringify(githubOrgs) });
+	await usersService.updateOne(user.id, { github_organizations: JSON.stringify(githubOrgs) });
 };
