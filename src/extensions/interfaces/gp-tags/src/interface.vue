@@ -42,7 +42,7 @@ const updateTag = (index: number, newTag: string) => {
 	emit('input', updatedArray);
 };
 const addTag = () => {
-	const updatedArray = [ ...tags.value, { value: '', prefix: '' }];
+	const updatedArray = [ ...tags.value, { value: '', prefix: prefixes.value[0] }];
 	emit('input', updatedArray);
 };
 const deleteTag = (index: number) => {
@@ -76,9 +76,11 @@ async function syncGithubData () {
 	try {
 		isFetching.value = true;
 		const response = await api.post('/sync-github-data', {
-			userId: props.primaryKey,
+			userId: id.value,
 		});
-		prefixes.value = response.data.github_organizations;
+		const username = response.data.github_username;
+		const organizations = response.data.github_organizations;
+		prefixes.value = [ username, ...organizations ];
 	} catch (err: any) {
 		console.error(err);
 		alert(err.message || err.toString());

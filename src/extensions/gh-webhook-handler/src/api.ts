@@ -12,7 +12,7 @@ type ValidateGithubSignatureArgs = {
 };
 
 const validateGithubSignature = ({ headers, body, env }: ValidateGithubSignatureArgs) => {
-	const GITHUB_WEBHOOK_SECRET = env['GITHUB_WEBHOOK_SECRET'] as string | undefined;
+	const GITHUB_WEBHOOK_SECRET = env.GITHUB_WEBHOOK_SECRET as string | undefined;
 	const githubSignature = headers['x-hub-signature-256'];
 
 	if (!GITHUB_WEBHOOK_SECRET) {

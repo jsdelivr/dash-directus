@@ -6,6 +6,7 @@ import { City, geonamesCache, getKey } from './geonames-cache';
 import { normalizeCityName } from './normalize-city';
 import { EventContext } from '@directus/types';
 
+export const UnnableToParseError = createError('INVALID_PAYLOAD_ERROR', 'Unable to parse tags field.', 400);
 export const InvalidTagError = createError('INVALID_PAYLOAD_ERROR', 'Some of the tags have invalid symbols. Valid symbols are: EN letters, numbers and "-" signs', 400);
 export const TooBigTagError = createError('INVALID_PAYLOAD_ERROR', 'Some of the tags are too big. Max length is 32 characters.', 400);
 export const TooManyTagsError = createError('INVALID_PAYLOAD_ERROR', 'No more than 5 tags are allowed.', 400);
@@ -15,17 +16,23 @@ export const DifferentCountriesError = createError('INVALID_PAYLOAD_ERROR', 'Req
 export const InvalidCityError = createError('INVALID_PAYLOAD_ERROR', 'No valid cities found. Please check "city" and "country" values. Validation algorithm can be checked here: https://www.geonames.org/advanced-search.html?featureClass=P', 400);
 
 export const validateTags = (fields: Fields) => {
-	if (fields.tags!.length > 5) {
+	if (!fields.tags) {
+		return;
+	}
+
+	if (fields.tags.length > 5) {
 		throw new TooManyTagsError();
 	}
 
-	fields.tags = fields.tags!.map(tag => tag.trim());
+	fields.tags = fields.tags.map(tag => ({ ...tag, value: tag.value.trim() }));
 
-	if (fields.tags!.some(tag => !/^[a-zA-Z0-9-]+$/.test(tag))) {
+	fields.tags = fields.tags.filter(tag => tag.value.length > 0 && tag.prefix.length > 0);
+
+	if (fields.tags.some(tag => !/^[a-zA-Z0-9-]+$/.test(tag.value))) {
 		throw new InvalidTagError();
 	}
 
-	if (fields.tags!.some(tag => tag.length > 32)) {
+	if (fields.tags.some(tag => tag.value.length > 32)) {
 		throw new TooBigTagError();
 	}
 };
