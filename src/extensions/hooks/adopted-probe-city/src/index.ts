@@ -11,7 +11,7 @@ export type AdoptedProbe = {
 	longitude: string | null;
 	country: string | null;
 	isCustomCity: boolean;
-	tags: {value: string; prefix: string}[] | null;
+	tags: {value: string | null; prefix: string}[] | null;
 };
 
 export type Fields = Partial<AdoptedProbe>;
