@@ -2,6 +2,7 @@ import type { OperationContext } from '@directus/extensions';
 
 type AdoptedProbe = {
 	id: number;
+	name: string | null;
 	ip: string;
 	onlineTimesToday: number;
 	userId: string;
@@ -48,10 +49,10 @@ export const addCredits = async (adoptedProbes: AdoptedProbe[], { services, data
 	const users = await usersService.readMany(adoptedProbes.map(({ userId }) => userId)) as User[];
 	const usersMap = new Map(users.map(user => [ user.id, user ]));
 
-	const result = await creditsService.createMany(adoptedProbes.map(({ userId, ip }) => ({
+	const result = await creditsService.createMany(adoptedProbes.map(({ userId, ip, name }) => ({
 		githubId: usersMap.get(userId)?.external_identifier,
 		credits: parseInt(env.CREDITS_PER_ADOPTED_PROBE_DAY, 10),
-		comment: `For adopted probe with ip ${ip}`,
+		comment: `For the adopted probe ${name ? name + ' ' : ''}(${ip})`,
 	}))) as number[];
 
 	return result;

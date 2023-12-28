@@ -1,3 +1,4 @@
+import { setTimeout } from 'node:timers/promises';
 import type { OperationContext } from '@directus/extensions';
 import { defineOperationApi } from '@directus/extensions-sdk';
 import _ from 'lodash';
@@ -13,14 +14,9 @@ export default defineOperationApi({
 		}
 
 		const timeOffset = _.random(0, maxDeviation * 60 * 1000);
+		await setTimeout(timeOffset);
 
-		const onlineIds = await new Promise((resolve, reject) => {
-			setTimeout(() => {
-				checkOnlineStatus(context)
-					.then(onlineIds => resolve(onlineIds))
-					.catch(err => reject(err));
-			}, timeOffset);
-		}) as number[];
+		const onlineIds = await checkOnlineStatus(context);
 
 		return onlineIds.length ? `Online adopted probes ids: ${onlineIds}` : 'No adopted online probes';
 	},
