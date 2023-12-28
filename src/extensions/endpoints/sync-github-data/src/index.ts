@@ -46,9 +46,9 @@ export default defineEndpoint((router, context: EndpointExtensionContext) => {
 
 			await rateLimiter.consume(requesterId, 1).catch(() => { throw new TooManyRequestsError(); });
 
-			await syncGithubData(userId, value.accountability, context);
+			const result = await syncGithubData(userId, value.accountability, context);
 
-			res.send('Synced');
+			res.send(result);
 		} catch (error: unknown) {
 			logger.error(error);
 

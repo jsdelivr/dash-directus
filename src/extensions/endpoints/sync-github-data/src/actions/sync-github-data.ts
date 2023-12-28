@@ -42,4 +42,9 @@ export const syncGithubData = async (userId: string, accountability: Request['ac
 			github_organizations: JSON.stringify(githubOrgs),
 		}, context);
 	}
+
+	return {
+		github_username: githubUsername,
+		github_organizations: githubOrgs,
+	};
 };
