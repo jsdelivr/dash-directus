@@ -1,5 +1,5 @@
 version: 1
-directus: 14.1.2
+directus: 10.8.3
 vendor: mysql
 collections:
   - collection: adopted_probes
@@ -794,11 +794,8 @@ fields:
       field: tags
       group: null
       hidden: false
-      interface: tags
-      note: >-
-        Public tags of the probe. They can be used as location filters for a
-        measurement. E.g. for user with github username `"jimaek"` and tag
-        `"home1"` location filter is `{ "tags": ["u-jimaek-home1"] }`
+      interface: gp-tags
+      note: null
       options: null
       readonly: false
       required: false

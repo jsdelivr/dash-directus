@@ -39,6 +39,7 @@
 		"@directus/errors": "^0.2.0",
 		"@isaacs/ttlcache": "^1.4.1",
 		"any-ascii": "^0.3.2",
-		"axios": "^1.6.0"
+		"axios": "^1.6.0",
+		"joi": "^17.11.0"
 	}
 }

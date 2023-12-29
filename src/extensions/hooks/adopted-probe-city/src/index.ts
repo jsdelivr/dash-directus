@@ -27,7 +27,7 @@ export default defineHook(({ filter, action }, context) => {
 		}
 
 		if (fields.tags && fields.tags.length > 0) {
-			validateTags(fields);
+			await validateTags(fields, accountability, context);
 		}
 
 		if (fields.city || fields.city === '') {
