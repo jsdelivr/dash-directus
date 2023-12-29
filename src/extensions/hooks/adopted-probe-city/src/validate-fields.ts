@@ -14,7 +14,9 @@ type User = {
 
 const payloadError = (message: string) => new (createError('INVALID_PAYLOAD_ERROR', message, 400))();
 
-export const validateTags = async (fields: Fields, accountability: EventContext['accountability'], { services, database, getSchema }: HookExtensionContext) => {
+export const validateTags = async (fields: Fields, keys: string[], accountability: EventContext['accountability'], context: HookExtensionContext) => {
+	const { services, database, getSchema } = context;
+
 	if (!fields.tags) {
 		return;
 	}
@@ -32,6 +34,11 @@ export const validateTags = async (fields: Fields, accountability: EventContext[
 		throw payloadError('User does not have enough github data.');
 	}
 
+	const existingTagsByProbe = await getExistingTags(keys, accountability, context);
+
+	const newTags = fields.tags.filter(tag => existingTagsByProbe
+		.some(existingTags => existingTags.findIndex(existingTag => tag.prefix === existingTag.prefix && tag.value === existingTag.value) === -1));
+
 	const validPrefixes = [ user.github_username, ...JSON.parse(user.github_organizations) ];
 
 	const tagsSchema = Joi.array().items(Joi.object({
@@ -39,11 +46,29 @@ export const validateTags = async (fields: Fields, accountability: EventContext[
 		prefix: Joi.string().valid(...validPrefixes).required(),
 	})).max(5);
 
-	const { error } = tagsSchema.validate(fields.tags);
+	const { error } = tagsSchema.validate(newTags);
 
 	if (error) {
 		throw payloadError(error.message);
 	}
+};
+
+const getExistingTags = async (keys: string[], accountability: EventContext['accountability'], { services, database, getSchema }: HookExtensionContext) => {
+	const { ItemsService } = services;
+
+	const adoptedProbesService = new ItemsService('adopted_probes', {
+		database,
+		schema: await getSchema(),
+		accountability,
+	});
+
+	const currentProbes = await adoptedProbesService.readMany(keys) as AdoptedProbe[];
+
+	if (!currentProbes || currentProbes.length === 0) {
+		throw payloadError('Adopted probes not found.');
+	}
+
+	return currentProbes.map(probe => probe.tags || []);
 };
 
 export const validateCity = async (fields: Fields, keys: string[], accountability: EventContext['accountability'], { env, services, database, getSchema }: HookExtensionContext) => {

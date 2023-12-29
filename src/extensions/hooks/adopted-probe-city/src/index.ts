@@ -11,7 +11,7 @@ export type AdoptedProbe = {
 	longitude: string | null;
 	country: string | null;
 	isCustomCity: boolean;
-	tags: {value: string | null; prefix: string}[] | null;
+	tags: {value: string; prefix: string}[] | null;
 };
 
 export type Fields = Partial<AdoptedProbe>;
@@ -27,7 +27,7 @@ export default defineHook(({ filter, action }, context) => {
 		}
 
 		if (fields.tags && fields.tags.length > 0) {
-			await validateTags(fields, accountability, context);
+			await validateTags(fields, keys, accountability, context);
 		}
 
 		if (fields.city || fields.city === '') {

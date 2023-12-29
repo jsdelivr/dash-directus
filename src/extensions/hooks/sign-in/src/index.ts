@@ -62,7 +62,7 @@ const syncGitHubUsername = async (user: User, context: HookExtensionContext) => 
 	const githubUsername = githubResponse.data.login;
 
 	if (user.github_username !== githubUsername) {
-		await sendNotification(user, githubUsername, context);
+		await updateUser(user, { github_username: githubUsername }, context);
 	}
 };
 
@@ -84,27 +84,11 @@ const syncGitHubOrganizations = async (user: User, context: HookExtensionContext
 	}
 
 	if (!_.isEqual(userOrgs.sort(), githubOrgs.sort())) {
-		await updateOrganizations(user, githubOrgs, context);
+		await updateUser(user, { github_organizations: JSON.stringify(githubOrgs) }, context);
 	}
 };
 
-const sendNotification = async (user: User, githubUsername: string, context: HookExtensionContext) => {
-	const { services, database, getSchema } = context;
-	const { NotificationsService } = services;
-
-	const notificationsService = new NotificationsService({
-		schema: await getSchema({ database }),
-		knex: database,
-	});
-
-	await notificationsService.createOne({
-		recipient: user.id,
-		subject: 'Github username update',
-		message: `Looks like your GitHub username was updated from "${user.github_username}" to "${githubUsername}". Tags of the adopted probes are constructed as \`u-\${githubUsername}-\${tagValue}\`. If you want tags to use the new value click "Sync GitHub Data" button on the [user page](/admin/users/${user.id}).`,
-	});
-};
-
-const updateOrganizations = async (user: User, githubOrgs: string[], context: HookExtensionContext) => {
+const updateUser = async (user: User, updateObject: Partial<User>, context: HookExtensionContext) => {
 	const { services, database, getSchema } = context;
 	const { UsersService } = services;
 
@@ -112,5 +96,5 @@ const updateOrganizations = async (user: User, githubOrgs: string[], context: Ho
 		schema: await getSchema({ database }),
 		knex: database,
 	});
-	await usersService.updateOne(user.id, { github_organizations: JSON.stringify(githubOrgs) });
+	await usersService.updateOne(user.id, updateObject);
 };
