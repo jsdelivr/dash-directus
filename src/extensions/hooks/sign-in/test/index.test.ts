@@ -103,7 +103,7 @@ describe('Sign-in hook', () => {
 		hook(actions, context);
 
 		const error = await callbacks.action['auth.login']({ user: userId, provider: 'github' }).catch(err => err);
-		expect(error.message).to.equal('Not enough data to check GitHub username');
+		expect(error.message).to.equal('Not enough data to sync with GitHub');
 
 		expect(readOne.callCount).to.equal(1);
 		expect(readOne.args[0]).to.deep.equal([ userId ]);

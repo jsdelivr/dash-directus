@@ -12,7 +12,7 @@ type User = {
 	github_organizations: string;
 };
 
-const payloadError = (message: string) => new (createError('INVALID_PAYLOAD_ERROR', message, 400))();
+export const payloadError = (message: string) => new (createError('INVALID_PAYLOAD_ERROR', message, 400))();
 
 export const validateTags = async (fields: Fields, keys: string[], accountability: EventContext['accountability'], context: HookExtensionContext) => {
 	const { services, database, getSchema } = context;

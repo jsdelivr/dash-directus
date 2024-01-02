@@ -43,7 +43,7 @@ const syncGithubData = async (userId: string, provider: string, context: HookExt
 	const user = await itemsService.readOne(userId) as User | undefined;
 
 	if (!user || !user.external_identifier) {
-		throw new Error('Not enough data to check GitHub data');
+		throw new Error('Not enough data to sync with GitHub');
 	}
 
 	await Promise.all([

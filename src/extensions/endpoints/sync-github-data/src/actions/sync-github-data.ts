@@ -12,7 +12,7 @@ export type User = {
 	github_organizations?: string;
 };
 
-const NotEnoughDataError = createError('INVALID_PAYLOAD_ERROR', 'Not enough data to check GitHub username', 400);
+const NotEnoughDataError = createError('INVALID_PAYLOAD_ERROR', 'Not enough data to sync with GitHub', 400);
 
 export const syncGithubData = async (userId: string, accountability: Request['accountability'], context: EndpointExtensionContext) => {
 	const user = await getDirectusUser(userId, accountability, context);

@@ -12,8 +12,6 @@ for dir in $directories; do
 	(
 		echo "Directory: $dir"
 		cd "$dir"
-		npm i
-		npm run build
 		npm run test
 	)
 done
