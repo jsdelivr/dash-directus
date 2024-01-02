@@ -28,7 +28,7 @@
 	"overrides": [
 		{
 			"files": [
-				"src/**/*.ts"
+				"src/**/src/**/*.ts"
 			],
 			"extends": "@martin-kolarik/eslint-config/typescript-type-checking",
 			"parserOptions": {

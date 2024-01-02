@@ -27,7 +27,7 @@ export const syncGithubData = async (userId: string, accountability: Request['ac
 		context.logger.error(error);
 	}
 
-	if (!user || !githubId || !username) {
+	if (!user || !githubId) {
 		throw new NotEnoughDataError();
 	}
 

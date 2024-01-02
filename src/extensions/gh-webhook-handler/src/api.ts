@@ -32,7 +32,7 @@ const validateGithubSignature = ({ headers, body, env }: ValidateGithubSignature
 export default defineOperationApi({
 	id: 'gh-webhook-handler',
 	handler: async (_operationData, { data, database, env, getSchema, services }) => {
-		const { $trigger: { headers, body } } = data as Data;
+		const { $trigger: { headers, body } } = data as {$trigger: Partial<Data['$trigger']>};
 
 		if (!headers) {
 			throw new Error(`"headers" field is ${headers}`);
