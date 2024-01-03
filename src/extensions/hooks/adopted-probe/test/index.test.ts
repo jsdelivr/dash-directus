@@ -6,7 +6,7 @@ import hook from '../src/index.js';
 import { payloadError } from '../src/validate-fields.js';
 // import { CountryNotDefinedError, DifferentCountriesError, InvalidCityError, InvalidTagError, ProbesNotFoundError, TooBigTagError, TooManyTagsError } from '../src/validate-fields.js';
 
-describe('adopted-probe-city hook', () => {
+describe('adopted-probe hook', () => {
 	const callbacks = {
 		filter: {},
 		action: {},

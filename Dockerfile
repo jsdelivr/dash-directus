@@ -62,12 +62,12 @@ RUN npm ci
 COPY ./src/extensions/endpoints/adoption-code .
 RUN npm run build
 
-# Build hooks/adopted-probe-city
+# Build hooks/adopted-probe
 FROM node:18-alpine AS builder-09
-WORKDIR /builder/src/extensions/hooks/adopted-probe-city
-ADD ./src/extensions/hooks/adopted-probe-city/package.json ./src/extensions/hooks/adopted-probe-city/package-lock.json ./
+WORKDIR /builder/src/extensions/hooks/adopted-probe
+ADD ./src/extensions/hooks/adopted-probe/package.json ./src/extensions/hooks/adopted-probe/package-lock.json ./
 RUN npm ci
-COPY ./src/extensions/hooks/adopted-probe-city .
+COPY ./src/extensions/hooks/adopted-probe .
 RUN npm run build
 
 # Build hooks/sign-in
@@ -131,7 +131,7 @@ COPY --from=builder-06 /builder/src/extensions/sponsors-cron-handler/dist/* /dir
 COPY --from=builder-06 /builder/src/extensions/sponsors-cron-handler/package.json /directus/extensions/directus-extension-sponsors-cron-handler/
 COPY --from=builder-07 /builder/src/extensions/modules/probes-adapter/dist/* /directus/extensions/modules/probes-adapter/
 COPY --from=builder-08 /builder/src/extensions/endpoints/adoption-code/dist/* /directus/extensions/endpoints/adoption-code/
-COPY --from=builder-09 /builder/src/extensions/hooks/adopted-probe-city/dist/* /directus/extensions/hooks/adopted-probe-city/
+COPY --from=builder-09 /builder/src/extensions/hooks/adopted-probe/dist/* /directus/extensions/hooks/adopted-probe/
 COPY --from=builder-10 /builder/src/extensions/hooks/sign-in/dist/* /directus/extensions/hooks/sign-in/
 COPY --from=builder-11 /builder/src/extensions/endpoints/sync-github-data/dist/* /directus/extensions/endpoints/sync-github-data/
 COPY --from=builder-12 /builder/src/extensions/interfaces/github-username/dist/* /directus/extensions/interfaces/github-username/
