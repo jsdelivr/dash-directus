@@ -25,14 +25,13 @@ async function getUserPermissions (roleId) {
 	});
 	const permissions = response.data;
 	const readPermissions = permissions.find(({ action }) => action === 'read');
-	const updatePermissions = permissions.find(({ action }) => action === 'update');
 
-	return { readPermissions, updatePermissions };
+	return { readPermissions };
 }
 
 async function patchReadPermissions (readPermissions) {
 	const URL = `${DIRECTUS_URL}/permissions/${readPermissions.id}?access_token=${ADMIN_ACCESS_TOKEN}`;
-	const filteredFields = readPermissions.fields.filter(field => field !== 'theme');
+	const filteredFields = readPermissions.fields.filter(field => field !== 'github');
 
 	const response = await fetch(URL, {
 		method: 'PATCH',
@@ -40,42 +39,8 @@ async function patchReadPermissions (readPermissions) {
 			...readPermissions,
 			fields: [
 				...filteredFields,
-				'appearance',
-				'theme_light',
-				'theme_dark',
-				'theme_light_overrides',
-				'theme_dark_overrides',
-				'github',
-			],
-		}),
-		headers: {
-			'Content-Type': 'application/json',
-		},
-	}).then((response) => {
-		if (!response.ok) {
-			throw new Error(`Fetch request failed. Status: ${response.status}`);
-		}
-
-		return response.json();
-	});
-	return response.data;
-}
-
-async function patchUpdatePermissions (updatePermissions) {
-	const URL = `${DIRECTUS_URL}/permissions/${updatePermissions.id}?access_token=${ADMIN_ACCESS_TOKEN}`;
-	const filteredFields = updatePermissions.fields.filter(field => field !== 'theme');
-
-	const response = await fetch(URL, {
-		method: 'PATCH',
-		body: JSON.stringify({
-			...updatePermissions,
-			fields: [
-				...filteredFields,
-				'appearance',
-				'theme_light',
-				'theme_dark',
-				'theme_light_overrides',
-				'theme_dark_overrides',
+				'github_username',
+				'github_organizations',
 			],
 		}),
 		headers: {
@@ -93,10 +58,9 @@ async function patchUpdatePermissions (updatePermissions) {
 
 export async function up () {
 	const roleId = await getUserRoleId();
-	const { readPermissions, updatePermissions } = await getUserPermissions(roleId);
+	const { readPermissions } = await getUserPermissions(roleId);
 	await patchReadPermissions(readPermissions);
-	await patchUpdatePermissions(updatePermissions);
-	console.log('User permissions patched');
+	console.log('User permissions patched to read new gh fields');
 }
 
 export async function down () {
