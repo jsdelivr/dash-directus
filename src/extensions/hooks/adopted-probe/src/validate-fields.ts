@@ -2,9 +2,9 @@ import Joi from 'joi';
 import type { HookExtensionContext } from '@directus/extensions';
 import axios from 'axios';
 import { createError } from '@directus/errors';
-import { AdoptedProbe, Fields } from './index';
-import { City, geonamesCache, getKey } from './geonames-cache';
-import { normalizeCityName } from './normalize-city';
+import { AdoptedProbe, Fields } from './index.js';
+import { City, geonamesCache, getKey } from './geonames-cache.js';
+import { normalizeCityName } from './normalize-city.js';
 import { EventContext } from '@directus/types';
 
 type User = {

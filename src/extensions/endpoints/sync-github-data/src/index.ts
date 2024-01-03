@@ -5,7 +5,7 @@ import axios from 'axios';
 import { RateLimiterMemory } from 'rate-limiter-flexible';
 import type { Request as ExpressRequest } from 'express';
 import type { EndpointExtensionContext } from '@directus/extensions';
-import { syncGithubData } from './actions/sync-github-data';
+import { syncGithubData } from './actions/sync-github-data.js';
 
 export type Request = ExpressRequest & {
 	accountability: {

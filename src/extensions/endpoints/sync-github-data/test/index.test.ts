@@ -7,11 +7,7 @@ import endpoint from '../src/index.js';
 
 describe('/sync-github-data endpoint', () => {
 	const updateOne = sinon.stub();
-	const readOne = sinon.stub().resolves({
-		external_identifier: 'github-id',
-		github_username: 'old-username',
-		github_organizations: '["old-org"]',
-	});
+	const readOne = sinon.stub();
 	const itemsServiceStub = sinon.stub().returns({
 		readOne,
 	});
@@ -54,6 +50,12 @@ describe('/sync-github-data endpoint', () => {
 
 	beforeEach(() => {
 		sinon.resetHistory();
+
+		readOne.resolves({
+			external_identifier: 'github-id',
+			github_username: 'old-username',
+			github_organizations: '["old-org"]',
+		});
 	});
 
 	after(() => {
@@ -78,6 +80,50 @@ describe('/sync-github-data endpoint', () => {
 		nock('https://api.github.com').get('/user/github-id/orgs').reply(200, [{
 			login: 'new-org',
 		}]);
+
+		await request('/', req, res);
+
+		expect(nock.isDone()).to.equal(true);
+		expect(resSend.callCount).to.equal(1);
+
+		expect(resSend.args[0]).to.deep.equal([{
+			github_username: 'new-username',
+			github_organizations: [ 'new-org' ],
+		}]);
+
+		expect(readOne.callCount).to.equal(1);
+		expect(updateOne.callCount).to.equal(1);
+
+		expect(updateOne.args[0][1]).to.deep.equal({
+			github_username: 'new-username',
+			github_organizations: '["new-org"]',
+		});
+	});
+
+	it('should work if current github data is null', async () => {
+		endpoint(router, endpointContext);
+		const req = {
+			accountability: {
+				user: 'requester-id',
+			},
+			body: {
+				userId: 'user-id',
+			},
+		};
+
+		nock('https://api.github.com').get('/user/github-id').reply(200, {
+			login: 'new-username',
+		});
+
+		nock('https://api.github.com').get('/user/github-id/orgs').reply(200, [{
+			login: 'new-org',
+		}]);
+
+		readOne.resolves({
+			external_identifier: 'github-id',
+			github_username: null,
+			github_organizations: null,
+		});
 
 		await request('/', req, res);
 

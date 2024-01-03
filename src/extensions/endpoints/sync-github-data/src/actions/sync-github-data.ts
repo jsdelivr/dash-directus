@@ -2,8 +2,8 @@ import _ from 'lodash';
 import { EndpointExtensionContext } from '@directus/extensions';
 import { createError } from '@directus/errors';
 import { Request } from '../index';
-import { getDirectusUser, updateDirectusUser } from '../repositories/directus';
-import { getGithubOrgs, getGithubUsername } from '../repositories/github';
+import { getDirectusUser, updateDirectusUser } from '../repositories/directus.js';
+import { getGithubOrgs, getGithubUsername } from '../repositories/github.js';
 
 export type User = {
 	id: string;
