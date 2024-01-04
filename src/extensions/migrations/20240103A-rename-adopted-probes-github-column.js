@@ -1,7 +1,5 @@
 export async function up (knex) {
-	return knex.schema.table('adopted_probes', (table) => {
-		table.renameColumn('github', 'github_username');
-	});
+	await knex.schema.raw('ALTER TABLE `directus_users` RENAME COLUMN `github` TO `github_username`');
 }
 
 export async function down () {
