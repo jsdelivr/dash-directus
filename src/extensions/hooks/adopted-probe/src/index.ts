@@ -3,7 +3,6 @@ import { createError } from '@directus/errors';
 import { validateCity, validateTags } from './validate-fields.js';
 import { resetMetadata, updateMetadata } from './update-metadata.js';
 
-
 export type AdoptedProbe = {
 	city: string | null;
 	state: string | null;
@@ -12,6 +11,7 @@ export type AdoptedProbe = {
 	country: string | null;
 	isCustomCity: boolean;
 	tags: {value: string; prefix: string}[] | null;
+	userId: string | null;
 };
 
 export type Fields = Partial<AdoptedProbe>;

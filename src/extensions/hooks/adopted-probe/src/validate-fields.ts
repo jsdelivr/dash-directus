@@ -28,18 +28,30 @@ export const validateTags = async (fields: Fields, keys: string[], accountabilit
 		accountability,
 	});
 
-	const user = await itemsService.readOne(accountability?.user) as User | undefined;
+	const currentProbes = await getProbes(keys, accountability, context);
+	const userId = currentProbes[0]?.userId;
 
-	if (!user || !user.github_username || !user.github_organizations) {
+	if (!userId) {
+		throw payloadError('User id not found.');
+	}
+
+	if (currentProbes.some(probe => probe.userId !== userId)) {
+		throw payloadError('User id is not the same for the requested probes.');
+	}
+
+	const existingTagsArrays = currentProbes.map(probe => probe.tags || []);
+
+	const user = await itemsService.readOne(userId) as User | undefined;
+
+	if (!user || !user.github_username || !user.github_organizations) { // TODO: should !user.github_organizations be here????
 		throw payloadError('User does not have enough github data.');
 	}
 
-	const existingTagsByProbe = await getExistingTags(keys, accountability, context);
 
-	const newTags = fields.tags.filter(tag => existingTagsByProbe
+	const newTags = fields.tags.filter(tag => existingTagsArrays
 		.some(existingTags => existingTags.findIndex(existingTag => tag.prefix === existingTag.prefix && tag.value === existingTag.value) === -1));
 
-	const validPrefixes = [ user.github_username, ...JSON.parse(user.github_organizations) ];
+	const validPrefixes = [ user.github_username, ...JSON.parse(user.github_organizations) ]; // ???
 
 	const tagsSchema = Joi.array().items(Joi.object({
 		value: Joi.string().trim().pattern(/^[a-zA-Z0-9-]+$/).max(32).required(),
@@ -53,7 +65,7 @@ export const validateTags = async (fields: Fields, keys: string[], accountabilit
 	}
 };
 
-const getExistingTags = async (keys: string[], accountability: EventContext['accountability'], { services, database, getSchema }: HookExtensionContext) => {
+const getProbes = async (keys: string[], accountability: EventContext['accountability'], { services, database, getSchema }: HookExtensionContext) => {
 	const { ItemsService } = services;
 
 	const adoptedProbesService = new ItemsService('adopted_probes', {
@@ -68,7 +80,7 @@ const getExistingTags = async (keys: string[], accountability: EventContext['acc
 		throw payloadError('Adopted probes not found.');
 	}
 
-	return currentProbes.map(probe => probe.tags || []);
+	return currentProbes;
 };
 
 export const validateCity = async (fields: Fields, keys: string[], accountability: EventContext['accountability'], { env, services, database, getSchema }: HookExtensionContext) => {
