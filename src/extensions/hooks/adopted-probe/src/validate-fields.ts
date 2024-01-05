@@ -43,15 +43,20 @@ export const validateTags = async (fields: Fields, keys: string[], accountabilit
 
 	const user = await itemsService.readOne(userId) as User | undefined;
 
-	if (!user || !user.github_username || !user.github_organizations) { // TODO: should !user.github_organizations be here????
+	if (!user || !user.github_username) {
 		throw payloadError('User does not have enough github data.');
 	}
 
+	let organizations = [];
+
+	if (user.github_organizations) {
+		organizations = JSON.parse(user.github_organizations);
+	}
 
 	const newTags = fields.tags.filter(tag => existingTagsArrays
 		.some(existingTags => existingTags.findIndex(existingTag => tag.prefix === existingTag.prefix && tag.value === existingTag.value) === -1));
 
-	const validPrefixes = [ user.github_username, ...JSON.parse(user.github_organizations) ]; // ???
+	const validPrefixes = [ user.github_username, ...organizations ];
 
 	const tagsSchema = Joi.array().items(Joi.object({
 		value: Joi.string().trim().pattern(/^[a-zA-Z0-9-]+$/).max(32).required(),
