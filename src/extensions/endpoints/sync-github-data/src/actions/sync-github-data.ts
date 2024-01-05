@@ -7,9 +7,9 @@ import { getGithubOrgs, getGithubUsername } from '../repositories/github.js';
 
 export type User = {
 	id: string;
-	external_identifier?: string;
-	github_username?: string;
-	github_organizations?: string;
+	external_identifier: string | null;
+	github_username: string | null;
+	github_organizations: string[];
 };
 
 const NotEnoughDataError = createError('INVALID_PAYLOAD_ERROR', 'Not enough data to sync with GitHub', 400);
@@ -18,14 +18,6 @@ export const syncGithubData = async (userId: string, accountability: Request['ac
 	const user = await getDirectusUser(userId, accountability, context);
 	const githubId = user?.external_identifier;
 	const username = user?.github_username;
-	let orgs = [];
-
-	try {
-		orgs = user?.github_organizations ? JSON.parse(user.github_organizations) : [];
-	} catch (error) {
-		context.logger.error('Failed to parse github_organizations:');
-		context.logger.error(error);
-	}
 
 	if (!user || !githubId) {
 		throw new NotEnoughDataError();
@@ -36,10 +28,10 @@ export const syncGithubData = async (userId: string, accountability: Request['ac
 		getGithubOrgs(user, context),
 	]);
 
-	if (username !== githubUsername || !_.isEqual(orgs.sort(), githubOrgs.sort())) {
+	if (username !== githubUsername || !_.isEqual(user.github_organizations.sort(), githubOrgs.sort())) {
 		await updateDirectusUser(user, {
 			github_username: githubUsername,
-			github_organizations: JSON.stringify(githubOrgs),
+			github_organizations: githubOrgs,
 		}, context);
 	}
 

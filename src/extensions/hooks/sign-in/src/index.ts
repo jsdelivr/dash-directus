@@ -14,9 +14,9 @@ type GithubOrgsResponse = {
 
 type User = {
 	id: string;
-	external_identifier?: string;
-	github_username?: string;
-	github_organizations?: string;
+	external_identifier: string | null;
+	github_username: string | null;
+	github_organizations: string[];
 }
 
 export default defineHook(({ action }, context) => {
@@ -74,17 +74,9 @@ const syncGitHubOrganizations = async (user: User, context: HookExtensionContext
 		},
 	});
 	const githubOrgs = orgsResponse.data.map(org => org.login);
-	let userOrgs = [];
 
-	try {
-		userOrgs = user?.github_organizations ? JSON.parse(user.github_organizations) : [];
-	} catch (error) {
-		context.logger.error('Failed to parse github_organizations:');
-		context.logger.error(error);
-	}
-
-	if (!_.isEqual(userOrgs.sort(), githubOrgs.sort())) {
-		await updateUser(user, { github_organizations: JSON.stringify(githubOrgs) }, context);
+	if (!_.isEqual(user.github_organizations.sort(), githubOrgs.sort())) {
+		await updateUser(user, { github_organizations: githubOrgs }, context);
 	}
 };
 

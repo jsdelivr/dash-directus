@@ -26,7 +26,7 @@ async function sync () {
 		window.location.reload();
 	} catch (err: any) {
 		console.error(err);
-		alert(err.response?.data || err.toString());
+		alert(err.message || err.toString());
 	}
 }
 

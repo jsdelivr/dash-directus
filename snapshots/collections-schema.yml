@@ -1332,7 +1332,7 @@ fields:
       foreign_key_column: id
   - collection: directus_users
     field: github_organizations
-    type: text
+    type: json
     meta:
       collection: directus_users
       conditions: null
@@ -1341,13 +1341,15 @@ fields:
       field: github_organizations
       group: null
       hidden: false
-      interface: input
+      interface: input-code
       note: null
-      options: null
+      options:
+        lineNumber: false
       readonly: false
       required: false
       sort: 1
-      special: null
+      special:
+        - cast-json
       translations: null
       validation: null
       validation_message: null
@@ -1355,12 +1357,12 @@ fields:
     schema:
       name: github_organizations
       table: directus_users
-      data_type: text
-      default_value: null
-      max_length: 65535
+      data_type: longtext
+      default_value: []
+      max_length: 4294967295
       numeric_precision: null
       numeric_scale: null
-      is_nullable: true
+      is_nullable: false
       is_unique: false
       is_primary_key: false
       is_generated: false

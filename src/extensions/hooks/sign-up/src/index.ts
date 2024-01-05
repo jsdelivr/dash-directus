@@ -9,7 +9,7 @@ type User = {
     last_name?: string;
     last_page?: string;
 		github_username?: string;
-		github_organizations?: string;
+		github_organizations: string[];
 }
 
 type GithubOrganizationsResponse = {
@@ -59,5 +59,5 @@ const fulfillOrganizations = async (user: User, context: HookExtensionContext) =
 		},
 	});
 	const organizations = response.data.map(organization => organization.login);
-	user.github_organizations = JSON.stringify(organizations);
+	user.github_organizations = organizations;
 };

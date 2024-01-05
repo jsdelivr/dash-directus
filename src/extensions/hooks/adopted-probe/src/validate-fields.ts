@@ -8,8 +8,8 @@ import { normalizeCityName } from './normalize-city.js';
 import { EventContext } from '@directus/types';
 
 type User = {
-	github_username: string
-	github_organizations: string;
+	github_username: string | null;
+	github_organizations: string[];
 };
 
 export const payloadError = (message: string) => new (createError('INVALID_PAYLOAD_ERROR', message, 400))();
@@ -47,16 +47,10 @@ export const validateTags = async (fields: Fields, keys: string[], accountabilit
 		throw payloadError('User does not have enough github data.');
 	}
 
-	let organizations = [];
-
-	if (user.github_organizations) {
-		organizations = JSON.parse(user.github_organizations);
-	}
-
 	const newTags = fields.tags.filter(tag => existingTagsArrays
 		.some(existingTags => existingTags.findIndex(existingTag => tag.prefix === existingTag.prefix && tag.value === existingTag.value) === -1));
 
-	const validPrefixes = [ user.github_username, ...organizations ];
+	const validPrefixes = [ user.github_username, ...user.github_organizations ];
 
 	const tagsSchema = Joi.array().items(Joi.object({
 		value: Joi.string().trim().pattern(/^[a-zA-Z0-9-]+$/).max(32).required(),

@@ -54,7 +54,7 @@ describe('/sync-github-data endpoint', () => {
 		readOne.resolves({
 			external_identifier: 'github-id',
 			github_username: 'old-username',
-			github_organizations: '["old-org"]',
+			github_organizations: [ 'old-org' ],
 		});
 	});
 
@@ -96,7 +96,7 @@ describe('/sync-github-data endpoint', () => {
 
 		expect(updateOne.args[0][1]).to.deep.equal({
 			github_username: 'new-username',
-			github_organizations: '["new-org"]',
+			github_organizations: [ 'new-org' ],
 		});
 	});
 
@@ -122,7 +122,7 @@ describe('/sync-github-data endpoint', () => {
 		readOne.resolves({
 			external_identifier: 'github-id',
 			github_username: null,
-			github_organizations: null,
+			github_organizations: [],
 		});
 
 		await request('/', req, res);
@@ -140,7 +140,7 @@ describe('/sync-github-data endpoint', () => {
 
 		expect(updateOne.args[0][1]).to.deep.equal({
 			github_username: 'new-username',
-			github_organizations: '["new-org"]',
+			github_organizations: [ 'new-org' ],
 		});
 	});
 

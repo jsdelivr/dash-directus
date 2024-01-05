@@ -54,7 +54,7 @@ describe('Sign-in hook', () => {
 		const userId = '123';
 		const githubId = '456';
 
-		itemsService.readOne.resolves({ id: userId, external_identifier: githubId, github_username: null, github_organizations: null });
+		itemsService.readOne.resolves({ id: userId, external_identifier: githubId, github_username: null, github_organizations: [] });
 
 		nock('https://api.github.com')
 			.get(`/user/${githubId}`)
@@ -73,14 +73,14 @@ describe('Sign-in hook', () => {
 		expect(nock.isDone()).to.equal(true);
 		expect(usersService.updateOne.callCount).to.equal(2);
 		expect(usersService.updateOne.args[0]).to.deep.equal([ '123', { github_username: 'newUsername' }]);
-		expect(usersService.updateOne.args[1]).to.deep.equal([ '123', { github_organizations: '["jsdelivr"]' }]);
+		expect(usersService.updateOne.args[1]).to.deep.equal([ '123', { github_organizations: [ 'jsdelivr' ] }]);
 	});
 
 	it('should not update username if it is the same', async () => {
 		const userId = '123';
 		const githubId = '456';
 
-		itemsService.readOne.resolves({ id: userId, external_identifier: githubId, github_username: 'oldUsername', github_organizations: null });
+		itemsService.readOne.resolves({ id: userId, external_identifier: githubId, github_username: 'oldUsername', github_organizations: [] });
 
 		nock('https://api.github.com')
 			.get(`/user/${githubId}`)
@@ -98,14 +98,14 @@ describe('Sign-in hook', () => {
 		expect(itemsService.readOne.args[0]).to.deep.equal([ userId ]);
 		expect(nock.isDone()).to.equal(true);
 		expect(usersService.updateOne.callCount).to.equal(1);
-		expect(usersService.updateOne.args[0]).to.deep.equal([ '123', { github_organizations: '["jsdelivr"]' }]);
+		expect(usersService.updateOne.args[0]).to.deep.equal([ '123', { github_organizations: [ 'jsdelivr' ] }]);
 	});
 
 	it('should not update organizations if it is the same', async () => {
 		const userId = '123';
 		const githubId = '456';
 
-		itemsService.readOne.resolves({ id: userId, external_identifier: githubId, github_username: 'oldUsername', github_organizations: '["jsdelivr"]' });
+		itemsService.readOne.resolves({ id: userId, external_identifier: githubId, github_username: 'oldUsername', github_organizations: [ 'jsdelivr' ] });
 
 		nock('https://api.github.com')
 			.get(`/user/${githubId}`)

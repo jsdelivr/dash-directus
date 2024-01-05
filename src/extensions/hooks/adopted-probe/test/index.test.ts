@@ -56,7 +56,7 @@ describe('adopted-probe hook', () => {
 
 		users.readOne.resolves({
 			github_username: 'jimaek',
-			github_organizations: '["jsdelivr"]',
+			github_organizations: [ 'jsdelivr' ],
 		});
 	});
 

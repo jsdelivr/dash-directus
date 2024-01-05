@@ -58,13 +58,12 @@ async function fetchUserData () {
 			},
 		});
 
-		const username = response.data.data.github_username;
-		const organizations = response.data.data.github_organizations ? JSON.parse(response.data.data.github_organizations) : [];
-		prefixes.value = [ username, ...organizations ];
+		const user = response.data.data;
+		prefixes.value = [ user.github_username, ...user.github_organizations ];
 		id.value = response.data.data.id;
 	} catch (err: any) {
 		console.error(err);
-		alert(err?.response?.data || err.toString());
+		alert(err.message || err.toString());
 	}
 }
 
@@ -87,7 +86,7 @@ async function syncGithubData () {
 		prefixes.value = [ username, ...organizations ];
 	} catch (err: any) {
 		console.error(err);
-		alert(err?.response?.data || err.toString());
+		alert(err.message || err.toString());
 	}
 
 	isFetching.value = false;
