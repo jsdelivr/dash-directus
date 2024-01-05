@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, watch, inject } from 'vue';
 import { useApi } from '@directus/extensions-sdk';
 
 const api = useApi();
@@ -17,6 +17,8 @@ const props = withDefaults(
 	},
 );
 
+const values = inject('values');
+
 const emit = defineEmits([ 'input' ]);
 
 const id = ref<string>('');
@@ -29,12 +31,9 @@ const updatePrefix = (index: number, newPrefix: string) => {
 };
 
 const tags = ref<{value: string, prefix: string}[]>(props.value ?? []);
-watch(
-	() => props.value,
-	(newVal) => {
-		tags.value = newVal ?? [];
-	},
-);
+watch(() => props.value, (newVal) => {
+	tags.value = newVal ?? [];
+});
 
 const updateTag = (index: number, newTag: string) => {
 	const updatedArray = [ ...tags.value ];
@@ -52,7 +51,8 @@ const deleteTag = (index: number) => {
 
 async function fetchUserData () {
 	try {
-		const response = await api.get(`/users/me`, {
+		const userId = values?.value?.userId || 'me';
+		const response = await api.get(`/users/${userId}`, {
 			params: {
 				fields: [ 'id', 'github_username', 'github_organizations' ],
 			},
@@ -64,11 +64,15 @@ async function fetchUserData () {
 		id.value = response.data.data.id;
 	} catch (err: any) {
 		console.error(err);
-		alert(err.message || err.toString());
+		alert(err?.response?.data || err.toString());
 	}
 }
 
-fetchUserData();
+watch(() => props.primaryKey, (newVal, oldVal) => {
+	if (newVal && newVal !== oldVal) {
+		fetchUserData();
+	}
+}, { immediate: true });
 
 const isFetching = ref(false);
 
@@ -83,7 +87,7 @@ async function syncGithubData () {
 		prefixes.value = [ username, ...organizations ];
 	} catch (err: any) {
 		console.error(err);
-		alert(err.message || err.toString());
+		alert(err?.response?.data || err.toString());
 	}
 
 	isFetching.value = false;

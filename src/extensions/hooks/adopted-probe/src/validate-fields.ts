@@ -28,7 +28,7 @@ export const validateTags = async (fields: Fields, keys: string[], accountabilit
 		accountability,
 	});
 
-	const currentProbes = await getProbes(keys, accountability, context);
+	const currentProbes = await getProbes(keys, context);
 	const userId = currentProbes[0]?.userId;
 
 	if (!userId) {
@@ -65,13 +65,12 @@ export const validateTags = async (fields: Fields, keys: string[], accountabilit
 	}
 };
 
-const getProbes = async (keys: string[], accountability: EventContext['accountability'], { services, database, getSchema }: HookExtensionContext) => {
+const getProbes = async (keys: string[], { services, database, getSchema }: HookExtensionContext) => {
 	const { ItemsService } = services;
 
 	const adoptedProbesService = new ItemsService('adopted_probes', {
 		database,
 		schema: await getSchema(),
-		accountability,
 	});
 
 	const currentProbes = await adoptedProbesService.readMany(keys) as AdoptedProbe[];
