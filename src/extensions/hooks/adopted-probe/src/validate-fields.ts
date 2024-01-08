@@ -2,33 +2,25 @@ import Joi from 'joi';
 import type { HookExtensionContext } from '@directus/extensions';
 import axios from 'axios';
 import { createError } from '@directus/errors';
-import { AdoptedProbe, Fields } from './index.js';
+import { Fields } from './index.js';
 import { City, geonamesCache, getKey } from './geonames-cache.js';
 import { normalizeCityName } from './normalize-city.js';
 import { EventContext } from '@directus/types';
-
-type User = {
-	github_username: string | null;
-	github_organizations: string[];
-};
+import { getProbes, getUser } from './repositories/directus.js';
 
 export const payloadError = (message: string) => new (createError('INVALID_PAYLOAD_ERROR', message, 400))();
 
 export const validateTags = async (fields: Fields, keys: string[], accountability: EventContext['accountability'], context: HookExtensionContext) => {
-	const { services, database, getSchema } = context;
-
 	if (!fields.tags) {
 		return;
 	}
 
-	const { ItemsService } = services;
-	const itemsService = new ItemsService('directus_users', {
-		schema: await getSchema({ database }),
-		knex: database,
-		accountability,
-	});
-
 	const currentProbes = await getProbes(keys, context);
+
+	if (!currentProbes || currentProbes.length === 0) {
+		throw payloadError('Adopted probes not found.');
+	}
+
 	const userId = currentProbes[0]?.userId;
 
 	if (!userId) {
@@ -41,7 +33,7 @@ export const validateTags = async (fields: Fields, keys: string[], accountabilit
 
 	const existingTagsArrays = currentProbes.map(probe => probe.tags || []);
 
-	const user = await itemsService.readOne(userId) as User | undefined;
+	const user = await getUser(userId, accountability, context);
 
 	if (!user || !user.github_username) {
 		throw payloadError('User does not have enough github data.');
@@ -64,33 +56,9 @@ export const validateTags = async (fields: Fields, keys: string[], accountabilit
 	}
 };
 
-const getProbes = async (keys: string[], { services, database, getSchema }: HookExtensionContext) => {
-	const { ItemsService } = services;
-
-	const adoptedProbesService = new ItemsService('adopted_probes', {
-		database,
-		schema: await getSchema(),
-	});
-
-	const currentProbes = await adoptedProbesService.readMany(keys) as AdoptedProbe[];
-
-	if (!currentProbes || currentProbes.length === 0) {
-		throw payloadError('Adopted probes not found.');
-	}
-
-	return currentProbes;
-};
-
-export const validateCity = async (fields: Fields, keys: string[], accountability: EventContext['accountability'], { env, services, database, getSchema }: HookExtensionContext) => {
-	const { ItemsService } = services;
-
-	const adoptedProbesService = new ItemsService('adopted_probes', {
-		database,
-		schema: await getSchema(),
-		accountability,
-	});
-
-	const currentProbes = await adoptedProbesService.readMany(keys) as AdoptedProbe[];
+export const validateCity = async (fields: Fields, keys: string[], accountability: EventContext['accountability'], context: HookExtensionContext) => {
+	const { env } = context;
+	const currentProbes = await getProbes(keys, context, accountability);
 
 	if (!currentProbes || currentProbes.length === 0) {
 		throw payloadError('Adopted probes not found.');

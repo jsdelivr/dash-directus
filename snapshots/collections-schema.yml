@@ -795,7 +795,12 @@ fields:
       group: null
       hidden: false
       interface: gp-tags
-      note: null
+      note: >-
+        Public tags of the probe. They can be used as location filters for a
+        measurement. Format is `u-${prefix}-{value}` where prefix is
+        user/organization github login, and value is your custom string. E.g.
+        for user with github username `"jimaek"` and tag `"home1"` location
+        filter is `{ "tags": ["u-jimaek-home1"] }`.
       options: null
       readonly: false
       required: false

@@ -12,18 +12,26 @@ type User = {
 		github_organizations: string[];
 }
 
-type GithubOrganizationsResponse = {
+type GithubOrgsResponse = {
 	login: string;
 }[];
 
-export default defineHook(({ filter }, context) => {
+export default defineHook(({ filter, action }, context) => {
 	filter('users.create', async (payload) => {
 		const user = payload as User;
 
 		if (user.provider === 'github') {
 			fulfillUsername(user);
 			fulfillFirstNameAndLastName(user);
-			await fulfillOrganizations(user, context);
+		}
+	});
+
+	action('users.create', async (payload) => {
+		const userId = payload.key;
+		const user = payload.payload as User;
+
+		if (user.provider === 'github') {
+			await fulfillOrganizations(userId, user, context);
 		}
 	});
 });
@@ -51,13 +59,25 @@ const fulfillFirstNameAndLastName = (user: User) => {
 	}
 };
 
-const fulfillOrganizations = async (user: User, context: HookExtensionContext) => {
-	const response = await axios.get<GithubOrganizationsResponse>(`https://api.github.com/users/${user.github_username}/orgs`, {
+const fulfillOrganizations = async (userId: string, user: User, context: HookExtensionContext) => {
+	const orgsResponse = await axios.get<GithubOrgsResponse>(`https://api.github.com/user/${user.external_identifier}/orgs`, {
 		timeout: 5000,
 		headers: {
 			Authorization: `Bearer ${context.env.GITHUB_ACCESS_TOKEN}`,
 		},
 	});
-	const organizations = response.data.map(organization => organization.login);
-	user.github_organizations = organizations;
+	const githubOrgs = orgsResponse.data.map(org => org.login);
+
+	await updateUser(userId, { github_organizations: githubOrgs }, context);
+};
+
+const updateUser = async (userId: string, updateObject: Partial<User>, context: HookExtensionContext) => {
+	const { services, database, getSchema } = context;
+	const { UsersService } = services;
+
+	const usersService = new UsersService({
+		schema: await getSchema({ database }),
+		knex: database,
+	});
+	await usersService.updateOne(userId, updateObject);
 };
