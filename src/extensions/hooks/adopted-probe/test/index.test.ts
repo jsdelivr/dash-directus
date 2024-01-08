@@ -27,7 +27,7 @@ describe('adopted-probe hook', () => {
 	};
 	const context = {
 		accountability: {
-			user: 'userId',
+			user: '1',
 		},
 		env: {
 			GEONAMES_USERNAME: 'username',
@@ -66,6 +66,7 @@ describe('adopted-probe hook', () => {
 
 	it('should update city, lat and long of the adopted probe', async () => {
 		adoptedProbes.readMany.resolves([{
+			userId: '1',
 			city: 'Paris',
 			state: null,
 			latitude: '48.85341',
@@ -123,6 +124,7 @@ describe('adopted-probe hook', () => {
 
 	it('should additionally update state for the US cities', async () => {
 		adoptedProbes.readMany.resolves([{
+			userId: '1',
 			city: 'Detroit',
 			state: 'MI',
 			latitude: '42.33143',
@@ -180,6 +182,7 @@ describe('adopted-probe hook', () => {
 
 	it('should reset city, lat and long of the adopted probe', async () => {
 		adoptedProbes.readMany.resolves([{
+			userId: '1',
 			city: 'Paris',
 			state: null,
 			latitude: '48.85341',
@@ -207,6 +210,7 @@ describe('adopted-probe hook', () => {
 
 	it('should update non-city meta fields of the adopted probe', async () => {
 		adoptedProbes.readMany.resolves([{
+			userId: '1',
 			city: 'Paris',
 			state: null,
 			latitude: '48.85341',
@@ -247,6 +251,7 @@ describe('adopted-probe hook', () => {
 
 	it('should send valid error if country is not defined', async () => {
 		adoptedProbes.readMany.resolves([{
+			userId: '1',
 			city: 'Paris',
 			state: null,
 			latitude: '48.85341',
@@ -265,6 +270,7 @@ describe('adopted-probe hook', () => {
 
 	it('should send valid error if target probes are in different countries', async () => {
 		adoptedProbes.readMany.resolves([{
+			userId: '1',
 			city: 'Paris',
 			state: null,
 			latitude: '48.85341',
@@ -288,6 +294,7 @@ describe('adopted-probe hook', () => {
 
 	it('should send valid error if provided city is not valid', async () => {
 		adoptedProbes.readMany.resolves([{
+			userId: '1',
 			city: 'Paris',
 			state: null,
 			latitude: '48.85341',
@@ -314,6 +321,7 @@ describe('adopted-probe hook', () => {
 	describe('tags validation', () => {
 		before(() => {
 			adoptedProbes.readMany.resolves([{
+				userId: '1',
 				city: 'Paris',
 				state: null,
 				latitude: '48.85341',
@@ -335,6 +343,7 @@ describe('adopted-probe hook', () => {
 			hook(hooks, context);
 
 			adoptedProbes.readMany.resolves([{
+				userId: '1',
 				tags: [{ prefix: 'oldprefix', value: 'a' }],
 				city: 'Paris',
 				state: null,
@@ -356,6 +365,7 @@ describe('adopted-probe hook', () => {
 			hook(hooks, context);
 
 			adoptedProbes.readMany.resolves([{
+				userId: '1',
 				tags: [{ prefix: 'oldprefix', value: 'a' }],
 				city: 'Paris',
 				state: null,
