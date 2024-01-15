@@ -1,12 +1,12 @@
 import { defineOperationApi } from '@directus/extensions-sdk';
+import { removeBannedUsers } from './actions/remove-banned-users';
 
-type Options = {
-	text: string;
-};
 
-export default defineOperationApi<Options>({
-	id: 'custom',
-	handler: ({ text }) => {
-		console.log(text);
+export default defineOperationApi({
+	id: 'remove-banned-users',
+	handler: async (_operationData, context) => {
+		const results = await removeBannedUsers(context);
+
+		return results.length ? `Removed users with ids: ${results.toString()}.` : 'No users removed.';
 	},
 });

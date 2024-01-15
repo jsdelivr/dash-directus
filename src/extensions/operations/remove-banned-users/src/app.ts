@@ -1,25 +1,10 @@
 import { defineOperationApp } from '@directus/extensions-sdk';
 
 export default defineOperationApp({
-	id: 'custom',
-	name: 'Custom',
-	icon: 'box',
-	description: 'This is my custom operation!',
-	overview: ({ text }) => [
-		{
-			label: 'Text',
-			text: text,
-		},
-	],
-	options: [
-		{
-			field: 'text',
-			name: 'Text',
-			type: 'string',
-			meta: {
-				width: 'full',
-				interface: 'input',
-			},
-		},
-	],
+	id: 'remove-banned-users',
+	name: 'Remove banned users CRON handler',
+	icon: 'schedule',
+	description: 'Handle banned users CRON job. Reads directus users, users not found on github are deleted.',
+	overview: () => [],
+	options: [],
 });
