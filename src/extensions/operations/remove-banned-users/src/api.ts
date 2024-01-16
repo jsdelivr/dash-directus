@@ -3,7 +3,7 @@ import { removeBannedUsers } from './actions/remove-banned-users';
 
 
 export default defineOperationApi({
-	id: 'remove-banned-users',
+	id: 'remove-banned-users-cron-handler',
 	handler: async (_operationData, context) => {
 		const results = await removeBannedUsers(context);
 

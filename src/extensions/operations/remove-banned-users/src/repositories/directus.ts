@@ -13,14 +13,14 @@ export const getDirectusUsers = async ({ services, database, getSchema }: Operat
 	return result;
 };
 
-export const deleteUser = async (githubId: DirectusUser['external_identifier'], { services, database, getSchema }: OperationContext) => {
-	const { ItemsService } = services;
+export const deleteUser = async (user: DirectusUser, { services, database, getSchema }: OperationContext) => {
+	const { UsersService } = services;
 
-	const creditsService = new ItemsService('credits', {
+	const usersService = new UsersService({
 		schema: await getSchema({ database }),
 		knex: database,
 	});
 
-	const result = await creditsService.deleteByQuery({ filter: { githubId } });
-	return result;
+	const result = await usersService.deleteOne(user.id) as string[];
+	return result[0];
 };

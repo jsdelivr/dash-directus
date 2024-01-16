@@ -118,6 +118,14 @@ RUN npm ci
 COPY ./src/extensions/interfaces/gp-tags .
 RUN npm run build
 
+# Build operations/remove-banned-users
+FROM node:18-alpine AS builder-16
+WORKDIR /builder/src/extensions/operations/remove-banned-users
+ADD ./src/extensions/operations/remove-banned-users/package.json ./src/extensions/operations/remove-banned-users/package-lock.json ./
+RUN npm ci
+COPY ./src/extensions/operations/remove-banned-users .
+RUN npm run build
+
 FROM directus/directus:10.8.2
 
 COPY --from=builder-01 /builder/src/extensions/hooks/tokens/dist/* /directus/extensions/hooks/tokens/
@@ -140,3 +148,4 @@ COPY --from=builder-13 /builder/src/extensions/adopted-probes-status-cron-handle
 COPY --from=builder-14 /builder/src/extensions/adopted-probes-credits-cron-handler/dist/* /directus/extensions/directus-extension-adopted-probes-credits-cron-handler/dist/
 COPY --from=builder-14 /builder/src/extensions/adopted-probes-credits-cron-handler/package.json /directus/extensions/directus-extension-adopted-probes-credits-cron-handler/
 COPY --from=builder-15 /builder/src/extensions/interfaces/gp-tags/dist/* /directus/extensions/interfaces/gp-tags/
+COPY --from=builder-16 /builder/src/extensions/operations/remove-banned-users/dist/* /directus/extensions/operations/remove-banned-users/
