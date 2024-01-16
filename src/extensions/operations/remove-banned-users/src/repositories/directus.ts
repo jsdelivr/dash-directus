@@ -13,7 +13,7 @@ export const getDirectusUsers = async ({ services, database, getSchema }: Operat
 	return result;
 };
 
-export const deleteUser = async ({ githubId }: { githubId: DirectusUser['external_identifier'] }, { services, database, getSchema }: OperationContext) => {
+export const deleteUser = async (githubId: DirectusUser['external_identifier'], { services, database, getSchema }: OperationContext) => {
 	const { ItemsService } = services;
 
 	const creditsService = new ItemsService('credits', {
