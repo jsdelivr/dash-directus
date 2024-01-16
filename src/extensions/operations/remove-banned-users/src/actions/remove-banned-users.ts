@@ -7,7 +7,11 @@ import { getGithubUser } from '../repositories/github';
 export const removeBannedUsers = async (context: OperationContext) => {
 	const users = await getDirectusUsers(context);
 	const removedIds = await Bluebird.map(users, async (user) => {
-		const githubUser = await getGithubUser(user, context);
+		if (!user.external_identifier) {
+			return null;
+		}
+
+		const githubUser = await getGithubUser(user.external_identifier, context);
 
 		if (githubUser === null) {
 			const id = await deleteUser(user, context);
