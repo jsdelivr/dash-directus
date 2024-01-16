@@ -1,5 +1,5 @@
 import { OperationContext } from '@directus/types';
-import { DirectusUser } from '../types';
+import { DirectusUser } from '../types.js';
 
 export const getDirectusUsers = async ({ services, database, getSchema }: OperationContext): Promise<DirectusUser[]> => {
 	const { ItemsService } = services;
@@ -21,8 +21,8 @@ export const deleteUser = async (user: DirectusUser, { services, database, getSc
 		knex: database,
 	});
 
-	const result = await usersService.deleteOne(user.id) as string[];
-	return result[0];
+	const result = await usersService.deleteOne(user.id) as string;
+	return result;
 };
 
 export const deleteCredits = async (user: DirectusUser, { services, database, getSchema }: OperationContext) => {

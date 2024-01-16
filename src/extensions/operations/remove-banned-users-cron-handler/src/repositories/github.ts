@@ -1,6 +1,6 @@
 import { OperationContext } from '@directus/types';
 import axios, { isAxiosError } from 'axios';
-import { DirectusUser, GithubUser } from '../types';
+import { DirectusUser, GithubUser } from '../types.js';
 
 export const getGithubUser = async (id: DirectusUser['external_identifier'], context: OperationContext) => {
 	try {

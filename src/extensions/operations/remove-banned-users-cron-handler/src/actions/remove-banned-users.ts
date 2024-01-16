@@ -1,8 +1,8 @@
 
 import Bluebird from 'bluebird';
 import { OperationContext } from '@directus/types';
-import { getDirectusUsers, deleteUser, deleteCredits } from '../repositories/directus';
-import { getGithubUser } from '../repositories/github';
+import { getDirectusUsers, deleteUser, deleteCredits } from '../repositories/directus.js';
+import { getGithubUser } from '../repositories/github.js';
 
 export const removeBannedUsers = async (context: OperationContext) => {
 	const users = await getDirectusUsers(context);
