@@ -28,6 +28,7 @@
 	},
 	"dependencies": {
 		"@directus/errors": "^0.0.2",
+		"joi": "^17.12.0",
 		"lodash": "^4.17.21"
 	}
 }

@@ -1845,7 +1845,7 @@ fields:
       foreign_key_column: null
   - collection: tokens
     field: origins
-    type: string
+    type: json
     meta:
       collection: tokens
       conditions: null
@@ -1854,18 +1854,17 @@ fields:
       field: origins
       group: null
       hidden: false
-      interface: input
+      interface: tags
       note: >-
-        A comma-separated list of origins which are allowed to use the token. If
-        empty - any origin is valid. Examples of valid origins:
-        "www.jsdelivr.com", "www.jsdelivr.com:10000". Use ", " as a separator.
-      options:
-        iconRight: globe_uk
-        placeholder: www.jsdelivr.com, www.jsdelivr.com:10000
+        A list of origins which are allowed to use the token. If empty - any
+        origin is valid. Examples of origins: "www.jsdelivr.com",
+        "www.jsdelivr.com:10000".
+      options: {}
       readonly: false
       required: false
-      sort: null
-      special: null
+      sort: 8
+      special:
+        - cast-json
       translations: null
       validation: null
       validation_message: null
@@ -1873,9 +1872,9 @@ fields:
     schema:
       name: origins
       table: tokens
-      data_type: varchar
+      data_type: longtext
       default_value: null
-      max_length: 1023
+      max_length: 4294967295
       numeric_precision: null
       numeric_scale: null
       is_nullable: true

@@ -1,8 +1,8 @@
 import { defineHook } from '@directus/extensions-sdk';
-import { createError } from '@directus/errors';
-import _ from 'lodash';
+import { validateToken } from './actions/validate-token.js';
+import { validateQuery } from './actions/validate-items-query.js';
 
-type Token = {
+export type Token = {
 		id: number;
 		name: string;
 		value: string;
@@ -19,38 +19,17 @@ type Revision = {
 		delta: Token;
 };
 
-const InvalidPayloadError = createError('INVALID_PAYLOAD_ERROR', 'Filtering is not availiable for "tokens" collection', 400);
-
-const getKeysDeep = (entity: object | object[] | string[]) => {
-	const keys = _.isArray(entity) ? [] : Object.keys(entity);
-
-	const nestedKeys: string[] = _.flatMapDeep(entity, (value) => {
-		if (_.isObject(value)) {
-			return getKeysDeep(value);
-		}
-
-		return [];
+export default defineHook(({ action, filter }) => {
+	filter('tokens.items.create', (payload) => {
+		const token = payload as Token;
+		validateToken(token);
 	});
 
-	return [ ...keys, ...nestedKeys ];
-};
+	filter('tokens.items.update', (payload) => {
+		const token = payload as Partial<Token>;
+		validateToken(token);
+	});
 
-const validateQuery = (query: {filter?: object, search?: object} = {}) => {
-	if (query.filter) {
-		const filterKeys = getKeysDeep(query.filter);
-		const dataFields = _.uniq(filterKeys).filter(key => !key.startsWith('_'));
-
-		if (_.isEqual(dataFields, [ 'id' ])) {
-			return; // Allow to query by "id". That is required to not break the UI.
-		}
-
-		throw new InvalidPayloadError();
-	} else if (query.search) {
-		throw new InvalidPayloadError();
-	}
-};
-
-export default defineHook(({ action, filter }) => {
 	filter('tokens.items.query', (query) => {
 		validateQuery(query as object);
 	});
