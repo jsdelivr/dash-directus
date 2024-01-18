@@ -1,5 +1,5 @@
 import { defineHook } from '@directus/extensions-sdk';
-import { hashToken } from '../utils/token';
+import { hashToken } from '../utils/token.js';
 
 type Token = {
     id: number;

@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
 import { defineEndpoint } from '@directus/extensions-sdk';
-import { generateToken } from '../utils/token';
 import { ForbiddenError } from '@directus/errors';
+import { generateToken } from '../utils/token.js';
 
 type DirectusRequest = Request & {
 	accountability?: {
@@ -13,7 +13,7 @@ export default defineEndpoint((router) => {
 	router.post('/', async (request: Request, res: Response, next) => {
 		const req = request as DirectusRequest;
 
-		if (req.accountability?.user === null) {
+		if (!req.accountability?.user) {
 			return next(new ForbiddenError());
 		}
 
