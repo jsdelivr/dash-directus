@@ -20,6 +20,6 @@ export const removeBannedUsers = async (context: OperationContext) => {
 		}
 
 		return null;
-	}, { concurrency: 8 });
+	}, { concurrency: 2 });
 	return removedIds.filter((id): id is string => !!id);
 };
