@@ -1,4 +1,4 @@
-import { OperationContext } from '@directus/types';
+import type { OperationContext } from '@directus/extensions';
 import { DirectusUser } from '../types.js';
 
 export const getDirectusUsers = async ({ services, database, getSchema }: OperationContext): Promise<DirectusUser[]> => {

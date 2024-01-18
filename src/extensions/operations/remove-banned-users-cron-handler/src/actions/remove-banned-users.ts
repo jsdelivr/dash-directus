@@ -1,6 +1,6 @@
 
 import Bluebird from 'bluebird';
-import { OperationContext } from '@directus/types';
+import type { OperationContext } from '@directus/extensions';
 import { getDirectusUsers, deleteUser, deleteCredits } from '../repositories/directus.js';
 import { getGithubUser } from '../repositories/github.js';
 

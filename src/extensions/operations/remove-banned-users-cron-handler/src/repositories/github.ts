@@ -1,4 +1,4 @@
-import { OperationContext } from '@directus/types';
+import type { OperationContext } from '@directus/extensions';
 import axios, { isAxiosError } from 'axios';
 import { DirectusUser, GithubUser } from '../types.js';
 
