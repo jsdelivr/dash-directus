@@ -19,7 +19,7 @@ collections:
       note: null
       preview_url: null
       singleton: false
-      sort: null
+      sort: 3
       sort_field: null
       translations: null
       unarchive_value: null
@@ -43,35 +43,13 @@ collections:
       note: null
       preview_url: null
       singleton: false
-      sort: null
+      sort: 4
       sort_field: null
       translations: null
       unarchive_value: null
       versioning: false
     schema:
       name: credits
-  - collection: jsdelivr
-    meta:
-      accountability: all
-      archive_app_filter: true
-      archive_field: null
-      archive_value: null
-      collapse: open
-      collection: jsdelivr
-      color: null
-      display_template: null
-      group: null
-      hidden: false
-      icon: folder
-      item_duplication_fields: null
-      note: null
-      preview_url: null
-      singleton: false
-      sort: 1
-      sort_field: null
-      translations: null
-      unarchive_value: null
-      versioning: false
   - collection: sponsors
     meta:
       accountability: all
@@ -89,7 +67,7 @@ collections:
       note: null
       preview_url: null
       singleton: false
-      sort: null
+      sort: 5
       sort_field: null
       translations: null
       unarchive_value: null
@@ -106,14 +84,14 @@ collections:
       collection: tokens
       color: null
       display_template: null
-      group: jsdelivr
+      group: null
       hidden: false
       icon: null
       item_duplication_fields: null
       note: null
       preview_url: null
       singleton: false
-      sort: 1
+      sort: 2
       sort_field: null
       translations: null
       unarchive_value: null
