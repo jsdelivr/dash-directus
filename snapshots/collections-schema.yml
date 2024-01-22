@@ -1393,6 +1393,45 @@ fields:
       foreign_key_table: null
       foreign_key_column: null
   - collection: gp_tokens
+    field: date_last_used
+    type: dateTime
+    meta:
+      collection: gp_tokens
+      conditions: null
+      display: null
+      display_options: null
+      field: date_last_used
+      group: null
+      hidden: false
+      interface: datetime
+      note: null
+      options:
+        includeSeconds: true
+      readonly: false
+      required: false
+      sort: 10
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: date_last_used
+      table: gp_tokens
+      data_type: datetime
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: gp_tokens
     field: date_updated
     type: timestamp
     meta:
@@ -1449,7 +1488,7 @@ fields:
       options: null
       readonly: false
       required: false
-      sort: null
+      sort: 9
       special: null
       translations: null
       validation: null
@@ -1749,6 +1788,45 @@ fields:
       foreign_key_table: null
       foreign_key_column: null
   - collection: jsd_purge_tokens
+    field: date_last_used
+    type: dateTime
+    meta:
+      collection: jsd_purge_tokens
+      conditions: null
+      display: null
+      display_options: null
+      field: date_last_used
+      group: null
+      hidden: false
+      interface: datetime
+      note: null
+      options:
+        includeSeconds: true
+      readonly: false
+      required: false
+      sort: 10
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: date_last_used
+      table: jsd_purge_tokens
+      data_type: datetime
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: jsd_purge_tokens
     field: date_updated
     type: timestamp
     meta:
@@ -1805,7 +1883,7 @@ fields:
       options: null
       readonly: false
       required: false
-      sort: null
+      sort: 9
       special: null
       translations: null
       validation: null
