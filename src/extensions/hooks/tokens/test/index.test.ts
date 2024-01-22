@@ -28,7 +28,7 @@ describe('token hooks', () => {
 			expire: null,
 			origins: [ 'https://www.jsdelivr.com/' ],
 		};
-		callbacks.filter['tokens.items.create'](payload);
+		callbacks.filter['jsd_purge_tokens.items.create'](payload);
 
 		expect(payload.origins).to.deep.equal([ 'https://www.jsdelivr.com/' ]);
 	});
@@ -40,7 +40,7 @@ describe('token hooks', () => {
 			expire: null,
 			origins: [ 'jsdelivr.com' ],
 		};
-		callbacks.filter['tokens.items.create'](payload);
+		callbacks.filter['jsd_purge_tokens.items.create'](payload);
 
 		expect(payload.origins).to.deep.equal([ 'https://jsdelivr.com' ]);
 	});
@@ -52,7 +52,7 @@ describe('token hooks', () => {
 			expire: null,
 			origins: [ 'alo://jsdelivr.com' ],
 		};
-		callbacks.filter['tokens.items.create'](payload);
+		callbacks.filter['jsd_purge_tokens.items.create'](payload);
 
 		expect(payload.origins).to.deep.equal([ 'alo://jsdelivr.com' ]);
 	});
@@ -68,7 +68,7 @@ describe('token hooks', () => {
 		let error: Error;
 
 		try {
-			callbacks.filter['tokens.items.create'](payload);
+			callbacks.filter['jsd_purge_tokens.items.create'](payload);
 		} catch (err) {
 			error = err;
 		}
@@ -80,7 +80,7 @@ describe('token hooks', () => {
 		const payload = {
 			origins: [ 'jsdelivr.com' ],
 		};
-		callbacks.filter['tokens.items.update'](payload);
+		callbacks.filter['jsd_purge_tokens.items.update'](payload);
 
 		expect(payload.origins).to.deep.equal([ 'https://jsdelivr.com' ]);
 	});

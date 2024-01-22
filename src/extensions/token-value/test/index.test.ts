@@ -6,7 +6,7 @@ import hook from '../src/token-validator/index.js';
 import { WrongTokenError } from '../src/utils/token.js';
 import { ForbiddenError } from '@directus/errors';
 
-describe('/token-generator & tokens.items.create hook', () => {
+describe('/token-generator & jsd_purge_tokens.items.create hook', () => {
 	const resSend = sinon.stub();
 	const next = sinon.stub();
 	const res = { send: resSend };
@@ -53,7 +53,7 @@ describe('/token-generator & tokens.items.create hook', () => {
 			name: 'my-token',
 			value: token,
 		};
-		callbacks.filter['tokens.items.create'](payload);
+		callbacks.filter['jsd_purge_tokens.items.create'](payload);
 
 		expect(payload.value).to.not.equal(token);
 	});
@@ -73,7 +73,7 @@ describe('/token-generator & tokens.items.create hook', () => {
 		let error = null;
 
 		try {
-			callbacks.filter['tokens.items.create']({
+			callbacks.filter['jsd_purge_tokens.items.create']({
 				id: 1,
 				name: 'my-token',
 				value: 'wrong-token',
@@ -86,7 +86,7 @@ describe('/token-generator & tokens.items.create hook', () => {
 	});
 
 	it('should accept no token in the payload on edit', async () => {
-		callbacks.filter['tokens.items.update']({
+		callbacks.filter['jsd_purge_tokens.items.update']({
 			name: 'my-token-2',
 		});
 	});
@@ -104,7 +104,7 @@ describe('/token-generator & tokens.items.create hook', () => {
 		const payload = {
 			value: token,
 		};
-		callbacks.filter['tokens.items.update'](payload);
+		callbacks.filter['jsd_purge_tokens.items.update'](payload);
 
 		expect(payload.value).to.not.equal(token);
 	});
@@ -113,7 +113,7 @@ describe('/token-generator & tokens.items.create hook', () => {
 		let error = null;
 
 		try {
-			callbacks.filter['tokens.items.update']({
+			callbacks.filter['jsd_purge_tokens.items.update']({
 				value: 'wrong-token',
 			});
 		} catch (err) {

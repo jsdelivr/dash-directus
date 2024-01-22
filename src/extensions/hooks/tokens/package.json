@@ -1,6 +1,6 @@
 {
-	"name": "directus-extension-tokens",
-	"description": "This extension hides tokens values from user",
+	"name": "directus-extension-jsd-purge-tokens",
+	"description": "This extension manages jsd_purge_tokens collection",
 	"icon": "extension",
 	"version": "1.0.0",
 	"keywords": [

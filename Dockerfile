@@ -1,9 +1,9 @@
-# Build hooks/tokens
+# Build hooks/jsd-purge-tokens
 FROM node:18-alpine AS builder-01
-WORKDIR /builder/src/extensions/hooks/tokens
-ADD ./src/extensions/hooks/tokens/package.json ./src/extensions/hooks/tokens/package-lock.json ./
+WORKDIR /builder/src/extensions/hooks/jsd-purge-tokens
+ADD ./src/extensions/hooks/jsd-purge-tokens/package.json ./src/extensions/hooks/jsd-purge-tokens/package-lock.json ./
 RUN npm ci
-COPY ./src/extensions/hooks/tokens .
+COPY ./src/extensions/hooks/jsd-purge-tokens .
 RUN npm run build
 
 # Build hooks/sign-up
@@ -128,7 +128,7 @@ RUN npm run build
 
 FROM directus/directus:10.8.2
 
-COPY --from=builder-01 /builder/src/extensions/hooks/tokens/dist/* /directus/extensions/hooks/tokens/
+COPY --from=builder-01 /builder/src/extensions/hooks/jsd-purge-tokens/dist/* /directus/extensions/hooks/jsd-purge-tokens/
 COPY --from=builder-02 /builder/src/extensions/hooks/sign-up/dist/* /directus/extensions/hooks/sign-up/
 COPY --from=builder-03 /builder/src/extensions/interfaces/token/dist/* /directus/extensions/interfaces/token/
 COPY --from=builder-04 /builder/src/extensions/token-value/dist/* /directus/extensions/directus-extension-token-value/dist/

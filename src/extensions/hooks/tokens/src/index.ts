@@ -20,25 +20,25 @@ type Revision = {
 };
 
 export default defineHook(({ action, filter }) => {
-	filter('tokens.items.create', (payload) => {
+	filter('jsd_purge_tokens.items.create', (payload) => {
 		const token = payload as Token;
 		validateToken(token);
 	});
 
-	filter('tokens.items.update', (payload) => {
+	filter('jsd_purge_tokens.items.update', (payload) => {
 		const token = payload as Partial<Token>;
 		validateToken(token);
 	});
 
-	filter('tokens.items.query', (query) => {
+	filter('jsd_purge_tokens.items.query', (query) => {
 		validateQuery(query as object);
 	});
 
-	filter('tokens.items.read', (_items, request) => {
+	filter('jsd_purge_tokens.items.read', (_items, request) => {
 		validateQuery(request.query);
 	});
 
-	action('tokens.items.read', (query) => {
+	action('jsd_purge_tokens.items.read', (query) => {
 		const payload = query.payload as Token[];
 		payload.forEach((item) => {
 			if (item.value) {

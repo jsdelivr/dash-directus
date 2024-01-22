@@ -1,7 +1,7 @@
 import { createError } from '@directus/errors';
 import _ from 'lodash';
 
-const FilteringError = createError('INVALID_PAYLOAD_ERROR', 'Filtering is not availiable for "tokens" collection', 400);
+const FilteringError = createError('INVALID_PAYLOAD_ERROR', 'Filtering is not availiable for "jsd_purge_tokens" collection', 400);
 
 const getKeysDeep = (entity: object | object[] | string[]) => {
 	const keys = _.isArray(entity) ? [] : Object.keys(entity);
