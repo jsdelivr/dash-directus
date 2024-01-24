@@ -1394,7 +1394,7 @@ fields:
       foreign_key_column: null
   - collection: gp_tokens
     field: date_last_used
-    type: dateTime
+    type: date
     meta:
       collection: gp_tokens
       conditions: null
@@ -1405,8 +1405,7 @@ fields:
       hidden: false
       interface: datetime
       note: null
-      options:
-        includeSeconds: true
+      options: null
       readonly: false
       required: false
       sort: 10
@@ -1418,7 +1417,7 @@ fields:
     schema:
       name: date_last_used
       table: gp_tokens
-      data_type: datetime
+      data_type: date
       default_value: null
       max_length: null
       numeric_precision: null
@@ -1789,7 +1788,7 @@ fields:
       foreign_key_column: null
   - collection: jsd_purge_tokens
     field: date_last_used
-    type: dateTime
+    type: date
     meta:
       collection: jsd_purge_tokens
       conditions: null
@@ -1800,8 +1799,7 @@ fields:
       hidden: false
       interface: datetime
       note: null
-      options:
-        includeSeconds: true
+      options: null
       readonly: false
       required: false
       sort: 10
@@ -1813,7 +1811,7 @@ fields:
     schema:
       name: date_last_used
       table: jsd_purge_tokens
-      data_type: datetime
+      data_type: date
       default_value: null
       max_length: null
       numeric_precision: null
