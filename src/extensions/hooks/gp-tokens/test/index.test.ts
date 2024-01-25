@@ -21,7 +21,7 @@ describe('token hooks', () => {
 		sinon.resetHistory();
 	});
 
-	it('should accept valid origin', () => {
+	it('should remove trailing slash', () => {
 		const payload = {
 			name: 'name',
 			value: 'value',
@@ -30,7 +30,7 @@ describe('token hooks', () => {
 		};
 		callbacks.filter['gp_tokens.items.create'](payload);
 
-		expect(payload.origins).to.deep.equal([ 'https://www.jsdelivr.com/' ]);
+		expect(payload.origins).to.deep.equal([ 'https://www.jsdelivr.com' ]);
 	});
 
 	it('should add missing protocol', () => {
