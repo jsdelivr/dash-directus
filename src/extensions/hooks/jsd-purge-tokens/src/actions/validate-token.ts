@@ -16,6 +16,7 @@ const validateOrigin = (value: string, helpers: CustomHelpers) => {
 
 	if (protocolSymbol) {
 		value = value.replace(protocolSymbol, '://');
+		value = value.replace(/\/+$/, ''); // Remove trailing slashes
 	} else if (protocolSymbol === null) {
 		value = 'https://' + value;
 	}

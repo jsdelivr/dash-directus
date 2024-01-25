@@ -3,15 +3,14 @@ export async function up (knex) {
 	const probesTableExists = await knex.schema.hasTable('adopted_probes');
 	const usersTableExists = await knex.schema.hasTable('directus_users');
 
-	if (!tokensTableExists || !probesTableExists || !usersTableExists) {
-		console.log('Old collections do not exist, operation is not required.');
-		return;
-	}
-
 	await knex.transaction(async (trx) => {
-		await trx.raw('INSERT INTO jsd_purge_tokens SELECT * FROM tokens');
-		await trx.raw('INSERT INTO gp_adopted_probes SELECT * FROM adopted_probes');
-		await trx.raw('INSERT INTO gp_credits SELECT * FROM credits');
+		if (!tokensTableExists || !probesTableExists || !usersTableExists) {
+			console.log('Old collections do not exist, migration of data is not required.');
+		} else {
+			await trx.raw('INSERT INTO jsd_purge_tokens SELECT * FROM tokens');
+			await trx.raw('INSERT INTO gp_adopted_probes SELECT * FROM adopted_probes');
+			await trx.raw('INSERT INTO gp_credits SELECT * FROM credits');
+		}
 
 		await trx('directus_permissions').where('collection', 'tokens').update({
 			collection: 'jsd_purge_tokens',
