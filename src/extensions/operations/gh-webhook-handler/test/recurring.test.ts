@@ -67,7 +67,7 @@ describe('GitHub webhook recurring handler', () => {
 
 		expect(creditsCreateOne.args[0]).to.deep.equal([{
 			githubId: '2',
-			credits: 150000,
+			amount: 150000,
 			comment: 'For 15$ sponsorship',
 		}]);
 
@@ -122,7 +122,7 @@ describe('GitHub webhook recurring handler', () => {
 
 		expect(creditsCreateOne.args[0]).to.deep.equal([{
 			githubId: '2',
-			credits: 50000,
+			amount: 50000,
 			comment: 'For 5$ sponsorship',
 		}]);
 

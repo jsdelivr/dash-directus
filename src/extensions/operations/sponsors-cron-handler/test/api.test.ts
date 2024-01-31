@@ -105,7 +105,7 @@ describe('Sponsors cron handler', () => {
 		expect(createOne.callCount).to.equal(1);
 
 		expect(createOne.args[0]).to.deep.equal([{
-			credits: 100000,
+			amount: 100000,
 			githubId: '2',
 			comment: 'For $10 recurring sponsorship',
 		}]);
@@ -366,7 +366,7 @@ describe('Sponsors cron handler', () => {
 		expect(createOne.callCount).to.equal(1);
 
 		expect(createOne.args[0]).to.deep.equal([{
-			credits: 150000,
+			amount: 150000,
 			githubId: '2',
 			comment: 'For $15 recurring sponsorship',
 		}]);

@@ -1116,14 +1116,14 @@ fields:
       foreign_key_table: null
       foreign_key_column: null
   - collection: gp_credits_additions
-    field: credits
+    field: amount
     type: integer
     meta:
       collection: gp_credits_additions
       conditions: null
       display: null
       display_options: null
-      field: credits
+      field: amount
       group: null
       hidden: false
       interface: input
@@ -1138,7 +1138,7 @@ fields:
       validation_message: null
       width: full
     schema:
-      name: credits
+      name: amount
       table: gp_credits_additions
       data_type: int
       default_value: null

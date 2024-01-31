@@ -45,7 +45,7 @@ describe('GitHub webhook one-time handler', () => {
 
 		expect(createOne.args[0]).to.deep.equal([{
 			githubId: '2',
-			credits: 50000,
+			amount: 50000,
 			comment: 'For 5$ sponsorship',
 		}]);
 
