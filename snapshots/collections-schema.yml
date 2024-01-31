@@ -50,6 +50,30 @@ collections:
       versioning: false
     schema:
       name: gp_adopted_probes
+  - collection: gp_credits
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: null
+      archive_value: null
+      collapse: open
+      collection: gp_credits
+      color: null
+      display_template: null
+      group: null
+      hidden: false
+      icon: null
+      item_duplication_fields: null
+      note: null
+      preview_url: null
+      singleton: false
+      sort: null
+      sort_field: null
+      translations: null
+      unarchive_value: null
+      versioning: false
+    schema:
+      name: gp_credits
   - collection: gp_credits_additions
     meta:
       accountability: all
@@ -1077,36 +1101,37 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: gp_credits_additions
-    field: comment
-    type: string
+  - collection: gp_credits
+    field: amount
+    type: integer
     meta:
-      collection: gp_credits_additions
+      collection: gp_credits
       conditions: null
       display: null
       display_options: null
-      field: comment
+      field: amount
       group: null
       hidden: false
       interface: input
-      note: Why credits are added?
-      options: null
+      note: null
+      options:
+        min: 0
       readonly: false
       required: true
-      sort: 10
+      sort: 5
       special: null
       translations: null
       validation: null
       validation_message: null
       width: full
     schema:
-      name: comment
-      table: gp_credits_additions
-      data_type: varchar
+      name: amount
+      table: gp_credits
+      data_type: int
       default_value: null
-      max_length: 255
-      numeric_precision: null
-      numeric_scale: null
+      max_length: null
+      numeric_precision: 10
+      numeric_scale: 0
       is_nullable: false
       is_unique: false
       is_primary_key: false
@@ -1115,6 +1140,164 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
+  - collection: gp_credits
+    field: date_created
+    type: timestamp
+    meta:
+      collection: gp_credits
+      conditions: null
+      display: datetime
+      display_options:
+        relative: true
+      field: date_created
+      group: null
+      hidden: true
+      interface: datetime
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 2
+      special:
+        - date-created
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: date_created
+      table: gp_credits
+      data_type: timestamp
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: gp_credits
+    field: date_updated
+    type: timestamp
+    meta:
+      collection: gp_credits
+      conditions: null
+      display: datetime
+      display_options:
+        relative: true
+      field: date_updated
+      group: null
+      hidden: true
+      interface: datetime
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 3
+      special:
+        - date-updated
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: date_updated
+      table: gp_credits
+      data_type: timestamp
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: gp_credits
+    field: id
+    type: integer
+    meta:
+      collection: gp_credits
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: gp_credits
+      data_type: int unsigned
+      default_value: null
+      max_length: null
+      numeric_precision: 10
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: false
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: gp_credits
+    field: user_id
+    type: string
+    meta:
+      collection: gp_credits
+      conditions: null
+      display: null
+      display_options: null
+      field: user_id
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        enableCreate: false
+      readonly: false
+      required: true
+      sort: 4
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: user_id
+      table: gp_credits
+      data_type: char
+      default_value: null
+      max_length: 36
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: true
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: directus_users
+      foreign_key_column: id
   - collection: gp_credits_additions
     field: amount
     type: integer
@@ -1145,6 +1328,44 @@ fields:
       max_length: null
       numeric_precision: 10
       numeric_scale: 0
+      is_nullable: false
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: gp_credits_additions
+    field: comment
+    type: string
+    meta:
+      collection: gp_credits_additions
+      conditions: null
+      display: null
+      display_options: null
+      field: comment
+      group: null
+      hidden: false
+      interface: input
+      note: Why credits are added?
+      options: null
+      readonly: false
+      required: true
+      sort: 10
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: comment
+      table: gp_credits_additions
+      data_type: varchar
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
       is_nullable: false
       is_unique: false
       is_primary_key: false
@@ -2511,6 +2732,27 @@ relations:
       foreign_key_table: directus_users
       foreign_key_column: id
       constraint_name: gp_adopted_probes_userid_foreign
+      on_update: RESTRICT
+      on_delete: CASCADE
+  - collection: gp_credits
+    field: user_id
+    related_collection: directus_users
+    meta:
+      junction_field: null
+      many_collection: gp_credits
+      many_field: user_id
+      one_allowed_collections: null
+      one_collection: directus_users
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: gp_credits
+      column: user_id
+      foreign_key_table: directus_users
+      foreign_key_column: id
+      constraint_name: gp_credits_user_id_foreign
       on_update: RESTRICT
       on_delete: CASCADE
   - collection: gp_credits_additions
