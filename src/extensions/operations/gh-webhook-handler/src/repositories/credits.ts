@@ -15,7 +15,7 @@ type Context = {
 export const addCredits = async ({ githubId, amount }: AddItemData, { services, database, getSchema, env }: Context) => {
 	const { ItemsService } = services;
 
-	const creditsService = new ItemsService('gp_credits', {
+	const creditsService = new ItemsService('gp_credits_additions', {
 		schema: await getSchema({ database }),
 		knex: database,
 	});

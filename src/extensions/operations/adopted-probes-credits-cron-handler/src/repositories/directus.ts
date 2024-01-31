@@ -36,7 +36,7 @@ export const addCredits = async (adoptedProbes: AdoptedProbe[], { services, data
 
 	const { ItemsService } = services;
 
-	const creditsService = new ItemsService('gp_credits', {
+	const creditsService = new ItemsService('gp_credits_additions', {
 		schema: await getSchema({ database }),
 		knex: database,
 	});
