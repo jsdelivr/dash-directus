@@ -18,6 +18,21 @@ export async function up (knex) {
 		`);
 
 		await trx.raw(`
+			ALTER TABLE gp_credits
+			ADD CONSTRAINT gp_credits_amount_positive CHECK (amount >= 0);
+		`);
+
+		await trx.raw(`
+			ALTER TABLE gp_credits_additions
+			ADD CONSTRAINT gp_credits_additions_amount_positive CHECK (amount >= 0);
+		`);
+
+		await trx.raw(`
+			ALTER TABLE gp_credits_deductions
+			ADD CONSTRAINT gp_credits_deductions_amount_positive CHECK (amount >= 0);
+		`);
+
+		await trx.raw(`
 			CREATE TRIGGER after_gp_credits_update
 			AFTER UPDATE ON gp_credits
 			FOR EACH ROW
