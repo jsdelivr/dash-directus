@@ -77,7 +77,7 @@ describe('GitHub webhook recurring handler', () => {
 			github_login: 'monalisa',
 			github_id: '2',
 			monthly_amount: 15,
-			lastEarningDate: '2023-09-19T00:00:00.000Z',
+			last_earning_date: '2023-09-19T00:00:00.000Z',
 		}]);
 
 		expect(result).to.equal('Sponsor with id: 2 created. Credits item with id: 1 created. Recurring sponsorship handled.');

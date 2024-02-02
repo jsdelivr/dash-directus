@@ -33,7 +33,7 @@ export const createdAction = async ({ body, services, database, getSchema, env }
 		github_login: body.sponsorship.sponsor.login,
 		github_id: body.sponsorship.sponsor.id.toString(),
 		monthly_amount: body.sponsorship.tier.monthly_price_in_dollars,
-		lastEarningDate: new Date().toISOString(),
+		last_earning_date: new Date().toISOString(),
 	}, { services, database, getSchema });
 	const creditsId = await addCredits({
 		github_id: body.sponsorship.sponsor.id.toString(),

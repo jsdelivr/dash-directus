@@ -47,10 +47,10 @@ export const handleDirectusSponsor = async ({ directusSponsor, githubSponsors }:
 		await updateDirectusSponsor(directusSponsor.id, { monthly_amount: githubSponsor.monthlyAmount }, { services, database, getSchema, env });
 	}
 
-	const shouldCreditsBeAdded = is30DaysAgo(directusSponsor.lastEarningDate);
+	const shouldCreditsBeAdded = is30DaysAgo(directusSponsor.last_earning_date);
 
 	if (shouldCreditsBeAdded) {
-		await updateDirectusSponsor(directusSponsor.id, { lastEarningDate: new Date().toISOString() }, { services, database, getSchema, env });
+		await updateDirectusSponsor(directusSponsor.id, { last_earning_date: new Date().toISOString() }, { services, database, getSchema, env });
 		const creditsId = await addCredits({
 			github_id: githubSponsor.githubId,
 			amount: githubSponsor.monthlyAmount,

@@ -20,7 +20,7 @@ describe('Sponsors cron handler', () => {
 		github_login: 'monalisa',
 		github_id: '2',
 		monthly_amount: 10,
-		lastEarningDate: '2023-08-15 08:19:00',
+		last_earning_date: '2023-08-15 08:19:00',
 	}]);
 	const createOne = sinon.stub().resolves(1);
 	const updateOne = sinon.stub().resolves(1);
@@ -42,7 +42,7 @@ describe('Sponsors cron handler', () => {
 			github_login: 'monalisa',
 			github_id: '2',
 			monthly_amount: 10,
-			lastEarningDate: '2023-08-15 08:19:00',
+			last_earning_date: '2023-08-15 08:19:00',
 		}]);
 	});
 
@@ -50,7 +50,7 @@ describe('Sponsors cron handler', () => {
 		nock.cleanAll();
 	});
 
-	it('should add credits to recurring sponsors with lastEarningDate > 30 days', async () => {
+	it('should add credits to recurring sponsors with last_earning_date > 30 days', async () => {
 		nock('https://api.github.com').post('/graphql').reply(200, {
 			data: {
 				organization: {
@@ -95,7 +95,7 @@ describe('Sponsors cron handler', () => {
 		}]);
 
 		expect(updateOne.callCount).to.equal(1);
-		expect(updateOne.args[0]).to.deep.equal([ 1, { lastEarningDate: '2023-09-19T00:00:00.000Z' }]);
+		expect(updateOne.args[0]).to.deep.equal([ 1, { last_earning_date: '2023-09-19T00:00:00.000Z' }]);
 
 		expect(services.ItemsService.args[2]).to.deep.equal([ 'gp_credits_additions', {
 			schema: {},
@@ -113,7 +113,7 @@ describe('Sponsors cron handler', () => {
 		expect(result).to.deep.equal([ 'Credits item with id: 1 for user with github id: 2 created. Recurring sponsorship handled.' ]);
 	});
 
-	it('should not add credits to recurring sponsors with lastEarningDate < 30 days', async () => {
+	it('should not add credits to recurring sponsors with last_earning_date < 30 days', async () => {
 		nock('https://api.github.com').post('/graphql').reply(200, {
 			data: {
 				organization: {
@@ -145,7 +145,7 @@ describe('Sponsors cron handler', () => {
 			github_login: 'monalisa',
 			github_id: '2',
 			monthly_amount: 10,
-			lastEarningDate: '2023-09-15 08:19:00',
+			last_earning_date: '2023-09-15 08:19:00',
 		}]);
 
 		const result = await operationApi.handler({}, { data, database, env, getSchema, services, logger, accountability });
@@ -356,7 +356,7 @@ describe('Sponsors cron handler', () => {
 
 		expect(updateOne.callCount).to.equal(2);
 		expect(updateOne.args[0]).to.deep.equal([ 1, { monthly_amount: 15 }]);
-		expect(updateOne.args[1]).to.deep.equal([ 1, { lastEarningDate: '2023-09-19T00:00:00.000Z' }]);
+		expect(updateOne.args[1]).to.deep.equal([ 1, { last_earning_date: '2023-09-19T00:00:00.000Z' }]);
 
 		expect(services.ItemsService.args[3]).to.deep.equal([ 'gp_credits_additions', {
 			schema: {},
@@ -425,7 +425,7 @@ describe('Sponsors cron handler', () => {
 		expect(createOne.args[0]).to.deep.equal([{
 			github_id: '2',
 			github_login: 'monalisa',
-			lastEarningDate: '2023-09-19T00:00:00.000Z',
+			last_earning_date: '2023-09-19T00:00:00.000Z',
 			monthly_amount: 10,
 		}]);
 

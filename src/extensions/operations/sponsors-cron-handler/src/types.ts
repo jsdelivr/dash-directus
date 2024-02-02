@@ -3,7 +3,7 @@ export type DirectusSponsor = {
 	github_login: string;
 	github_id: string;
 	monthly_amount: number;
-	lastEarningDate: string;
+	last_earning_date: string;
 }
 
 export type GithubSponsor = {

@@ -4,7 +4,7 @@ type AddItemData = {
 	github_login: string;
 	github_id: string;
 	monthly_amount: number;
-	lastEarningDate: string;
+	last_earning_date: string;
 }
 
 type Context = {
@@ -13,7 +13,7 @@ type Context = {
 	getSchema: OperationContext['getSchema'],
 };
 
-export const addSponsor = async ({ github_login, github_id, monthly_amount, lastEarningDate }: AddItemData, { services, database, getSchema }: Context) => {
+export const addSponsor = async ({ github_login, github_id, monthly_amount, last_earning_date }: AddItemData, { services, database, getSchema }: Context) => {
 	const { ItemsService } = services;
 
 	const sponsorsService = new ItemsService('sponsors', {
@@ -25,7 +25,7 @@ export const addSponsor = async ({ github_login, github_id, monthly_amount, last
 		github_login,
 		github_id,
 		monthly_amount,
-		lastEarningDate,
+		last_earning_date,
 	});
 	return result;
 };

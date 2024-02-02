@@ -2820,14 +2820,14 @@ fields:
       foreign_key_table: null
       foreign_key_column: null
   - collection: sponsors
-    field: lastEarningDate
+    field: last_earning_date
     type: timestamp
     meta:
       collection: sponsors
       conditions: null
       display: null
       display_options: null
-      field: lastEarningDate
+      field: last_earning_date
       group: null
       hidden: false
       interface: datetime
@@ -2842,7 +2842,7 @@ fields:
       validation_message: null
       width: full
     schema:
-      name: lastEarningDate
+      name: last_earning_date
       table: sponsors
       data_type: timestamp
       default_value: null

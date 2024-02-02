@@ -32,7 +32,7 @@ export const createDirectusSponsor = async (githubSponsor: GithubSponsor, { serv
 		github_login: githubSponsor.githubLogin,
 		github_id: githubSponsor.githubId,
 		monthly_amount: githubSponsor.monthlyAmount,
-		lastEarningDate: new Date().toISOString(),
+		last_earning_date: new Date().toISOString(),
 	});
 	return result;
 };
