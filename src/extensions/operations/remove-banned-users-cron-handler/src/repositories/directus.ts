@@ -33,6 +33,6 @@ export const deleteCredits = async (user: DirectusUser, { services, database, ge
 		knex: database,
 	});
 
-	const result = await usersService.deleteByQuery({ filter: { githubId: user.external_identifier } }) as string[];
+	const result = await usersService.deleteByQuery({ filter: { github_id: user.external_identifier } }) as string[];
 	return result;
 };

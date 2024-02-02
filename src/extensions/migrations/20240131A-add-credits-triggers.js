@@ -6,7 +6,7 @@ export async function up (knex) {
 			FOR EACH ROW
 			BEGIN
 					DECLARE found_user_id CHAR(36);
-					SELECT id INTO found_user_id FROM directus_users WHERE external_identifier = NEW.githubId LIMIT 1;
+					SELECT id INTO found_user_id FROM directus_users WHERE external_identifier = NEW.github_id LIMIT 1;
 
 					IF found_user_id IS NOT NULL THEN
 							INSERT INTO gp_credits (user_id, amount)

@@ -2,7 +2,7 @@ import { OperationContext } from '@directus/types';
 
 type AddItemData = {
 	githubLogin: string;
-	githubId: string;
+	github_id: string;
 	monthlyAmount: number;
 	lastEarningDate: string;
 }
@@ -13,7 +13,7 @@ type Context = {
 	getSchema: OperationContext['getSchema'],
 };
 
-export const addSponsor = async ({ githubLogin, githubId, monthlyAmount, lastEarningDate }: AddItemData, { services, database, getSchema }: Context) => {
+export const addSponsor = async ({ githubLogin, github_id, monthlyAmount, lastEarningDate }: AddItemData, { services, database, getSchema }: Context) => {
 	const { ItemsService } = services;
 
 	const sponsorsService = new ItemsService('sponsors', {
@@ -23,7 +23,7 @@ export const addSponsor = async ({ githubLogin, githubId, monthlyAmount, lastEar
 
 	const result = await sponsorsService.createOne({
 		githubLogin,
-		githubId,
+		github_id,
 		monthlyAmount,
 		lastEarningDate,
 	});
@@ -31,11 +31,11 @@ export const addSponsor = async ({ githubLogin, githubId, monthlyAmount, lastEar
 };
 
 type UpdateItemData = {
-	githubId: string;
+	github_id: string;
 	monthlyAmount: number;
 }
 
-export const updateSponsor = async ({ githubId, monthlyAmount }: UpdateItemData, { services, database, getSchema }: Context) => {
+export const updateSponsor = async ({ github_id, monthlyAmount }: UpdateItemData, { services, database, getSchema }: Context) => {
 	const { ItemsService } = services;
 
 	const sponsorsService = new ItemsService('sponsors', {
@@ -43,6 +43,6 @@ export const updateSponsor = async ({ githubId, monthlyAmount }: UpdateItemData,
 		knex: database,
 	});
 
-	const result = await sponsorsService.updateByQuery({ filter: { githubId } }, { monthlyAmount });
+	const result = await sponsorsService.updateByQuery({ filter: { github_id } }, { monthlyAmount });
 	return result;
 };

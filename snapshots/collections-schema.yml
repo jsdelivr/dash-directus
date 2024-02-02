@@ -1483,14 +1483,14 @@ fields:
       foreign_key_table: null
       foreign_key_column: null
   - collection: gp_credits_additions
-    field: githubId
+    field: github_id
     type: string
     meta:
       collection: gp_credits_additions
       conditions: null
       display: null
       display_options: null
-      field: githubId
+      field: github_id
       group: null
       hidden: false
       interface: input
@@ -1507,7 +1507,7 @@ fields:
       validation_message: null
       width: full
     schema:
-      name: githubId
+      name: github_id
       table: gp_credits_additions
       data_type: varchar
       default_value: null
@@ -2704,14 +2704,14 @@ fields:
       foreign_key_table: null
       foreign_key_column: null
   - collection: sponsors
-    field: githubId
+    field: github_id
     type: string
     meta:
       collection: sponsors
       conditions: null
       display: null
       display_options: null
-      field: githubId
+      field: github_id
       group: null
       hidden: false
       interface: input
@@ -2728,7 +2728,7 @@ fields:
       validation_message: null
       width: full
     schema:
-      name: githubId
+      name: github_id
       table: sponsors
       data_type: varchar
       default_value: null

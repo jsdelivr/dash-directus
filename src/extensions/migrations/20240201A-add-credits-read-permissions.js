@@ -26,7 +26,7 @@ async function createPermissions (roleId) {
 				permissions: {
 					_and: [
 						{
-							githubId: {
+							github_id: {
 								_eq: '$CURRENT_USER.external_identifier',
 							},
 						},

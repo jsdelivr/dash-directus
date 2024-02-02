@@ -66,7 +66,7 @@ describe('GitHub webhook recurring handler', () => {
 		expect(creditsCreateOne.callCount).to.equal(1);
 
 		expect(creditsCreateOne.args[0]).to.deep.equal([{
-			githubId: '2',
+			github_id: '2',
 			amount: 150000,
 			comment: 'For 15$ sponsorship',
 		}]);
@@ -75,7 +75,7 @@ describe('GitHub webhook recurring handler', () => {
 
 		expect(sponsorsCreateOne.args[0]).to.deep.equal([{
 			githubLogin: 'monalisa',
-			githubId: '2',
+			github_id: '2',
 			monthlyAmount: 15,
 			lastEarningDate: '2023-09-19T00:00:00.000Z',
 		}]);
@@ -111,7 +111,7 @@ describe('GitHub webhook recurring handler', () => {
 
 		expect(sponsorsUpdateByQuery.args[0]).to.deep.equal([{
 			filter: {
-				githubId: '2',
+				github_id: '2',
 			},
 		}, {
 			monthlyAmount: 15,
@@ -121,7 +121,7 @@ describe('GitHub webhook recurring handler', () => {
 		expect(creditsCreateOne.callCount).to.equal(1);
 
 		expect(creditsCreateOne.args[0]).to.deep.equal([{
-			githubId: '2',
+			github_id: '2',
 			amount: 50000,
 			comment: 'For 5$ sponsorship',
 		}]);
@@ -154,7 +154,7 @@ describe('GitHub webhook recurring handler', () => {
 
 		expect(sponsorsUpdateByQuery.args[0]).to.deep.equal([{
 			filter: {
-				githubId: '2',
+				github_id: '2',
 			},
 		}, {
 			monthlyAmount: 5,

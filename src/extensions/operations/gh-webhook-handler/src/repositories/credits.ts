@@ -1,7 +1,7 @@
 import { OperationContext } from '@directus/types';
 
 type AddItemData = {
-	githubId: string;
+	github_id: string;
 	amount: number;
 }
 
@@ -12,7 +12,7 @@ type Context = {
 	env: OperationContext['env'];
 };
 
-export const addCredits = async ({ githubId, amount }: AddItemData, { services, database, getSchema, env }: Context) => {
+export const addCredits = async ({ github_id, amount }: AddItemData, { services, database, getSchema, env }: Context) => {
 	const { ItemsService } = services;
 
 	const creditsService = new ItemsService('gp_credits_additions', {
@@ -21,7 +21,7 @@ export const addCredits = async ({ githubId, amount }: AddItemData, { services, 
 	});
 
 	const result = await creditsService.createOne({
-		githubId,
+		github_id,
 		amount: amount * parseInt(env.CREDITS_PER_DOLLAR, 10),
 		comment: `For ${amount}$ sponsorship`,
 	});
