@@ -19,7 +19,7 @@ describe('Sponsors cron handler', () => {
 		id: 1,
 		github_login: 'monalisa',
 		github_id: '2',
-		monthlyAmount: 10,
+		monthly_amount: 10,
 		lastEarningDate: '2023-08-15 08:19:00',
 	}]);
 	const createOne = sinon.stub().resolves(1);
@@ -41,7 +41,7 @@ describe('Sponsors cron handler', () => {
 			id: 1,
 			github_login: 'monalisa',
 			github_id: '2',
-			monthlyAmount: 10,
+			monthly_amount: 10,
 			lastEarningDate: '2023-08-15 08:19:00',
 		}]);
 	});
@@ -144,7 +144,7 @@ describe('Sponsors cron handler', () => {
 			id: 1,
 			github_login: 'monalisa',
 			github_id: '2',
-			monthlyAmount: 10,
+			monthly_amount: 10,
 			lastEarningDate: '2023-09-15 08:19:00',
 		}]);
 
@@ -305,7 +305,7 @@ describe('Sponsors cron handler', () => {
 		expect(result).to.deep.equal([ 'Sponsorship of user with github id: 2 is one-time. Sponsor deleted from directus.' ]);
 	});
 
-	it('should update directus "monthlyAmount" field if github and directus fields do not match', async () => {
+	it('should update directus "monthly_amount" field if github and directus fields do not match', async () => {
 		nock('https://api.github.com').post('/graphql').reply(200, {
 			data: {
 				organization: {
@@ -355,7 +355,7 @@ describe('Sponsors cron handler', () => {
 		}]);
 
 		expect(updateOne.callCount).to.equal(2);
-		expect(updateOne.args[0]).to.deep.equal([ 1, { monthlyAmount: 15 }]);
+		expect(updateOne.args[0]).to.deep.equal([ 1, { monthly_amount: 15 }]);
 		expect(updateOne.args[1]).to.deep.equal([ 1, { lastEarningDate: '2023-09-19T00:00:00.000Z' }]);
 
 		expect(services.ItemsService.args[3]).to.deep.equal([ 'gp_credits_additions', {
@@ -426,7 +426,7 @@ describe('Sponsors cron handler', () => {
 			github_id: '2',
 			github_login: 'monalisa',
 			lastEarningDate: '2023-09-19T00:00:00.000Z',
-			monthlyAmount: 10,
+			monthly_amount: 10,
 		}]);
 
 		expect(result).to.deep.equal([ 'Sponsor with github id: 2 not found on directus sponsors list. Sponsor added to directus.' ]);

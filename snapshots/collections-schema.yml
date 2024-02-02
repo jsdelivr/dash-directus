@@ -2858,14 +2858,14 @@ fields:
       foreign_key_table: null
       foreign_key_column: null
   - collection: sponsors
-    field: monthlyAmount
+    field: monthly_amount
     type: integer
     meta:
       collection: sponsors
       conditions: null
       display: null
       display_options: null
-      field: monthlyAmount
+      field: monthly_amount
       group: null
       hidden: false
       interface: input
@@ -2880,7 +2880,7 @@ fields:
       validation_message: null
       width: full
     schema:
-      name: monthlyAmount
+      name: monthly_amount
       table: sponsors
       data_type: int
       default_value: null

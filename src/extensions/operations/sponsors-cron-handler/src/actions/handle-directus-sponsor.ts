@@ -43,8 +43,8 @@ export const handleDirectusSponsor = async ({ directusSponsor, githubSponsors }:
 		return `Sponsorship of user with github id: ${id} is one-time. Sponsor deleted from directus.`;
 	}
 
-	if (githubSponsor.monthlyAmount !== directusSponsor.monthlyAmount) {
-		await updateDirectusSponsor(directusSponsor.id, { monthlyAmount: githubSponsor.monthlyAmount }, { services, database, getSchema, env });
+	if (githubSponsor.monthlyAmount !== directusSponsor.monthly_amount) {
+		await updateDirectusSponsor(directusSponsor.id, { monthly_amount: githubSponsor.monthlyAmount }, { services, database, getSchema, env });
 	}
 
 	const shouldCreditsBeAdded = is30DaysAgo(directusSponsor.lastEarningDate);

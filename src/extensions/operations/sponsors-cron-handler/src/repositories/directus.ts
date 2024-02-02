@@ -31,7 +31,7 @@ export const createDirectusSponsor = async (githubSponsor: GithubSponsor, { serv
 	const result = await sponsorsService.createOne({
 		github_login: githubSponsor.githubLogin,
 		github_id: githubSponsor.githubId,
-		monthlyAmount: githubSponsor.monthlyAmount,
+		monthly_amount: githubSponsor.monthlyAmount,
 		lastEarningDate: new Date().toISOString(),
 	});
 	return result;
