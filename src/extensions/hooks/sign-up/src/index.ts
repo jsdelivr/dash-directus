@@ -16,6 +16,12 @@ type GithubOrgsResponse = {
 	login: string;
 }[];
 
+type CreditsAdditions = {
+	amount: number,
+	github_id: string,
+	consumed: boolean,
+};
+
 export default defineHook(({ filter, action }, context) => {
 	filter('users.create', async (payload) => {
 		const user = payload as User;
@@ -32,6 +38,7 @@ export default defineHook(({ filter, action }, context) => {
 
 		if (user.provider === 'github') {
 			await fulfillOrganizations(userId, user, context);
+			await assignCredits(userId, user, context);
 		}
 	});
 });
@@ -80,4 +87,37 @@ const updateUser = async (userId: string, updateObject: Partial<User>, context: 
 		knex: database,
 	});
 	await usersService.updateOne(userId, updateObject);
+};
+
+const assignCredits = async (userId: string, user: User, context: HookExtensionContext) => {
+	const { services, database, getSchema } = context;
+	const { ItemsService } = services;
+
+	const creditsAdditionsService = new ItemsService('gp_credits_additions', {
+		schema: await getSchema({ database }),
+		knex: database,
+	});
+
+	const creditsService = new ItemsService('gp_credits', {
+		schema: await getSchema({ database }),
+		knex: database,
+	});
+
+	const creditsAdditions = await creditsAdditionsService.readByQuery({ filter: {
+		github_id: user.external_identifier,
+		consumed: false,
+	} }) as CreditsAdditions[];
+
+	if (creditsAdditions.length === 0) {
+		return;
+	}
+
+	const sum = creditsAdditions.reduce((sum, { amount }) => sum + amount, 0);
+
+	await creditsAdditionsService.updateByQuery({ filter: {
+		github_id: user.external_identifier,
+		consumed: false,
+	} }, { consumed: true });
+
+	await creditsService.createOne({ amount: sum, user_id: userId });
 };
