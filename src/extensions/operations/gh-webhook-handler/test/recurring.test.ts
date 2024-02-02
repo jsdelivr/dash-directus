@@ -74,7 +74,7 @@ describe('GitHub webhook recurring handler', () => {
 		expect(sponsorsCreateOne.callCount).to.equal(1);
 
 		expect(sponsorsCreateOne.args[0]).to.deep.equal([{
-			githubLogin: 'monalisa',
+			github_login: 'monalisa',
 			github_id: '2',
 			monthlyAmount: 15,
 			lastEarningDate: '2023-09-19T00:00:00.000Z',

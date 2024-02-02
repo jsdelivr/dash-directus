@@ -17,7 +17,7 @@ describe('Sponsors cron handler', () => {
 
 	const readByQuery = sinon.stub().resolves([{
 		id: 1,
-		githubLogin: 'monalisa',
+		github_login: 'monalisa',
 		github_id: '2',
 		monthlyAmount: 10,
 		lastEarningDate: '2023-08-15 08:19:00',
@@ -39,7 +39,7 @@ describe('Sponsors cron handler', () => {
 
 		readByQuery.resolves([{
 			id: 1,
-			githubLogin: 'monalisa',
+			github_login: 'monalisa',
 			github_id: '2',
 			monthlyAmount: 10,
 			lastEarningDate: '2023-08-15 08:19:00',
@@ -142,7 +142,7 @@ describe('Sponsors cron handler', () => {
 
 		readByQuery.resolves([{
 			id: 1,
-			githubLogin: 'monalisa',
+			github_login: 'monalisa',
 			github_id: '2',
 			monthlyAmount: 10,
 			lastEarningDate: '2023-09-15 08:19:00',
@@ -424,7 +424,7 @@ describe('Sponsors cron handler', () => {
 
 		expect(createOne.args[0]).to.deep.equal([{
 			github_id: '2',
-			githubLogin: 'monalisa',
+			github_login: 'monalisa',
 			lastEarningDate: '2023-09-19T00:00:00.000Z',
 			monthlyAmount: 10,
 		}]);

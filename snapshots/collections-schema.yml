@@ -2744,14 +2744,14 @@ fields:
       foreign_key_table: null
       foreign_key_column: null
   - collection: sponsors
-    field: githubLogin
+    field: github_login
     type: string
     meta:
       collection: sponsors
       conditions: null
       display: null
       display_options: null
-      field: githubLogin
+      field: github_login
       group: null
       hidden: false
       interface: input
@@ -2766,7 +2766,7 @@ fields:
       validation_message: null
       width: full
     schema:
-      name: githubLogin
+      name: github_login
       table: sponsors
       data_type: varchar
       default_value: null

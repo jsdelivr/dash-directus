@@ -1,7 +1,7 @@
 import { OperationContext } from '@directus/types';
 
 type AddItemData = {
-	githubLogin: string;
+	github_login: string;
 	github_id: string;
 	monthlyAmount: number;
 	lastEarningDate: string;
@@ -13,7 +13,7 @@ type Context = {
 	getSchema: OperationContext['getSchema'],
 };
 
-export const addSponsor = async ({ githubLogin, github_id, monthlyAmount, lastEarningDate }: AddItemData, { services, database, getSchema }: Context) => {
+export const addSponsor = async ({ github_login, github_id, monthlyAmount, lastEarningDate }: AddItemData, { services, database, getSchema }: Context) => {
 	const { ItemsService } = services;
 
 	const sponsorsService = new ItemsService('sponsors', {
@@ -22,7 +22,7 @@ export const addSponsor = async ({ githubLogin, github_id, monthlyAmount, lastEa
 	});
 
 	const result = await sponsorsService.createOne({
-		githubLogin,
+		github_login,
 		github_id,
 		monthlyAmount,
 		lastEarningDate,
