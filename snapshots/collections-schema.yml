@@ -1146,7 +1146,7 @@ fields:
       options:
         min: 0
       readonly: false
-      required: true
+      required: false
       sort: 5
       special: null
       translations: null
@@ -1161,7 +1161,7 @@ fields:
       max_length: null
       numeric_precision: 10
       numeric_scale: 0
-      is_nullable: false
+      is_nullable: true
       is_unique: false
       is_primary_key: false
       is_generated: false
