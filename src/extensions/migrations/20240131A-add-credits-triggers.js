@@ -2,7 +2,7 @@ export async function up (knex) {
 	await knex.transaction(async (trx) => {
 		await trx.raw(`
 			CREATE TRIGGER after_gp_credits_additions_insert
-			AFTER INSERT ON gp_credits_additions
+			BEFORE INSERT ON gp_credits_additions
 			FOR EACH ROW
 			BEGIN
 					DECLARE found_user_id CHAR(36);
@@ -13,6 +13,8 @@ export async function up (knex) {
 							VALUES (found_user_id, NEW.amount, CURRENT_TIMESTAMP)
 							ON DUPLICATE KEY UPDATE
 							gp_credits.amount = gp_credits.amount + NEW.amount;
+					ELSE
+							SET NEW.consumed = FALSE;
 					END IF;
 			END;
 		`);

@@ -1395,7 +1395,7 @@ fields:
       max_length: null
       numeric_precision: 3
       numeric_scale: 0
-      is_nullable: true
+      is_nullable: false
       is_unique: false
       is_primary_key: false
       is_generated: false
