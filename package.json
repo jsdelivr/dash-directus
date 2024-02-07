@@ -19,6 +19,7 @@
 		"@types/lodash": "^4.14.199",
 		"@typescript-eslint/eslint-plugin": "^6.7.2",
 		"cross-env": "^7.0.3",
+		"dotenv-cli": "^7.3.0",
 		"eslint": "^8.50.0",
 		"eslint-plugin-vue": "^9.17.0",
 		"husky": "^8.0.3"
@@ -28,7 +29,7 @@
 		"lint:fix": "npm run lint -- --fix",
 		"init": "./scripts/init.sh",
 		"init:dev": "./scripts/init.sh --dev",
-		"migrate": "rm -rf ./extensions/migrations/* && mkdir -p ./extensions/migrations/ && cp -rp ./src/extensions/migrations/* ./extensions/migrations/ && npx --yes directus@latest database migrate:latest",
+		"migrate": "rm -rf ./extensions/migrations/* && mkdir -p ./extensions/migrations/ && cp -rp ./src/extensions/migrations/* ./extensions/migrations/ && dotenv -- npx --yes directus@latest database migrate:latest",
 		"schema:apply": "npx --yes directus@latest schema apply --yes snapshots/collections-schema.yml",
 		"schema:snapshot": "npx --yes directus@latest schema snapshot --yes snapshots/collections-schema.yml",
 		"prepare": "husky install || echo 'Failed to install husky'",

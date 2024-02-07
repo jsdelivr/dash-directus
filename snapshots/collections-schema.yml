@@ -1,5 +1,5 @@
 version: 1
-directus: 10.8.3
+directus: 10.9.0
 vendor: mysql
 collections:
   - collection: Globalping
