@@ -1131,45 +1131,6 @@ fields:
       foreign_key_table: null
       foreign_key_column: null
   - collection: gp_credits
-    field: amount
-    type: integer
-    meta:
-      collection: gp_credits
-      conditions: null
-      display: null
-      display_options: null
-      field: amount
-      group: null
-      hidden: false
-      interface: input
-      note: null
-      options:
-        min: 0
-      readonly: false
-      required: false
-      sort: 5
-      special: null
-      translations: null
-      validation: null
-      validation_message: null
-      width: full
-    schema:
-      name: amount
-      table: gp_credits
-      data_type: int
-      default_value: null
-      max_length: null
-      numeric_precision: 10
-      numeric_scale: 0
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      is_generated: false
-      generation_expression: null
-      has_auto_increment: false
-      foreign_key_table: null
-      foreign_key_column: null
-  - collection: gp_credits
     field: date_created
     type: timestamp
     meta:
@@ -1245,6 +1206,45 @@ fields:
       is_generated: false
       generation_expression: null
       has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: gp_credits
+    field: amount
+    type: integer
+    meta:
+      collection: gp_credits
+      conditions: null
+      display: null
+      display_options: null
+      field: amount
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options:
+        min: 0
+      readonly: false
+      required: false
+      sort: 5
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: amount
+      table: gp_credits
+      data_type: int
+      default_value: null
+      max_length: null
+      numeric_precision: 10
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
   - collection: gp_credits
@@ -2625,84 +2625,6 @@ fields:
       foreign_key_table: null
       foreign_key_column: null
   - collection: sponsors
-    field: github_id
-    type: string
-    meta:
-      collection: sponsors
-      conditions: null
-      display: null
-      display_options: null
-      field: github_id
-      group: null
-      hidden: false
-      interface: input
-      note: >-
-        GitHub ID of a user or an organization. Can be found by login (e.g.
-        https://api.github.com/users/jsdelivr)
-      options: null
-      readonly: false
-      required: true
-      sort: 9
-      special: null
-      translations: null
-      validation: null
-      validation_message: null
-      width: full
-    schema:
-      name: github_id
-      table: sponsors
-      data_type: varchar
-      default_value: null
-      max_length: 255
-      numeric_precision: null
-      numeric_scale: null
-      is_nullable: false
-      is_unique: true
-      is_primary_key: false
-      is_generated: false
-      generation_expression: null
-      has_auto_increment: false
-      foreign_key_table: null
-      foreign_key_column: null
-  - collection: sponsors
-    field: github_login
-    type: string
-    meta:
-      collection: sponsors
-      conditions: null
-      display: null
-      display_options: null
-      field: github_login
-      group: null
-      hidden: false
-      interface: input
-      note: GitHub username or organization name.
-      options: null
-      readonly: false
-      required: true
-      sort: 7
-      special: null
-      translations: null
-      validation: null
-      validation_message: null
-      width: full
-    schema:
-      name: github_login
-      table: sponsors
-      data_type: varchar
-      default_value: null
-      max_length: 255
-      numeric_precision: null
-      numeric_scale: null
-      is_nullable: false
-      is_unique: true
-      is_primary_key: false
-      is_generated: false
-      generation_expression: null
-      has_auto_increment: false
-      foreign_key_table: null
-      foreign_key_column: null
-  - collection: sponsors
     field: id
     type: integer
     meta:
@@ -2738,82 +2660,6 @@ fields:
       is_generated: false
       generation_expression: null
       has_auto_increment: true
-      foreign_key_table: null
-      foreign_key_column: null
-  - collection: sponsors
-    field: last_earning_date
-    type: timestamp
-    meta:
-      collection: sponsors
-      conditions: null
-      display: null
-      display_options: null
-      field: last_earning_date
-      group: null
-      hidden: false
-      interface: datetime
-      note: Date when user got it's credits last time.
-      options: null
-      readonly: false
-      required: true
-      sort: 13
-      special: null
-      translations: null
-      validation: null
-      validation_message: null
-      width: full
-    schema:
-      name: last_earning_date
-      table: sponsors
-      data_type: timestamp
-      default_value: null
-      max_length: null
-      numeric_precision: null
-      numeric_scale: null
-      is_nullable: false
-      is_unique: false
-      is_primary_key: false
-      is_generated: false
-      generation_expression: null
-      has_auto_increment: false
-      foreign_key_table: null
-      foreign_key_column: null
-  - collection: sponsors
-    field: monthly_amount
-    type: integer
-    meta:
-      collection: sponsors
-      conditions: null
-      display: null
-      display_options: null
-      field: monthly_amount
-      group: null
-      hidden: false
-      interface: input
-      note: Amount of the sponsorship in dollars that user donates every month.
-      options: null
-      readonly: false
-      required: true
-      sort: 11
-      special: null
-      translations: null
-      validation: null
-      validation_message: null
-      width: full
-    schema:
-      name: monthly_amount
-      table: sponsors
-      data_type: int
-      default_value: null
-      max_length: null
-      numeric_precision: 10
-      numeric_scale: 0
-      is_nullable: false
-      is_unique: false
-      is_primary_key: false
-      is_generated: false
-      generation_expression: null
-      has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
   - collection: sponsors
@@ -2896,6 +2742,160 @@ fields:
       has_auto_increment: false
       foreign_key_table: directus_users
       foreign_key_column: id
+  - collection: sponsors
+    field: github_id
+    type: string
+    meta:
+      collection: sponsors
+      conditions: null
+      display: null
+      display_options: null
+      field: github_id
+      group: null
+      hidden: false
+      interface: input
+      note: >-
+        GitHub ID of a user or an organization. Can be found by login (e.g.
+        https://api.github.com/users/jsdelivr)
+      options: null
+      readonly: false
+      required: true
+      sort: 9
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: github_id
+      table: sponsors
+      data_type: varchar
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: true
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: sponsors
+    field: github_login
+    type: string
+    meta:
+      collection: sponsors
+      conditions: null
+      display: null
+      display_options: null
+      field: github_login
+      group: null
+      hidden: false
+      interface: input
+      note: GitHub username or organization name.
+      options: null
+      readonly: false
+      required: true
+      sort: 7
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: github_login
+      table: sponsors
+      data_type: varchar
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: true
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: sponsors
+    field: last_earning_date
+    type: timestamp
+    meta:
+      collection: sponsors
+      conditions: null
+      display: null
+      display_options: null
+      field: last_earning_date
+      group: null
+      hidden: false
+      interface: datetime
+      note: Date when user got it's credits last time.
+      options: null
+      readonly: false
+      required: true
+      sort: 13
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: last_earning_date
+      table: sponsors
+      data_type: timestamp
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: sponsors
+    field: monthly_amount
+    type: integer
+    meta:
+      collection: sponsors
+      conditions: null
+      display: null
+      display_options: null
+      field: monthly_amount
+      group: null
+      hidden: false
+      interface: input
+      note: Amount of the sponsorship in dollars that user donates every month.
+      options: null
+      readonly: false
+      required: true
+      sort: 11
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: monthly_amount
+      table: sponsors
+      data_type: int
+      default_value: null
+      max_length: null
+      numeric_precision: 10
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
 relations:
   - collection: gp_adopted_probes
     field: userId
