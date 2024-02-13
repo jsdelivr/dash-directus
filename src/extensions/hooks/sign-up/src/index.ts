@@ -37,8 +37,10 @@ export default defineHook(({ filter, action }, context) => {
 		const user = payload.payload as User;
 
 		if (user.provider === 'github') {
-			await fulfillOrganizations(userId, user, context);
-			await assignCredits(userId, user, context);
+			await Promise.all([
+				fulfillOrganizations(userId, user, context),
+				assignCredits(userId, user, context),
+			]);
 		}
 	});
 });
@@ -93,31 +95,34 @@ const assignCredits = async (userId: string, user: User, context: HookExtensionC
 	const { services, database, getSchema } = context;
 	const { ItemsService } = services;
 
-	const creditsAdditionsService = new ItemsService('gp_credits_additions', {
-		schema: await getSchema({ database }),
-		knex: database,
+	await database.transaction(async (trx) => {
+		const creditsAdditionsService = new ItemsService('gp_credits_additions', {
+			schema: await getSchema({ database }),
+			knex: trx,
+		});
+
+		const creditsService = new ItemsService('gp_credits', {
+			schema: await getSchema({ database }),
+			knex: trx,
+		});
+
+		const creditsAdditions = await creditsAdditionsService.readByQuery({ filter: {
+			github_id: user.external_identifier,
+			consumed: false,
+		} }) as CreditsAdditions[];
+
+		if (creditsAdditions.length === 0) {
+			return;
+		}
+
+		const sum = creditsAdditions.reduce((sum, { amount }) => sum + amount, 0);
+
+		await Promise.all([
+			creditsAdditionsService.updateByQuery({ filter: {
+				github_id: user.external_identifier,
+				consumed: false,
+			} }, { consumed: true }),
+			creditsService.createOne({ amount: sum, user_id: userId }),
+		]);
 	});
-
-	const creditsService = new ItemsService('gp_credits', {
-		schema: await getSchema({ database }),
-		knex: database,
-	});
-
-	const creditsAdditions = await creditsAdditionsService.readByQuery({ filter: {
-		github_id: user.external_identifier,
-		consumed: false,
-	} }) as CreditsAdditions[];
-
-	if (creditsAdditions.length === 0) {
-		return;
-	}
-
-	const sum = creditsAdditions.reduce((sum, { amount }) => sum + amount, 0);
-
-	await creditsAdditionsService.updateByQuery({ filter: {
-		github_id: user.external_identifier,
-		consumed: false,
-	} }, { consumed: true });
-
-	await creditsService.createOne({ amount: sum, user_id: userId });
 };
