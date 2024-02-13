@@ -38,7 +38,11 @@ describe('Sign-up hook', () => {
 		env: {
 			GITHUB_ACCESS_TOKEN: 'fakeToken',
 		},
-		database: {},
+		database: {
+			transaction: async (f) => {
+				await f({});
+			},
+		},
 		getSchema: () => Promise.resolve({}),
 		logger: {
 			error: () => {},
