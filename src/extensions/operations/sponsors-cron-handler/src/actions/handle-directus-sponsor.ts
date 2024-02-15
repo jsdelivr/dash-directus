@@ -29,17 +29,17 @@ export const handleDirectusSponsor = async ({ directusSponsor, githubSponsors }:
 	const githubSponsor = githubSponsors.find(githubSponsor => githubSponsor.githubId === id);
 
 	if (!githubSponsor) {
-		await deleteDirectusSponsor({ id: directusSponsor.id }, { services, database, getSchema, env });
+		await deleteDirectusSponsor(directusSponsor, { services, database, getSchema, env });
 		return `Sponsor with github id: ${id} not found on github sponsors list. Sponsor deleted from directus.`;
 	}
 
 	if (!githubSponsor.isActive) {
-		await deleteDirectusSponsor({ id: directusSponsor.id }, { services, database, getSchema, env });
+		await deleteDirectusSponsor(directusSponsor, { services, database, getSchema, env });
 		return `Sponsor with github id: ${id} is not active on github sponsors list. Sponsor deleted from directus.`;
 	}
 
 	if (githubSponsor.isOneTimePayment) {
-		await deleteDirectusSponsor({ id: directusSponsor.id }, { services, database, getSchema, env });
+		await deleteDirectusSponsor(directusSponsor, { services, database, getSchema, env });
 		return `Sponsorship of user with github id: ${id} is one-time. Sponsor deleted from directus.`;
 	}
 
