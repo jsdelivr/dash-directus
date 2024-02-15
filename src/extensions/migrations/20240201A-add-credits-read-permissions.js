@@ -35,7 +35,6 @@ async function createPermissions (roleId) {
 				fields: [
 					'amount',
 					'comment',
-					'date_updated',
 					'date_created',
 					'user_updated',
 				],
@@ -107,8 +106,6 @@ async function patchReadPermissions (readPermissions) {
 			},
 			fields: [
 				'amount',
-				'date_created',
-				'date_updated',
 			],
 		}),
 		headers: {

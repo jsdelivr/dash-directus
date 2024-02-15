@@ -8,8 +8,8 @@ export async function up (knex) {
 				SELECT id INTO found_user_id FROM directus_users WHERE external_identifier = NEW.github_id LIMIT 1;
 
 				IF found_user_id IS NOT NULL THEN
-						INSERT INTO gp_credits (user_id, amount, date_created)
-						VALUES (found_user_id, NEW.amount, CURRENT_TIMESTAMP)
+						INSERT INTO gp_credits (user_id, amount)
+						VALUES (found_user_id, NEW.amount)
 						ON DUPLICATE KEY UPDATE
 						gp_credits.amount = COALESCE(gp_credits.amount, 0) + NEW.amount;
 				ELSE
