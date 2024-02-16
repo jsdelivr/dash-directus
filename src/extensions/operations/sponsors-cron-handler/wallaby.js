@@ -14,6 +14,7 @@ export default function wallaby () {
 			type: 'node',
 			params: {
 				runner: '--experimental-specifier-resolution=node',
+				env: 'NODE_ENV=test',
 			},
 		},
 		preprocessors: {

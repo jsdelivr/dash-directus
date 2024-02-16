@@ -71,7 +71,7 @@ export const getGithubSponsors = async ({ env }: { env: OperationContext['env'] 
 			},
 			after: cursor,
 			request: {
-				fetch: globalThis.fetch ?? nodeFetch, // Using node-fetch for tests and native fetch in prod as nock doesn't support native fetch right now.
+				fetch: process.env.NODE_ENV === 'test' ? nodeFetch : globalThis.fetch, // Using node-fetch for tests and native fetch in prod as nock doesn't support native fetch right now.
 			},
 		});
 

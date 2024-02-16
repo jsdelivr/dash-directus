@@ -138,7 +138,7 @@ const fulfillUserType = async (userId: string, user: User, context: HookExtensio
 		knex: database,
 	});
 
-	const sponsors = sponsorsService.readByQuery({ filter: { github_id: user.external_identifier } });
+	const sponsors = await sponsorsService.readByQuery({ filter: { github_id: user.external_identifier } });
 
 	if (sponsors.length > 0) {
 		await updateUser(userId, { user_type: 'sponsor' }, context);
