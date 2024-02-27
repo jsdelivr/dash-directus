@@ -2,6 +2,7 @@ import type { HookExtensionContext } from '@directus/extensions';
 import { Accountability } from '@directus/types';
 
 type DirectusUser = {
+	id: string;
 	external_identifier: string;
 };
 
