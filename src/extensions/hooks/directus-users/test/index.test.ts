@@ -63,4 +63,12 @@ describe('token hooks', () => {
 
 		expect(creditsAdditionsService.deleteByQuery.callCount).to.deep.equal(0);
 	});
+
+	it('should throw if accountability was not provided', async () => {
+		usersService.readByQuery.resolves([{ id: '1-1-1-1-1', external_identifier: '123' }]);
+
+		const err = await callbacks.filter['users.delete']([ '1-1-1-1-1' ], {}, { accountability: null }).catch(err => err);
+
+		expect(err.message).to.equal('User is not authenticated');
+	});
 });
