@@ -27,14 +27,25 @@ type SendCodeResponse = {
 	network: string;
 }
 
-type AdoptedProbe = Omit<SendCodeResponse, 'ip' | 'code' | 'state'> & {
-	ip: string,
-	code: string,
-	state: string | null
+type AdoptedProbe = {
+	ip: string;
+	code: string;
+	uuid: string | null;
+	version: string | null;
+	hardwareDevice: string | null;
+	status: string;
+	city: string | null;
+	state: string | null;
+	country: string | null;
+	latitude: number | null;
+	longitude: number | null;
+	asn: number | null;
+	network: string | null;
 }
 
 const InvalidCodeError = createError('INVALID_PAYLOAD_ERROR', 'Code is not valid', 400);
 const TooManyRequestsError = createError('TOO_MANY_REQUESTS', 'Too many requests', 429);
+
 
 const rateLimiter = new RateLimiterMemory({
 	points: 20,
@@ -73,6 +84,22 @@ export default defineEndpoint((router, { env, logger, services }) => {
 			await rateLimiter.consume(userId, 1).catch(() => { throw new TooManyRequestsError(); });
 
 			const code = generateRandomCode();
+
+			probesToAdopt.set(userId, {
+				ip,
+				code,
+				uuid: null,
+				version: null,
+				hardwareDevice: null,
+				status: 'offline',
+				city: null,
+				state: null,
+				country: null,
+				latitude: null,
+				longitude: null,
+				asn: null,
+				network: null,
+			});
 
 			const response = await axios.post<SendCodeResponse>(`${env.GLOBALPING_URL}/adoption-code?systemkey=${env.GP_SYSTEM_KEY}`, {
 				ip,
