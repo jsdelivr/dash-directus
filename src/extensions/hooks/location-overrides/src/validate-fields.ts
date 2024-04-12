@@ -1,7 +1,8 @@
 import type { HookExtensionContext } from '@directus/extensions';
+import { createError } from '@directus/errors';
 import axios from 'axios';
 import ipaddr from 'ipaddr.js';
-import { Fields, payloadError } from './index.js';
+import type { Fields } from './index.js';
 import { normalizeCityName } from './normalize-city.js';
 
 type City = {
@@ -25,6 +26,7 @@ type City = {
 	adminName1: string;
 };
 
+const payloadError = (message: string) => new (createError('INVALID_PAYLOAD_ERROR', message, 400))();
 
 export const validateLocation = async (fields: Fields, context: HookExtensionContext) => {
 	const { env } = context;
