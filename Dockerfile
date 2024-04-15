@@ -65,7 +65,6 @@ RUN npm run build
 # Build hooks/adopted-probe
 FROM node:18-alpine AS builder-09
 WORKDIR /builder/src/extensions/lib
-COPY ./src/extensions/lib /builder/src/extensions/lib
 ADD ./src/extensions/lib/package.json ./src/extensions/lib/package-lock.json ./
 RUN npm ci
 COPY ./src/extensions/lib .
@@ -150,7 +149,6 @@ RUN npm run build
 # Build hooks/location-verrides
 FROM node:18-alpine AS builder-19
 WORKDIR /builder/src/extensions/lib
-COPY ./src/extensions/lib /builder/src/extensions/lib
 ADD ./src/extensions/lib/package.json ./src/extensions/lib/package-lock.json ./
 RUN npm ci
 COPY ./src/extensions/lib .
