@@ -33,7 +33,7 @@ async function createPermissions (roleId) {
 		method: 'POST',
 		body: JSON.stringify([
 			{
-				collection: 'tokens',
+				collection: 'jsd_purge_tokens',
 				action: 'create',
 				role: roleId,
 				permissions: {
@@ -44,7 +44,7 @@ async function createPermissions (roleId) {
 				fields: [ 'name', 'value', 'expire', 'origins' ],
 			},
 			{
-				collection: 'tokens',
+				collection: 'jsd_purge_tokens',
 				action: 'read',
 				role: roleId,
 				permissions: {
@@ -55,7 +55,7 @@ async function createPermissions (roleId) {
 				fields: [ '*' ],
 			},
 			{
-				collection: 'tokens',
+				collection: 'jsd_purge_tokens',
 				action: 'update',
 				role: roleId,
 				permissions: {
@@ -66,7 +66,7 @@ async function createPermissions (roleId) {
 				fields: [ 'name', 'value', 'expire', 'origins' ],
 			},
 			{
-				collection: 'tokens',
+				collection: 'jsd_purge_tokens',
 				action: 'delete',
 				role: roleId,
 				permissions: {
