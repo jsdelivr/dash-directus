@@ -13,7 +13,7 @@ export default _.merge({}, ...[ 'development' ].map((environment) => {
 				user: 'directus',
 				password: 'password',
 				database: 'directus',
-				port: 3306,
+				port: 3307,
 			},
 			pool: {
 				min: 0,
