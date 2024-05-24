@@ -6,7 +6,7 @@ async function addCssRules () {
 	const response = await fetch(URL, {
 		method: 'PATCH',
 		body: JSON.stringify({
-			custom_css: '.search-input {\n  display: none !important;\n}\n\nbody:not(:has(.router-link-active[href="/admin/content/tokens"])) .search-input {\n\tdisplay: flex !important;\n}',
+			custom_css: '.search-input {\n  display: none !important;\n}\n\nbody:not(:has(.router-link-active[href="/admin/content/jsd_purge_tokens"])) .search-input {\n\tdisplay: flex !important;\n}',
 		}),
 		headers: {
 			'Content-Type': 'application/json',

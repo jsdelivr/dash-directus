@@ -1,4 +1,4 @@
-# dashboard
+# jsDelivr dashboard directus
 
 ## Prod first deploy
 
@@ -54,12 +54,12 @@ sudo apt -y install haproxy
 # Configure and start haproxy
 sudo chmod a+w /etc/haproxy/haproxy.cfg
 cat <<EOF | sudo tee -a /etc/haproxy/haproxy.cfg > /dev/null
-frontend gp_fe
+frontend jsd_fe
     bind *:80
-    default_backend gp_be
+    default_backend jsd_be
 
-backend gp_be
-    server server1 127.0.0.1:8055
+backend jsd_be
+    server server1 127.0.0.1:8056
 EOF
 sudo systemctl stop haproxy
 sudo systemctl start haproxy

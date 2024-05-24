@@ -12,6 +12,5 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
-		"any-ascii": "^0.3.2"
 	}
 }
